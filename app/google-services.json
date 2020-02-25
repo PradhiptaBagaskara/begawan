@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "607034871457",
+    "firebase_url": "https://pt-begawan-polosoro.firebaseio.com",
+    "project_id": "pt-begawan-polosoro",
+    "storage_bucket": "pt-begawan-polosoro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607034871457:android:3ed53a33b64af26daeeae0",
+        "android_client_info": {
+          "package_name": "com.pt.begawanpolosoro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607034871457-iu8ah196o48dkp0m66c0f01dmcu3altn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pt.begawanpolosoro",
+            "certificate_hash": "c9e4af9ed391f066f122a24cbdbeb67f32f730f7"
+          }
+        },
+        {
+          "client_id": "607034871457-me40dc7g85lul1kcpr7vaibh52trhk6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMY-a1w3VKKzJGsMggnCYvWuRCJlShiBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607034871457-me40dc7g85lul1kcpr7vaibh52trhk6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="8dp"
+    android:background="@color/whiteOri"
+    android:elevation="5dp"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="10dp"
+    android:layout_centerHorizontal="true"
+    android:innerRadius="5dp"
+    android:shape="ring"
+    android:thicknessRatio="1.9">
+<io.supercharge.shimmerlayout.ShimmerLayout
+    android:id="@+id/shimmer_text"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:shimmer_animation_duration="1200">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txNameUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/worksans_bold"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:layout_marginBottom="1dp"
+                android:text="nama user"/>
+            <TextView
+                android:id="@+id/txName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:textSize="12sp"
+                android:fontFamily="@font/worksans_regular"
+                android:text="pembelian"/>
+
+        </LinearLayout>
+        <com.congfandi.lib.TextViewRupiah
+            android:id="@+id/txDana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Rp. 5000000000"
+            android:fontFamily="@font/worksans_bold"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"/>
+    </LinearLayout>
+</io.supercharge.shimmerlayout.ShimmerLayout>
+
+</androidx.cardview.widget.CardView>
+
