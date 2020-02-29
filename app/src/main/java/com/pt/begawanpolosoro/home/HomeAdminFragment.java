@@ -1,13 +1,18 @@
 package com.pt.begawanpolosoro.home;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +28,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.bcc.gridmenuview.GridMenu;
 import com.bcc.gridmenuview.event.OnItemClickListener;
 import com.bcc.gridmenuview.model.MenuItem;
+import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
@@ -46,7 +52,7 @@ import retrofit2.Response;
 
 
 public class HomeAdminFragment extends Fragment {
-    LinearLayout userInfo;
+    LinearLayout userInfo,saldoBtn;
     RelativeLayout relativeLayout;
     TextView nama,username;
     TextViewRupiah saldo;
@@ -101,6 +107,10 @@ public class HomeAdminFragment extends Fragment {
 
     List sementara = new ArrayList<>();
     NestedScrollView scrollView;
+    Dialog saldoForm;
+    EditTextRupiah edtSaldo;
+    Button edtSave,edtBatal;
+    ProgressBar edtPg;
 
 
     @Override
@@ -109,11 +119,15 @@ public class HomeAdminFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =   inflater.inflate(R.layout.fragment_home, container, false);
         relativeLayout = view.findViewById(R.id.rel);
-        userInfo = view.findViewById(R.id.userInfo);
-        bt = getActivity().findViewById(R.id.bottom_navigation_bar);
         recyclerView = (RecyclerView) view.findViewById(R.id.home_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         scrollView = view.findViewById(R.id.scroll);
+        customDialog(getActivity());
+        userInfo = view.findViewById(R.id.userInfo);
+        saldoBtn = view.findViewById(R.id.edtSaldoBtn);
+        saldoBtn.setOnClickListener(showEditSaldo);
+
+
 
 
 
@@ -168,12 +182,7 @@ public class HomeAdminFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         nama.setText(getsNama());
         username.setText(getsUsername());
-//        refresh.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loadSaldo();
-//            }
-//        });
+
         userInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +202,72 @@ public class HomeAdminFragment extends Fragment {
 
     }
 
+    private View.OnClickListener showEditSaldo = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            saldoForm.show();
+            edtSave.setOnClickListener(updateSaldo);
+            edtBatal.setOnClickListener(closeDialog);
 
+        }
+    };
+
+    private View.OnClickListener closeDialog = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            edtSaldo.getText().clear();
+            saldoForm.dismiss();
+        }
+    };
+
+    private View.OnClickListener updateSaldo = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            edtSave.setVisibility(View.GONE);
+            edtBatal.setVisibility(View.GONE);
+            edtPg.setVisibility(View.VISIBLE);
+           Call<ResponseSaldo> update = apiService.updateSaldoApi(getsAuth(), getsAuth(), edtSaldo.getNumber().toString(), "tambah");
+           update.enqueue(new Callback<ResponseSaldo>() {
+               @Override
+               public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
+                   if (response.isSuccessful()){
+                       if (response.body().isStatus()){
+                           edtBatal.setVisibility(View.VISIBLE);
+                           edtSave.setVisibility(View.VISIBLE);
+                           edtPg.setVisibility(View.GONE);
+                           saldoForm.dismiss();
+                           Toast.makeText(getActivity(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                           loadSaldo();
+
+                       }
+                   }
+               }
+
+               @Override
+               public void onFailure(Call<ResponseSaldo> call, Throwable t) {
+                   t.printStackTrace();
+                   Toast.makeText(getActivity(), "Terjadi Kesalahan!", Toast.LENGTH_LONG).show();
+                   edtBatal.setVisibility(View.VISIBLE);
+                   edtSave.setVisibility(View.VISIBLE);
+                   edtPg.setVisibility(View.GONE);
+               }
+           });
+        }
+    };
+
+    private void customDialog(Context context) {
+        saldoForm = new Dialog(context);
+        saldoForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        saldoForm.setContentView(R.layout.dialog_saldo_home);
+        saldoForm.setCancelable(true);
+        saldoForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
+        saldoForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        edtPg = saldoForm.findViewById(R.id.progresSaldo);
+        edtPg.setVisibility(View.GONE);
+        edtSaldo = saldoForm.findViewById(R.id.dialogSaldo);
+        edtSave = saldoForm.findViewById(R.id.saveSaldo);
+        edtBatal= saldoForm.findViewById(R.id.cancelDialog);
+    }
 
 
     void loadSaldo(){

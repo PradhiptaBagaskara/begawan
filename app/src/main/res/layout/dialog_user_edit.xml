@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
+    android:id="@+id/cardDialog"
     app:cardCornerRadius="20dp"
     android:layout_marginHorizontal="20dp"
     android:layout_marginBottom="5dp"
@@ -23,38 +24,35 @@
     android:layout_marginVertical="10dp"
     android:orientation="vertical">
 
-<!--    <info.hoang8f.widget.FButton-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:padding="15dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:buttonColor="@color/darkBlue"-->
-<!--        app:shadowColor="@color/lightBlue"-->
-<!--        app:shadowEnabled="true"-->
-<!--        app:shadowHeight="5dp"-->
-<!--        app:cornerRadius="5dp"-->
-<!--    />-->
 
-    <androidx.cardview.widget.CardView
+
+    <Button
+        android:id="@+id/shareUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="1dp"
-        app:cardCornerRadius="40dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="5dp"
-        android:layout_centerHorizontal="true"
-        android:innerRadius="5dp"
-        android:shape="ring"
-        android:backgroundTint="@color/darkBlue"
-        android:layout_marginTop="10dp"
-        android:thicknessRatio="2.9">
+        android:text="Share Login"
+        android:layout_marginVertical="5dp"
+        android:textColor="@color/whiteOri"
+        android:background="@drawable/gradient_btn"/>
+
     <Button
+        android:id="@+id/resetPassword"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:text="Reset Password"
         android:layout_marginVertical="5dp"
         android:textColor="@color/whiteOri"
-        android:background="@color/transparant"/>
-    </androidx.cardview.widget.CardView>
+        android:background="@drawable/gradient_btn"/>
+
+    <ProgressBar
+        android:id="@+id/progresReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset Password"
+        android:layout_marginVertical="5dp"
+        android:textColor="@color/whiteOri"
+        android:background="@drawable/gradient_btn"/>
+
 </LinearLayout>
 
 </LinearLayout>

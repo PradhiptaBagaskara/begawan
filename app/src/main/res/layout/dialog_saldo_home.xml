@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    android:id="@+id/cardDialog"
+    app:cardCornerRadius="20dp"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginBottom="5dp"
+    android:layout_centerHorizontal="true"
+    android:innerRadius="5dp"
+    android:shape="ring"
+    android:layout_marginTop="10dp"
+    android:thicknessRatio="1.9">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="15dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Tambah Saldo"
+                android:fontFamily="@font/mont_bold"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"/>
+
+            <com.congfandi.lib.EditTextRupiah
+                android:id="@+id/dialogSaldo"
+                android:layout_width="match_parent"
+                android:hint="Masukan Saldo"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/cancelDialog"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="25dp"
+                    android:background="@drawable/gradient_btn"
+                    android:text="BATAL"
+                    android:textColor="@color/whiteOri" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/saveSaldo"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/gradient_btn"
+                        android:text="Simpan"
+                        android:textColor="@color/whiteOri" />
+
+                    <ProgressBar
+                        android:id="@+id/progresSaldo"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@drawable/gradient_btn"
+                        android:text="Reset Password"
+                        android:textColor="@color/whiteOri" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

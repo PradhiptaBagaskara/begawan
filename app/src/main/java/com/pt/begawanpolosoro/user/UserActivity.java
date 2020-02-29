@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
+import com.google.android.material.snackbar.Snackbar;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
@@ -31,9 +35,12 @@ import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
+import com.pt.begawanpolosoro.user.api.ResponseUser;
 
 import java.util.List;
 
+import gdut.bsx.share2.Share2;
+import gdut.bsx.share2.ShareContentType;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,6 +87,8 @@ public class UserActivity extends AppCompatActivity {
         this.id = id;
     }
 
+    String passwordDefault = "123456";
+
     String username;
     String saldo;
     int role;
@@ -87,15 +96,19 @@ public class UserActivity extends AppCompatActivity {
     String id;
     Dialog userForm;
 
+    Button share, reset;
+
     TextView vUsername, vNama, vAktifitas;
     TextViewRupiah vSaldo;
     ApiService apiService;
     ImageButton back,logout, addSaldo, saveSaldo, cancel,setting;
-    ProgressBar pg;
+    ProgressBar pg, pgReset;
 
     RecyclerView recyclerView;
     CurrentUser user;
     EditTextRupiah updateSaldo;
+    CardView cardDialog;
+    CoordinatorLayout activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +118,7 @@ public class UserActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.darkBlue));
+        activity = findViewById(R.id.userActivity);
 
         apiService = InitRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getApplicationContext());
@@ -190,10 +204,55 @@ public class UserActivity extends AppCompatActivity {
         public void onClick(View view) {
             userForm.show();
 
-//            edtVideo = (EditText)formvideo.findViewById(R.id.input_url_dialog);
-//            addVideo = (Button)formvideo.findViewById(R.id.add_video_dialog);
+            share.setOnClickListener(sharedUser);
+            reset.setOnClickListener(resetPass);
+
 //
 //            addVideo.setOnClickListener(addVideoFb);
+        }
+    };
+
+    private View.OnClickListener resetPass = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            reset.setVisibility(View.GONE);
+            pgReset.setVisibility(View.VISIBLE);
+            Call<ResponseUser> pas = apiService.resetPassword(user.getsAuth(), getId(),passwordDefault);
+            pas.enqueue(new Callback<ResponseUser>() {
+                @Override
+                public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                    reset.setVisibility(View.VISIBLE);
+                    pgReset.setVisibility(View.GONE);
+                    if (response.isSuccessful()){
+                        if (response.body().isStatus()){
+                            Snackbar.make(activity, response.body().getMsg(), Snackbar.LENGTH_LONG).show();
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseUser> call, Throwable t) {
+                    reset.setVisibility(View.VISIBLE);
+                    pgReset.setVisibility(View.GONE);
+                }
+            });
+
+        }
+    };
+
+    private View.OnClickListener sharedUser = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new Share2.Builder(UserActivity.this)
+                    .setContentType(ShareContentType.TEXT)
+                    // 设置要分享的文本内容
+                    .setTextContent("Selamat " + getNama() +"! Login anda telah di buat.\n \nUsername: " +getUsername()+"\nPassword: "+ passwordDefault
+                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/begawan.apk")
+                    .setTitle("Login Aplikasi "+ getResources().getString(R.string.app_name))
+                    .build()
+                    .shareBySystem();
         }
     };
 
@@ -306,14 +365,20 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+
+
     private void customDialog() {
         userForm = new Dialog(UserActivity.this);
         userForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
         userForm.setContentView(R.layout.dialog_user_edit);
         userForm.setCancelable(true);
         userForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
-
         userForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pgReset = userForm.findViewById(R.id.progresReset);
+        pgReset.setVisibility(View.GONE);
+        share = userForm.findViewById(R.id.shareUser);
+        reset = userForm.findViewById(R.id.resetPassword);
+        cardDialog = userForm.findViewById(R.id.cardDialog);
     }
 
 

@@ -44,6 +44,17 @@ public interface ApiService {
                                      @Query("id") String id);
 
     @FormUrlEncoded
+    @POST("api/password")
+    Call<ResponseUser> resetPassword(@Field("auth_key") String auth_key,
+                                     @Field("id") String id,
+                                     @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("api/fcmtoken")
+    Call<ResponseSaldo> updateToken(@Field("auth_key") String auth_key,
+                                     @Field("token") String id);
+
+    @FormUrlEncoded
     @POST("api/proyek")
     Call<ResponseProyek> updateProyek(@Field("auth_key") String auth,
                                      @Field("id") String id,
