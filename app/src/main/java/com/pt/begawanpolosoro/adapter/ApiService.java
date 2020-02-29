@@ -23,6 +23,13 @@ public interface ApiService {
     @GET("api/saldo")
     Call<ResponseSaldo> saldoApi (@Query("auth_key") String auth_key);
 
+    @FormUrlEncoded
+    @POST("api/saldo")
+    Call<ResponseSaldo> updateSaldoApi (@Field("auth_key") String auth_key,
+                                        @Field("id") String id,
+                                        @Field("saldo") String saldo,
+                                        @Field("param") String param);
+
     @GET("api/transaksi")
     Call<ResponseTx> txApi (@Query("auth_key") String auth);
 
@@ -32,5 +39,16 @@ public interface ApiService {
     @GET("api/proyek")
     Call<ResponseProyek> getProyek(@Query("auth_key") String auth);
 
+    @GET("api/proyek")
+    Call<ResponseProyek> getProyekId(@Query("auth_key") String auth,
+                                     @Query("id") String id);
 
+    @FormUrlEncoded
+    @POST("api/proyek")
+    Call<ResponseProyek> updateProyek(@Field("auth_key") String auth,
+                                     @Field("id") String id,
+                                      @Field("nama_proyek") String namaProyek,
+                                      @Field("param") String param,
+                                      @Field("keterangan") String catatan,
+                                      @Field("modal") String modal);
 }

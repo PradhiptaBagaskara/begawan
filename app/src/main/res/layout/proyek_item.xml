@@ -45,6 +45,8 @@
                     android:text="Pembangunan daerah"
                     android:fontFamily="@font/worksans_bold"
                     android:textColor="@color/darkBlue"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textSize="15sp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"/>

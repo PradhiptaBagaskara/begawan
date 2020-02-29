@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,15 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.bcc.gridmenuview.GridMenu;
 import com.bcc.gridmenuview.event.OnItemClickListener;
 import com.bcc.gridmenuview.model.MenuItem;
@@ -28,6 +32,7 @@ import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.home.api.ResultSaldo;
+import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +47,7 @@ import retrofit2.Response;
 
 public class HomeAdminFragment extends Fragment {
     LinearLayout userInfo;
+    RelativeLayout relativeLayout;
     TextView nama,username;
     TextViewRupiah saldo;
     String sNama;
@@ -90,8 +96,11 @@ public class HomeAdminFragment extends Fragment {
     GridMenu menu;
     final ArrayList<MenuItem> list = new ArrayList<>();
     RecyclerView recyclerView;
+    InitRetro initRetro;
+    BottomNavigationBar bt;
 
     List sementara = new ArrayList<>();
+    NestedScrollView scrollView;
 
 
     @Override
@@ -99,16 +108,22 @@ public class HomeAdminFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =   inflater.inflate(R.layout.fragment_home, container, false);
-
+        relativeLayout = view.findViewById(R.id.rel);
+        userInfo = view.findViewById(R.id.userInfo);
+        bt = getActivity().findViewById(R.id.bottom_navigation_bar);
         recyclerView = (RecyclerView) view.findViewById(R.id.home_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        scrollView = view.findViewById(R.id.scroll);
 
-        userInfo = view.findViewById(R.id.userInfo);
+
+
+
         nama = view.findViewById(R.id.nama);
         username = view.findViewById(R.id.username);
         saldo = view.findViewById(R.id.saldo);
-        refresh = view.findViewById(R.id.refreshSaldo);
+//        refresh = view.findViewById(R.id.refreshSaldo);
         menu = view.findViewById(R.id.menu_grid);
+
 
 
 
@@ -129,7 +144,8 @@ public class HomeAdminFragment extends Fragment {
         super.onCreate(savedInstanceState);
         sm = new SessionManager(getContext());
         map = sm.getLogged();
-        apiService = InitRetro.InitApi().create(ApiService.class);
+        initRetro = new InitRetro(getContext());
+        apiService = initRetro.InitApi().create(ApiService.class);
         setsNama(map.get(sm.SES_NAMA).toString());
         setsUsername(map.get(sm.SES_USERNAME).toString());
         setsAuth(map.get(sm.SES_TOKEN).toString());
@@ -150,15 +166,14 @@ public class HomeAdminFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadTx();
         nama.setText(getsNama());
         username.setText(getsUsername());
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadSaldo();
-            }
-        });
+//        refresh.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadSaldo();
+//            }
+//        });
         userInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,6 +194,8 @@ public class HomeAdminFragment extends Fragment {
     }
 
 
+
+
     void loadSaldo(){
         Call<ResponseSaldo> apiSaldo = apiService.saldoApi(getsAuth());
         apiSaldo.enqueue(new Callback<ResponseSaldo>() {
@@ -187,7 +204,7 @@ public class HomeAdminFragment extends Fragment {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
                         ResultSaldo data = response.body().getResult();
-                        Log.d("saldo", response.body().toString() + "token: " +getsAuth());
+//                        Log.d("saldo", response.body().toString() + "token: " +getsAuth());
                         amount = data.getSaldo().toString();
                     }
 
@@ -215,7 +232,7 @@ public class HomeAdminFragment extends Fragment {
                     ResponseTx res = response.body();
                     if (res.isStatus()){
                         if (res.getResult() != null){
-                            Log.d("tagger: ", res.getResult().toString());
+//                            Log.d("tagger: ", res.getResult().toString());
 
                             List<ResultItemTx> TxItem = res.getResult();
                             TxAdapter Tadapter = new TxAdapter(TxItem);
@@ -247,20 +264,30 @@ public class HomeAdminFragment extends Fragment {
         @NonNull
         @Override
         public TxAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_tx_item, parent, false);
+            View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_txby_user, parent, false);
             MyViewHolder mViewHolder = new MyViewHolder(mView);
             return mViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final TxAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final TxAdapter.MyViewHolder holder, final int position) {
             holder.mDana.convertToIDR(txItem.get(position).getDana());
-            holder.mNama.setText(txItem.get(position).getNamaTransaksi());
-            holder.mTx.setText(txItem.get(position).getNama());
+            holder.mNama.setText(txItem.get(position).getNama());
+            holder.mTx.setText(txItem.get(position).getNamaTransaksi());
+            holder.mTgl.setText(txItem.get(position).getCreatedDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(getActivity(), TxDetailActivity.class);
+                    intent.putExtra("id", txItem.get(position).getId());
+                    intent.putExtra("nama", txItem.get(position).getNama());
+                    intent.putExtra("nama_tx", txItem.get(position).getNamaTransaksi());
+                    intent.putExtra("nama_proyek", txItem.get(position).getNamaProyek());
+                    intent.putExtra("jenis_bayar", txItem.get(position).getJenis());
+                    intent.putExtra("dana", txItem.get(position).getDana());
+                    intent.putExtra("keterangan", txItem.get(position).getKeterangan());
+                    intent.putExtra("waktu", txItem.get(position).getCreatedDate());
+                    startActivity(intent);
                 }
             });
 
@@ -272,15 +299,16 @@ public class HomeAdminFragment extends Fragment {
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public  TextView mTx, mNama;
+            public  TextView mTx, mNama, mTgl;
             TextViewRupiah mDana;
 
 
             public MyViewHolder(View itemView) {
                 super(itemView);
                 mDana = itemView.findViewById(R.id.txDana);
-                mTx = itemView.findViewById(R.id.txName);
-                mNama = itemView.findViewById(R.id.txNameUser);
+                mTx = itemView.findViewById(R.id.pembelian);
+                mNama = itemView.findViewById(R.id.nama_proyek);
+                mTgl = itemView.findViewById(R.id.txTgl);
             }
         }
     }

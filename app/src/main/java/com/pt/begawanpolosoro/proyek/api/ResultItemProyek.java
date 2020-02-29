@@ -4,8 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResultItemProyek {
 
+	@SerializedName("sisa_modal")
+	private String sisaModal;
+
 	@SerializedName("keterangan")
 	private String keterangan;
+
+	@SerializedName("total_dana")
+	private String totalDana;
 
 	@SerializedName("id")
 	private String id;
@@ -19,12 +25,28 @@ public class ResultItemProyek {
 	@SerializedName("modal")
 	private String modal;
 
+	public void setSisaModal(String sisaModal){
+		this.sisaModal = sisaModal;
+	}
+
+	public String getSisaModal(){
+		return sisaModal;
+	}
+
 	public void setKeterangan(String keterangan){
 		this.keterangan = keterangan;
 	}
 
 	public String getKeterangan(){
 		return keterangan;
+	}
+
+	public void setTotalDana(String totalDana){
+		this.totalDana = totalDana;
+	}
+
+	public String getTotalDana(){
+		return totalDana;
 	}
 
 	public void setId(String id){
@@ -63,7 +85,9 @@ public class ResultItemProyek {
  	public String toString(){
 		return 
 			"ResultItem{" + 
-			"keterangan = '" + keterangan + '\'' + 
+			"sisa_modal = '" + sisaModal + '\'' + 
+			",keterangan = '" + keterangan + '\'' + 
+			",total_dana = '" + totalDana + '\'' + 
 			",id = '" + id + '\'' + 
 			",created_date = '" + createdDate + '\'' + 
 			",nama_proyek = '" + namaProyek + '\'' + 

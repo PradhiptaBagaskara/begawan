@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_home, "Home"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "Proyek"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_user, "Pengguna"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
-                .setBarBackgroundColor(R.color.lightBlue)
-                .setActiveColor(R.color.whiteOri)
+                .addItem(new BottomNavigationItem(R.drawable.ic_home, "HOME"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PROYEK"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
+//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
+                .setBarBackgroundColor(R.color.lightGrey2)
+                .setActiveColor(R.color.lightBlue)
                 .setInActiveColor(R.color.grey)
                 .setFirstSelectedPosition(0)
                 .initialise();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
-                halaman(position, 0);
+                halaman(position, role);
 //                setActionBar(position, rule);
                 aktifFragment = position;
             }
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         String tag;
 
-//        if (rule == 0){
+        if (rule == 2){
             switch (index){
                 case 0:
                     HomeAdminFragment homeFragment = new HomeAdminFragment();
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = userFragment;
                     break;
             }
-//        }
+        }
 //        else {
 //            switch (index){
 //                case 0:

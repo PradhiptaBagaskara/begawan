@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,15 +42,11 @@ public class UserFragment extends Fragment {
     UserAdapter adapter;
 
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiService = InitRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getActivity());
-        loadUser();
 
     }
 
@@ -66,23 +63,10 @@ public class UserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.user_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        loadUser();
 
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-//                Log.d("search", "onQueryTextSubmit: "+query);
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-
-                return false;
-            }
-        });
 
 
         return view;
@@ -102,6 +86,20 @@ public class UserFragment extends Fragment {
                             recyclerView.setAdapter(adapter);
 
                             adapter.notifyDataSetChanged();
+                            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                @Override
+                                public boolean onQueryTextSubmit(String query) {
+                                    adapter.getFilter().filter(query);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onQueryTextChange(String newText) {
+                                    adapter.getFilter().filter(newText);
+
+                                    return false;
+                                }
+                            });
 
 
 
@@ -138,14 +136,29 @@ public class UserFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
             holder.mDana.convertToIDR(filteredUser.get(position).getSaldo());
             holder.mNama.setText(filteredUser.get(position).getNama());
             holder.mTx.setText(filteredUser.get(position).getUsername());
-            holder.mRole.setText(filteredUser.get(position).getRole());
+            int role = Integer.parseInt(filteredUser.get(position).getRole());
+            if (role == 0){
+                holder.mRole.setText("pekerja");
+            }else {
+                holder.mRole.setText("pemodal");
+                holder.mRole.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), UserActivity.class);
+                    intent.putExtra("username", filteredUser.get(position).getUsername());
+                    intent.putExtra("role", filteredUser.get(position).getRole());
+                    intent.putExtra("saldo", filteredUser.get(position).getSaldo());
+                    intent.putExtra("id", filteredUser.get(position).getId());
+                    intent.putExtra("nama", filteredUser.get(position).getNama());
+
+                    startActivity(intent);
 
                 }
             });
@@ -188,7 +201,7 @@ public class UserFragment extends Fragment {
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     filteredUser = (ArrayList<ResultItemUser>) results.values;
-                    Log.d("filter", "performFiltering: "+filteredUser.toString());
+//                    Log.d("filter", "performFiltering: "+filteredUser.toString());
 
                     notifyDataSetChanged();
                 }

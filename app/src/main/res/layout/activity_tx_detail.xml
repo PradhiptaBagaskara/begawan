@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.UserActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/lightBlue"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/back"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparant"
+                        android:src="@drawable/ic_back"
+
+                        android:layout_gravity="center_vertical"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="DETAIL PEMBELIAN"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/sf_bold"
+                        android:textSize="15sp"
+                        android:layout_marginRight="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="5dp"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:divider="?android:dividerHorizontal"
+                    android:showDividers="middle">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:layout_marginTop="15dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/darkBlue"
+                        android:layout_marginBottom="30dp"
+                        android:gravity="center_horizontal"/>
+                    <!--                id-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="ID Transaksi"/>
+                        <TextView
+                            android:id="@+id/id_tx"
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:layout_marginBottom="5dp"
+
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="ID Transaksi"/>
+
+                    </LinearLayout>
+                    <!--                judul pembelian-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Jenis Transaksi"/>
+                        <TextView
+                            android:id="@+id/judul_pembelian"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="5dp"
+
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="ID Transaksi"/>
+
+                    </LinearLayout>
+                    <!--                nama pembeli-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Nama"/>
+                        <TextView
+                            android:id="@+id/nama_pekerja"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="5dp"
+
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="pekerja"/>
+
+                    </LinearLayout>
+                    <!--                nama proyek-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Nama Proyek"/>
+                        <TextView
+                            android:id="@+id/nama_proyek"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:layout_marginBottom="5dp"
+
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="nama proyek"/>
+
+                    </LinearLayout>
+                    <!--                tgl-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Waktu"/>
+                        <TextView
+                            android:id="@+id/tgl"
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="5dp"
+
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="tgl"/>
+
+                    </LinearLayout>
+                    <!--keterangan-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Jenis Barang"/>
+                        <TextView
+                            android:id="@+id/keterangan"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="keterangan"/>
+
+                    </LinearLayout>
+                    <!--                jenis Pembelian-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Jenis Pembayaran"/>
+                        <TextView
+                            android:id="@+id/jenis_bayar"
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="5dp"
+
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="Jenis Pembelian"/>
+
+                    </LinearLayout>
+
+                    <!--                dana-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_regular"
+                            android:text="Total Pembayaran"/>
+                        <com.congfandi.lib.TextViewRupiah
+                            android:id="@+id/dana"
+                            android:layout_width="150dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="5dp"
+
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/worksans_bold"
+                            android:text="Rp. 50jt"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <!-- TODO: Update blank fragment layout -->
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

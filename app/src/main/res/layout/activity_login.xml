@@ -13,15 +13,15 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:orientation="vertical">
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/header"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="true"
-            />
+<!--        <ImageView-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/header"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            />-->
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

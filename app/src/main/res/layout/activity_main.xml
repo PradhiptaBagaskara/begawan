@@ -29,8 +29,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:text="@string/app_name"
-                android:fontFamily="@font/worksans_bold"
-                android:layout_weight="1"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/sf_bold"
+                android:layout_marginTop="5dp"
+
+            android:layout_weight="1"
                 android:gravity="center"/>
         <ImageButton
             android:id="@+id/logout"

@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.proyek;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,6 @@ public class ProyekFragment extends Fragment {
         super.onCreate(savedInstanceState);
         apiService = InitRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getActivity());
-        loadProyek();
     }
 
     @Override
@@ -61,22 +61,8 @@ public class ProyekFragment extends Fragment {
         recyclerView = v.findViewById(R.id.proyek_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        loadProyek();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
-//                Log.d("search", "onQueryTextSubmit: "+query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-
-                return false;
-            }
-        });
 
         return v;
 
@@ -95,6 +81,23 @@ public class ProyekFragment extends Fragment {
                         recyclerView.setAdapter(adapter);
 
                         adapter.notifyDataSetChanged();
+
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                adapter.getFilter().filter(query);
+//                Log.d("search", "onQueryTextSubmit: "+query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                adapter.getFilter().filter(newText);
+
+                                return false;
+                            }
+                        });
+
 
 
 
@@ -133,13 +136,16 @@ public class ProyekFragment extends Fragment {
 
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 //            holder.mDana.convertToIDR(filteredUser.get(position).getSaldo());
                 holder.mNama.setText(filteredUser.get(position).getNamaProyek());
                 holder.mTgl.setText(filteredUser.get(position).getCreatedDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ProyekActivity.class);
+                    intent.putExtra("id_proyek", filteredUser.get(position).getId());
+                    startActivity(intent);
 
                 }
             });

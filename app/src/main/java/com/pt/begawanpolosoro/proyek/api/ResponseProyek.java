@@ -1,7 +1,8 @@
 package com.pt.begawanpolosoro.proyek.api;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class ResponseProyek{
 
@@ -10,6 +11,9 @@ public class ResponseProyek{
 
 	@SerializedName("result")
 	private List<ResultItemProyek> result;
+
+	@SerializedName("transaksi")
+	private List<TransaksiItem> transaksi;
 
 	@SerializedName("status")
 	private boolean status;
@@ -30,6 +34,14 @@ public class ResponseProyek{
 		return result;
 	}
 
+	public void setTransaksi(List<TransaksiItem> transaksi){
+		this.transaksi = transaksi;
+	}
+
+	public List<TransaksiItem> getTransaksi(){
+		return transaksi;
+	}
+
 	public void setStatus(boolean status){
 		this.status = status;
 	}
@@ -44,6 +56,7 @@ public class ResponseProyek{
 			"ResponseProyek{" + 
 			"msg = '" + msg + '\'' + 
 			",result = '" + result + '\'' + 
+			",transaksi = '" + transaksi + '\'' + 
 			",status = '" + status + '\'' + 
 			"}";
 		}
