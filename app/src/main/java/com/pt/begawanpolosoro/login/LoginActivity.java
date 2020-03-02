@@ -11,13 +11,19 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
+import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.login.api.ResultLogin;
 
@@ -39,7 +45,8 @@ public class LoginActivity extends AppCompatActivity {
 
         sm = new SessionManager(LoginActivity.this);
         sm.logged();
-        apiServices = InitRetro.InitApi().create(ApiService.class);
+        InitRetro initRetro = new InitRetro(getApplicationContext());
+        apiServices = initRetro.InitApi().create(ApiService.class);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -67,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 }else {
                     btn.setVisibility(View.GONE);
                     pb.setVisibility(View.VISIBLE);
-                }
+
 
                 Call<ResponseLogin> login = apiServices.authLogin(username, password);
                 login.enqueue(new Callback<ResponseLogin>() {
@@ -78,9 +85,35 @@ public class LoginActivity extends AppCompatActivity {
                             btn.setVisibility(View.VISIBLE);
                             if (response.body().isStatus()){
                                 Log.d("tagger", response.body().getResult().getId().toString());
-                                ResultLogin rs = response.body().getResult();
+                                final ResultLogin rs = response.body().getResult();
                                 sm.storeLogin(rs.getRole().toString(), rs.getNama().toString(), rs.getUsername().toString(), rs.getId().toString());
+                                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.w("fcm", "getInstanceId failed", task.getException());
+                                            return;
+                                        }
+
+                                        // Get new Instance ID token
+                                        String token = task.getResult().getToken();
+                                        Call<ResponseSaldo> newToken = apiServices.updateToken(rs.getId().toString(), token);
+                                        newToken.enqueue(new Callback<ResponseSaldo>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseSaldo> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+                                });
                                 sm.logged();
+
+
 
                             }else {
                                 Toast.makeText(getApplicationContext(), response.body().getMsg().toString(), Toast.LENGTH_LONG).show();
@@ -100,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
 
+                }
 
 
             }

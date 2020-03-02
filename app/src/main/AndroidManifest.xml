@@ -8,27 +8,25 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/proyek"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/proyek"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".proyek.ProyekActivity"></activity>
-        <activity android:name=".transaksi.TxDetailActivity" />
-        <activity android:name=".user.UserActivity" />
-        <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".proyek.TambahProyekActivity"></activity>
+        <activity android:name=".user.TambahUserActivity" />
+        <activity android:name=".pekerja.PekerjaActivity" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".firebase.MyFirebaseMessagingService"
             android:exported="false">
@@ -36,6 +34,26 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notifications" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <activity android:name=".proyek.ProyekActivity" />
+        <activity android:name=".transaksi.TxDetailActivity" />
+        <activity
+            android:name=".user.UserActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

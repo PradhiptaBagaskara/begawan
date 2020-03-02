@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
 import com.pt.begawanpolosoro.CurrentUser;
+import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
@@ -123,11 +124,27 @@ public class ProyekActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("halaman", "1");
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
             }
         });
 
         loadProyek();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.putExtra("halaman", "1");
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     void setHideEdit(){

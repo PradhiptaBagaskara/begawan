@@ -2,6 +2,7 @@ package com.pt.begawanpolosoro;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,23 +19,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.pt.begawanpolosoro.adapter.ApiService;
-import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.home.HomeAdminFragment;
-import com.pt.begawanpolosoro.home.api.ResponseSaldo;
+import com.pt.begawanpolosoro.pekerja.PekerjaActivity;
+import com.pt.begawanpolosoro.pekerja.PekerjaHomeFragment;
 import com.pt.begawanpolosoro.proyek.ProyekFragment;
 import com.pt.begawanpolosoro.user.UserFragment;
 
 import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationBar bottomNavigationBar;
@@ -49,52 +41,32 @@ public class MainActivity extends AppCompatActivity {
     ApiService apiService;
     CurrentUser user;
 
+    public int getPosisiHalaman() {
+        return posisiHalaman;
+    }
+
+    public void setPosisiHalaman(int posisiHalaman) {
+        this.posisiHalaman = posisiHalaman;
+    }
+
+    int posisiHalaman;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent extra = getIntent();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
-            String channelId  = "gaji";
-            String channelName = "Gaji";
+            String channelId  = getString(R.string.app_id);
+            String channelName = getString(R.string.app_name);
             NotificationManager notificationManager =
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
-        user = new CurrentUser(getApplicationContext());
-        InitRetro initRetro = new InitRetro(getApplicationContext());
-        apiService = initRetro.InitApi().create(ApiService.class);
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("fcm", "getInstanceId failed", task.getException());
-                            return;
-                        }
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = token ;//getString(R.string.msg_token_fmt, token);
-                        Log.d("fcm", msg);
-                        Call<ResponseSaldo> newToken = apiService.updateToken(user.getsAuth(), token);
-                        newToken.enqueue(new Callback<ResponseSaldo>() {
-                            @Override
-                            public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<ResponseSaldo> call, Throwable t) {
-
-                            }
-                        });
-//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -115,23 +87,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
-        bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_home, "HOME"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PROYEK"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
-//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
-                .setBarBackgroundColor(R.color.lightGrey2)
-                .setActiveColor(R.color.lightBlue)
-                .setInActiveColor(R.color.grey)
-                .setFirstSelectedPosition(0)
-                .initialise();
 
-        halaman(0,role);
+        if (extra.hasExtra("halaman")){
+            setPosisiHalaman(Integer.parseInt(extra.getStringExtra("halaman")));
+
+        }else {
+            setPosisiHalaman(0);
+
+        }
+        menuBottom(role);
+        halaman(getPosisiHalaman(), role);
 
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
-                halaman(position, role);
+                setPosisiHalaman(position);
+                if (role == 0){
+                    if (position == 1){
+                        Intent intent = new Intent(getApplicationContext(), PekerjaActivity.class);
+                        startActivity(intent);
+                    }else {
+                        halaman(getPosisiHalaman(), role);
+
+                    }
+                }else {
+                    halaman(getPosisiHalaman(), role);
+
+                }
+
 //                setActionBar(position, rule);
                 aktifFragment = position;
             }
@@ -149,6 +132,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    void menuBottom(int rule){
+        switch (rule){
+            case 2:
+                bottomNavigationBar
+                        .addItem(new BottomNavigationItem(R.drawable.ic_home, "HOME"))
+                        .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PROYEK"))
+                        .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
+//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
+                        .setBarBackgroundColor(R.color.lightGrey2)
+                        .setActiveColor(R.color.lightBlue)
+                        .setInActiveColor(R.color.grey)
+                        .setFirstSelectedPosition(getPosisiHalaman())
+                        .initialise();
+                break;
+            case 0:
+                bottomNavigationBar
+                        .addItem(new BottomNavigationItem(R.drawable.ic_home, "DASHBOARD"))
+                        .addItem(new BottomNavigationItem(R.drawable.ic_add, "ADD"))
+                        .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
+//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
+                        .setBarBackgroundColor(R.color.lightGrey2)
+                        .setActiveColor(R.color.lightBlue)
+                        .setInActiveColor(R.color.grey)
+                        .setFirstSelectedPosition(getPosisiHalaman())
+                        .initialise();
+                break;
+
+        }
+    }
 
     private void halaman(int index, int rule){
         Fragment frg = null;
@@ -156,9 +168,29 @@ public class MainActivity extends AppCompatActivity {
         String tag;
 
         if (rule == 2){
+
             switch (index){
                 case 0:
                     HomeAdminFragment homeFragment = new HomeAdminFragment();
+                    fragment = homeFragment;
+                    tag = "HOME_FRAGMENT";
+                    Log.d("jalan", "halaman: home");
+                    break;
+
+                case 1:
+                    ProyekFragment proyekFragment = new ProyekFragment();
+                    fragment = proyekFragment;
+                    break;
+                case 2:
+                    UserFragment userFragment = new UserFragment();
+                    fragment = userFragment;
+                    break;
+            }
+        }else if (rule == 0){
+
+            switch (index){
+                case 0:
+                    PekerjaHomeFragment homeFragment = new PekerjaHomeFragment();
                     fragment = homeFragment;
                     tag = "HOME_FRAGMENT";
                     Log.d("jalan", "halaman: home");

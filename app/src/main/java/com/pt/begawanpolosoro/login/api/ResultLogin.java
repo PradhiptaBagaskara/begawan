@@ -20,7 +20,7 @@ public class ResultLogin{
 	private String nama;
 
 	@SerializedName("device_token")
-	private Object deviceToken;
+	private String deviceToken;
 
 	@SerializedName("id")
 	private String id;
@@ -74,11 +74,11 @@ public class ResultLogin{
 		return nama;
 	}
 
-	public void setDeviceToken(Object deviceToken){
+	public void setDeviceToken(String deviceToken){
 		this.deviceToken = deviceToken;
 	}
 
-	public Object getDeviceToken(){
+	public String getDeviceToken(){
 		return deviceToken;
 	}
 

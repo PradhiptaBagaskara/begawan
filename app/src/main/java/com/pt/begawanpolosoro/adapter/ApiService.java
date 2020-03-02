@@ -3,6 +3,7 @@ package com.pt.begawanpolosoro.adapter;
 
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
 import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 
@@ -62,4 +63,25 @@ public interface ApiService {
                                       @Field("param") String param,
                                       @Field("keterangan") String catatan,
                                       @Field("modal") String modal);
+    @FormUrlEncoded
+    @POST("api/proyek")
+    Call<ResponseInsertProyek> insertProyek(@Field("auth_key") String auth,
+                                            @Field("id") String id,
+                                            @Field("nama_proyek") String namaProyek,
+                                            @Field("param") String param,
+                                            @Field("keterangan") String catatan,
+                                            @Field("modal") String modal);
+    @FormUrlEncoded
+    @POST("api/editpemilik")
+    Call<ResponseLogin> updateAdmin(@Field("auth_key") String auth,
+                                      @Field("username") String username,
+                                      @Field("nama") String nama
+                                      );
+
+    @FormUrlEncoded
+    @POST("api/user")
+    Call<ResponseLogin> newUser(@Field("auth_key") String auth,
+                                @Field("nama") String nama,
+                                @Field("role") String role,
+                                    @Field("saldo") String  Saldo);
 }

@@ -22,23 +22,33 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
+import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
+import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
@@ -55,8 +65,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     ApiService apiService;
+    CurrentUser user;
     SessionManager sm;
-    HashMap map;
 
     /**
      * Called when message is received.
@@ -64,60 +74,104 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
     // [START receive_message]
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // [START_EXCLUDE]
-        // There are two types of messages data messages and notification messages. Data messages
-        // are handled
-        // here in onMessageReceived whether the app is in the foreground or background. Data
-        // messages are the type
-        // traditionally used with GCM. Notification messages are only received here in
-        // onMessageReceived when the app
-        // is in the foreground. When the app is in the background an automatically generated
-        // notification is displayed.
-        // When the user taps on the notification they are returned to the app. Messages
-        // containing both notification
-        // and data payloads are treated as notification messages. The Firebase console always
-        // sends notification
-        // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
-        // [END_EXCLUDE]
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
+        super.onMessageReceived(remoteMessage);
+        Map data = remoteMessage.getData();
+//
+//
+//        /*
+//         * Cek jika notif berisi data payload
+//         * pengiriman data payload dapat dieksekusi secara background atau foreground
+//         */
+        Log.d(TAG, "From data: " + data);
+//
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Log.e("TAG", "Message data title: " + data);
+            Log.e(TAG, "Message data string: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
-
+            showNotif(data.get("title").toString(), data.get("message").toString(),data.get("halaman").toString());
         }
 
-        // Check if message contains a notification payload.
+        /*
+         * Cek jika notif berisi data notification payload
+         * hanya dieksekusi ketika aplikasi bejalan secara foreground
+         * dan dapat push notif melalui UI Firebase console
+         */
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                    Log.d(TAG, "onMessageReceived: "+remoteMessage.getNotification().toString());
+
+            Log.e("TAG", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+//            sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            showNotif(data.get("title").toString(), data.get("message").toString(), data.get("halaman").toString());
+
+//            showNotif(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
         }
+
+
+
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void showNotif(String title, String message, String halaman){
+
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("message", message);
+        bundle.putString("halaman", halaman);
+
+        int notifID = new Random().nextInt();
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtras(bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notifID, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        String channelId = getString(R.string.app_id);
+
+
+        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this, getString(R.string.app_id))
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notifications) // icon
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.proyek))
+                .setAutoCancel(true) // menghapus notif ketika user melakukan tap pada notif
+                .setLights(200,200,200) // light button
+                .setSound(defaultSoundUri) // set sound
+                .setOnlyAlertOnce(true) // set alert sound notif
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent); // action notif ketika di tap
+
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        NotificationManager notificationManagerku = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
+            notificationManager.createNotificationChannel(channel);
+        }
+//        startForeground(1, notificationManagerku);
+        notificationManager.notify(notifID, notifBuilder.build());
+    }
+
 
     // [START on_new_token]
 
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
+
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
@@ -125,20 +179,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token);
+        sm = new SessionManager(getApplicationContext());
+
+        if (sm.Login()){
+            sendRegistrationToServer(token);
+
+        }
     }
     // [END on_new_token]
 
     /**
      * Schedule async work using WorkManager.
      */
-    private void scheduleJob() {
-        // [START dispatch_job]
-        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(MyWorker.class)
-                .build();
-        WorkManager.getInstance().beginWith(work).enqueue();
-        // [END dispatch_job]
-    }
+//    private void scheduleJob() {
+//        // [START dispatch_job]
+//        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(MyWorker.class)
+//                .build();
+//        WorkManager.getInstance().beginWith(work).enqueue();
+//        // [END dispatch_job]
+//    }
 
     /**
      * Handle time allotted to BroadcastReceivers.
@@ -155,10 +214,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
+    private void sendRegistrationToServer(final String token) {
         // TODO: Implement this method to send token to your app server.
-//        apiService = InitRetro.InitApi().create(ApiService.class);
-//        Call<ResponseSaldo> mytoken = apiService.updateToken(token)
+        user = new CurrentUser(getApplicationContext());
+        InitRetro initRetro = new InitRetro(getApplicationContext());
+        apiService = initRetro.InitApi().create(ApiService.class);
+        Call<ResponseSaldo> mytoken = apiService.updateToken(user.getsAuth(),token);
+        mytoken.enqueue(new Callback<ResponseSaldo>() {
+            @Override
+            public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
+                Log.d(TAG, "on new token: "+token);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseSaldo> call, Throwable t) {
+            t.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -166,18 +238,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title,String messageBody) {
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = "gaji";
+        String channelId = getString(R.string.app_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.icon_send)
-                        .setContentTitle("Saldo Khas Telah di Tambahkan!")
+                        .setSmallIcon(R.drawable.ic_notifications)
+                        .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.proyek))
+                        .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
@@ -190,11 +264,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
                     "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify( 0/* ID of notification */, notificationBuilder.build());
     }
 }
 

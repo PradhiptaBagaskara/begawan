@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
 import com.google.android.material.snackbar.Snackbar;
 import com.pt.begawanpolosoro.CurrentUser;
+import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
@@ -127,7 +129,12 @@ public class UserActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("halaman", "2");
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
             }
         });
         addSaldo =findViewById(R.id.addSaldo);
@@ -154,6 +161,7 @@ public class UserActivity extends AppCompatActivity {
             setSaldo(extra.getString("saldo"));
             setUsername(extra.getString("username"));
             setRole(extra.getString("role"));
+
         }
 
         vNama = findViewById(R.id.nama);
@@ -277,15 +285,21 @@ public class UserActivity extends AppCompatActivity {
         saldoCall.enqueue(new Callback<ResponseSaldo>() {
             @Override
             public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
+                pg.setVisibility(View.GONE);
+                loadSaldo();
+
+
                 if (response.isSuccessful()){
-                    pg.setVisibility(View.GONE);
 
                     if (response.body().isStatus()){
-                        loadSaldo();
 
                     }else {
+                        Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
 
                     }
+                }else {
+                    Toast.makeText(getApplicationContext(), "Terjadi Kesalahan!", Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -293,6 +307,8 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseSaldo> call, Throwable t) {
                 pg.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Terjadi Kesalahan!", Toast.LENGTH_LONG).show();
+
                 loadSaldo();
             }
         });
@@ -385,7 +401,11 @@ public class UserActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.putExtra("halaman", "2");
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {

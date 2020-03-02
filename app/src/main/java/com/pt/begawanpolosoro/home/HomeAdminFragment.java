@@ -4,12 +4,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,20 +29,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
-import com.bcc.gridmenuview.GridMenu;
-import com.bcc.gridmenuview.event.OnItemClickListener;
-import com.bcc.gridmenuview.model.MenuItem;
 import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
+import com.pt.begawanpolosoro.adapter.GridMenuAdapter;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.home.api.ResultSaldo;
+import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.login.api.ResultLogin;
+import com.pt.begawanpolosoro.proyek.TambahProyekActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
+import com.pt.begawanpolosoro.user.TambahUserActivity;
+import com.pt.begawanpolosoro.user.api.ResponseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,18 +106,21 @@ public class HomeAdminFragment extends Fragment {
     SessionManager sm;
     HashMap map;
     ApiService apiService;
-    GridMenu menu;
-    final ArrayList<MenuItem> list = new ArrayList<>();
     RecyclerView recyclerView;
     InitRetro initRetro;
     BottomNavigationBar bt;
 
     List sementara = new ArrayList<>();
     NestedScrollView scrollView;
-    Dialog saldoForm;
+    Dialog saldoForm, profilForm;
     EditTextRupiah edtSaldo;
-    Button edtSave,edtBatal;
-    ProgressBar edtPg;
+    EditText edtUname, edtPass,edtNama;
+    Button edtSave,edtBatal, btnSaveProfil, btnBatalProfil;
+    ProgressBar edtPg, pgProfil;
+    GridView menuGrid;
+    int logo[] = {R.drawable.user, R.drawable.proyek, R.drawable.gaji, R.drawable.print};
+    String menuName[] = {"USER", "PROYEK", "GAJI","LAPORAN"};
+    GridMenuAdapter gridMenuAdapter;
 
 
     @Override
@@ -120,12 +130,17 @@ public class HomeAdminFragment extends Fragment {
         View view =   inflater.inflate(R.layout.fragment_home, container, false);
         relativeLayout = view.findViewById(R.id.rel);
         recyclerView = (RecyclerView) view.findViewById(R.id.home_rec);
+        menuGrid = view.findViewById(R.id.gridMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         scrollView = view.findViewById(R.id.scroll);
         customDialog(getActivity());
         userInfo = view.findViewById(R.id.userInfo);
         saldoBtn = view.findViewById(R.id.edtSaldoBtn);
         saldoBtn.setOnClickListener(showEditSaldo);
+        profilDialog(getActivity());
+        gridMenuAdapter = new GridMenuAdapter(getActivity(),logo,menuName);
+        menuGrid.setAdapter(gridMenuAdapter);
+        menuGrid.setOnItemClickListener(setMenuListener);
 
 
 
@@ -135,19 +150,6 @@ public class HomeAdminFragment extends Fragment {
         nama = view.findViewById(R.id.nama);
         username = view.findViewById(R.id.username);
         saldo = view.findViewById(R.id.saldo);
-//        refresh = view.findViewById(R.id.refreshSaldo);
-        menu = view.findViewById(R.id.menu_grid);
-
-
-
-
-
-        list.add(new MenuItem("USER", getResources().getDrawable(R.drawable.user)));
-        list.add(new MenuItem("PROYEK", getResources().getDrawable(R.drawable.proyek)));
-        list.add(new MenuItem("GAJI", getResources().getDrawable(R.drawable.gaji)));
-        list.add(new MenuItem("LAPORAN", getResources().getDrawable(R.drawable.print)));
-
-        menu.setMenuItems(list);
 
 
 
@@ -180,27 +182,32 @@ public class HomeAdminFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nama.setText(getsNama());
+        nama.setText(getsNama().toUpperCase());
         username.setText(getsUsername());
 
-        userInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(getActivity(), getsSaldo(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        menu.setOnClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                Toast.makeText(getActivity(), "you selected " + list.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        userInfo.setOnClickListener(showEditProfil);
 
 
     }
+
+    private AdapterView.OnItemClickListener setMenuListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent i;
+            switch (position){
+                case 0:
+                    i = new Intent(getActivity(), TambahUserActivity.class);
+                    startActivity(i);
+                    break;
+                case 1:
+                    i = new Intent(getActivity(), TambahProyekActivity.class);
+                    startActivity(i);
+                    break;
+
+
+            }
+        }
+    };
 
     private View.OnClickListener showEditSaldo = new View.OnClickListener() {
         @Override
@@ -268,6 +275,112 @@ public class HomeAdminFragment extends Fragment {
         edtSave = saldoForm.findViewById(R.id.saveSaldo);
         edtBatal= saldoForm.findViewById(R.id.cancelDialog);
     }
+
+
+    private void profilDialog(Context context) {
+        profilForm = new Dialog(context);
+        profilForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        profilForm.setContentView(R.layout.dialog_edit_home);
+        profilForm.setCancelable(true);
+        profilForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
+        profilForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pgProfil = profilForm.findViewById(R.id.progresProfil);
+        pgProfil.setVisibility(View.GONE);
+        edtUname = profilForm.findViewById(R.id.dialogUname);
+        edtNama = profilForm.findViewById(R.id.dialogNama);
+        edtPass= profilForm.findViewById(R.id.dialogPassword);
+        btnBatalProfil = profilForm.findViewById(R.id.cancelDialog);
+        btnSaveProfil = profilForm.findViewById(R.id.saveDialog);
+        edtNama.setText(getsNama());
+        edtUname.setText(getsUsername());
+    }
+
+    private View.OnClickListener showEditProfil = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            profilForm.show();
+            btnBatalProfil.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    profilForm.dismiss();
+                    edtPass.getText().clear();
+                }
+            });
+            btnSaveProfil.setOnClickListener(updateProfil);
+
+        }
+    };
+
+    private View.OnClickListener updateProfil = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            btnSaveProfil.setVisibility(View.GONE);
+            btnBatalProfil.setVisibility(View.GONE);
+            pgProfil.setVisibility(View.VISIBLE);
+            Call<ResponseLogin> up = apiService.updateAdmin(getsAuth(),edtUname.getText().toString(), edtNama.getText().toString());
+            up.enqueue(new Callback<ResponseLogin>() {
+                @Override
+                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+                    btnSaveProfil.setVisibility(View.VISIBLE);
+                    pgProfil.setVisibility(View.GONE);
+                    btnBatalProfil.setVisibility(View.VISIBLE);
+
+                    if (response.isSuccessful()){
+                        if (response.body().isStatus()){
+                            ResultLogin dt = response.body().getResult();
+                            sm.storeLogin(dt.getRole(),dt.getNama(),dt.getUsername(),dt.getId());
+                            profilForm.dismiss();
+                            Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                    btnSaveProfil.setVisibility(View.VISIBLE);
+                    pgProfil.setVisibility(View.GONE);
+                    btnBatalProfil.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(),"Terjadi Kesalahan!",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            if (!TextUtils.isEmpty(edtPass.getText().toString())){
+                Call<ResponseUser> u = apiService.resetPassword(getsAuth(), getsAuth(), edtPass.getText().toString());
+                u.enqueue(new Callback<ResponseUser>() {
+                    @Override
+                    public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                        btnSaveProfil.setVisibility(View.VISIBLE);
+                        pgProfil.setVisibility(View.GONE);
+                        btnBatalProfil.setVisibility(View.VISIBLE);
+
+                        if (response.isSuccessful()){
+                            if (response.body().isStatus()){
+                                profilForm.dismiss();
+                                Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseUser> call, Throwable t) {
+                        btnSaveProfil.setVisibility(View.VISIBLE);
+                        pgProfil.setVisibility(View.GONE);
+                        btnBatalProfil.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+
+        }
+    };
+
+
 
 
     void loadSaldo(){
