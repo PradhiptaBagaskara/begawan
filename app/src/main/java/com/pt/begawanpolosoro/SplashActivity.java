@@ -43,22 +43,33 @@ public class SplashActivity extends AwesomeSplash {
 
         //Choose LOGO OR PATH; if you don't provide String value for path it's logo by default
 
-        //Customize Logo
-        configSplash.setLogoSplash(R.drawable.proyek); //or any other drawable
-        configSplash.setAnimLogoSplashDuration(1000); //int ms
-        configSplash.setPathSplashStrokeColor(R.color.lightBlue);
-        configSplash.setPathSplashFillColor(R.color.darkBlue);
-        configSplash.setAnimLogoSplashTechnique(Techniques.Bounce); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
+//        //Customize Logo
+//        configSplash.setLogoSplash(R.drawable.proyek); //or any other drawable
+//        configSplash.setAnimLogoSplashDuration(1000); //int ms
+//        configSplash.setPathSplashStrokeColor(R.color.whiteOri);
+//        configSplash.setPathSplashFillColor(R.color.light_gray);
+//        configSplash.setAnimLogoSplashTechnique(Techniques.Bounce); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
 
-
+//Customize Path
+//        configSplash.setPathSplash(Constants.BUILDING); //set path String
+//        configSplash.setOriginalHeight(400); //in relation to your svg (path) resource
+//        configSplash.setOriginalWidth(400); //in relation to your svg (path) resource
+//        configSplash.setAnimPathStrokeDrawingDuration(2000);
+//        configSplash.setPathSplashStrokeSize(3); //I advise value be <5
+//        configSplash.setPathSplashStrokeColor(R.color.whiteOri); //any color you want form colors.xml
+//        configSplash.setAnimPathFillingDuration(1000);
+//        configSplash.setPathSplashFillColor(R.color.lightBlue);
 
         //Customize Title
-        configSplash.setTitleSplash(getString(R.string.app_name));
+        configSplash.setTitleSplash("Begawan Polosoro");
         configSplash.setTitleTextColor(R.color.whiteOri);
         configSplash.setTitleTextSize(30f); //float value
         configSplash.setAnimTitleDuration(1000);
         configSplash.setAnimTitleTechnique(Techniques.FlipInX);
-//        configSplash.setTitleFont("fonts/mont_bold.tff");\
+        configSplash.setTitleFont("fonts/streatwear.otf");
+
+
+
 
 
     }
@@ -101,9 +112,10 @@ public class SplashActivity extends AwesomeSplash {
                         }
                     });
         }
-        sm.checkLogin();
-        sm.logged();
-
+        CurrentUser user = new CurrentUser(getApplicationContext());
+        user.routing();
+//sm.logged();
+//Log.d("ceklogin role", "role", String.valueOf(user.getRole()));
 
     }
 }

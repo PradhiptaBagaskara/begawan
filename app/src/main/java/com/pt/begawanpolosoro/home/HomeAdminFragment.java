@@ -330,6 +330,7 @@ public class HomeAdminFragment extends Fragment {
                         if (response.body().isStatus()){
                             ResultLogin dt = response.body().getResult();
                             sm.storeLogin(dt.getRole(),dt.getNama(),dt.getUsername(),dt.getId());
+                            nama.setText(dt.getNama());
                             profilForm.dismiss();
                             Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
                         }
@@ -474,6 +475,8 @@ public class HomeAdminFragment extends Fragment {
                     intent.putExtra("dana", txItem.get(position).getDana());
                     intent.putExtra("keterangan", txItem.get(position).getKeterangan());
                     intent.putExtra("waktu", txItem.get(position).getCreatedDate());
+                    intent.putExtra("halaman", "1");
+
                     startActivity(intent);
                 }
             });

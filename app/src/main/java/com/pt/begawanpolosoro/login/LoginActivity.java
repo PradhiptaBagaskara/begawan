@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
@@ -111,7 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                                         });
                                     }
                                 });
-                                sm.logged();
+                                CurrentUser user = new CurrentUser(getApplicationContext());
+                                user.routing();
 
 
 

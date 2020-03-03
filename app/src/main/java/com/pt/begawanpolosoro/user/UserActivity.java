@@ -112,6 +112,17 @@ public class UserActivity extends AppCompatActivity {
     CardView cardDialog;
     CoordinatorLayout activity;
 
+    String hal;
+    Intent intent = getIntent();
+
+    public String getHal() {
+        return hal;
+    }
+
+    public void setHal(String hal) {
+        this.hal = hal;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,12 +136,17 @@ public class UserActivity extends AppCompatActivity {
         apiService = InitRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getApplicationContext());
         customDialog();
+        if (intent.hasExtra("halaman")){
+            setHal(intent.getStringExtra("halaman"));
+        }else {
+            setHal("0");
+        }
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("halaman", "2");
+                i.putExtra("halaman", getHal());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_CLEAR_TASK |
                         Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -402,7 +418,7 @@ public class UserActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        i.putExtra("halaman", "2");
+        i.putExtra("halaman", getHal());
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);

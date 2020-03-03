@@ -3,6 +3,8 @@ package com.pt.begawanpolosoro.adapter;
 
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseGaji;
+import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseStatusGaji;
 import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
 import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
@@ -33,6 +35,15 @@ public interface ApiService {
 
     @GET("api/transaksi")
     Call<ResponseTx> txApi (@Query("auth_key") String auth);
+
+    @FormUrlEncoded
+    @POST("api/transaksi")
+    Call<ResponseTx> postTx (@Field("auth_key") String auth,
+                             @Field("id_proyek") String id_proyek,
+                             @Field("nama") String nama,
+                             @Field("dana") String dana,
+                             @Field("keterangan") String keterangan,
+                             @Field("jenis") String jenis);
 
     @GET("api/user")
     Call<ResponseUser> getUser(@Query("auth_key") String auth);
@@ -80,8 +91,22 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("api/user")
+    Call<ResponseLogin> updateUser(@Field("auth_key") String auth,
+                                    @Field("password") String password,
+                                    @Field("nama") String nama);
+    @FormUrlEncoded
+    @POST("api/user")
     Call<ResponseLogin> newUser(@Field("auth_key") String auth,
                                 @Field("nama") String nama,
                                 @Field("role") String role,
                                     @Field("saldo") String  Saldo);
+
+
+    @GET("api/gaji")
+    Call<ResponseStatusGaji> statusGaji(@Query("auth_key") String auth,
+                                        @Query("param") String param);
+    @GET("api/gaji")
+    Call<ResponseGaji> allGaji(@Query("auth_key") String auth,
+                                  @Query("param") String param,
+                               @Query("limit")  String limit);
 }

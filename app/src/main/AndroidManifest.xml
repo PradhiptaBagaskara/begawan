@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".proyek.TambahProyekActivity"></activity>
+        <activity android:name=".PekerjaControlerActivity"></activity>
+        <activity android:name=".proyek.TambahProyekActivity" />
         <activity android:name=".user.TambahUserActivity" />
         <activity android:name=".pekerja.PekerjaActivity" />
         <activity android:name=".SplashActivity">

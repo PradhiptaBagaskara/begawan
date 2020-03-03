@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteOri"
+    android:orientation="vertical"
+    tools:context=".PekerjaControlerActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/lightBlue"
+            android:layout_centerHorizontal="true"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparant"
+                android:layout_marginHorizontal="15dp"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/app_name"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/sf_bold"
+                android:layout_marginTop="5dp"
+
+                android:layout_weight="1"
+                android:gravity="center"/>
+            <ImageButton
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logout"
+                android:background="@color/transparant"
+                android:layout_marginHorizontal="15dp"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:background="@color/whiteOri"
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+<!--    <com.github.clans.fab.FloatingActionMenu-->
+<!--        android:id="@+id/menuFab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_marginBottom="60dp"-->
+<!--        app:menu_animationDelayPerItem="50"-->
+<!--        app:menu_backgroundColor="@android:color/transparent"-->
+<!--        app:menu_buttonSpacing="0dp"-->
+<!--        app:menu_colorNormal="@color/darkBlue"-->
+<!--        app:menu_colorPressed="@color/lightBlue"-->
+<!--        app:menu_colorRipple="#99FFFFFF"-->
+<!--        app:menu_fab_hide_animation="@anim/fab_scale_down"-->
+<!--        app:menu_fab_show_animation="@anim/fab_scale_up"-->
+<!--        app:menu_fab_size="normal"-->
+<!--        app:menu_icon="@drawable/fab_add"-->
+<!--        app:menu_labels_colorNormal="#333333"-->
+<!--        app:menu_labels_colorPressed="#444444"-->
+<!--        app:menu_labels_colorRipple="#66FFFFFF"-->
+<!--        app:menu_labels_cornerRadius="3dp"-->
+<!--        app:menu_labels_ellipsize="none"-->
+<!--        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"-->
+<!--        app:menu_labels_margin="0dp"-->
+<!--        app:menu_labels_maxLines="-1"-->
+<!--        app:menu_labels_padding="8dp"-->
+<!--        app:menu_labels_paddingBottom="4dp"-->
+<!--        app:menu_labels_paddingLeft="8dp"-->
+<!--        app:menu_labels_paddingRight="8dp"-->
+<!--        app:menu_labels_paddingTop="4dp"-->
+<!--        app:menu_labels_position="left"-->
+<!--        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"-->
+<!--        app:menu_labels_showShadow="true"-->
+<!--        app:menu_labels_singleLine="false"-->
+<!--        app:menu_labels_style="@style/MenuButtonsStyle"-->
+<!--        app:menu_labels_textColor="#FFFFFF"-->
+<!--        app:menu_labels_textSize="14sp"-->
+<!--        app:menu_openDirection="up"-->
+<!--        app:menu_shadowColor="#66000000"-->
+<!--        app:menu_shadowRadius="4dp"-->
+<!--        app:menu_shadowXOffset="1dp"-->
+<!--        app:menu_shadowYOffset="3dp"-->
+<!--        app:menu_showShadow="true">-->
+
+
+
+<!--    </com.github.clans.fab.FloatingActionMenu>-->
+
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:layout_gravity="bottom"
+        android:id="@+id/bottom_navigation_bar"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/transparant"
+        android:background="@color/transparant"
+        android:layout_width="match_parent"
+        android:elevation="0dp"
+        app:bnbElevation="0dp"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:background="@color/transparant"
+            android:backgroundTint="@color/transparant"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent">
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fabItemAdd"
+                android:layout_width="wrap_content"
+                android:background="@color/lightGrey2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                app:fab_colorNormal="@color/lightGrey2"
+                app:fab_colorRipple="@color/darkBlue"
+                app:fab_colorPressed="@color/lightBlue"
+                android:layout_marginBottom="15dp"
+                app:fab_showShadow="false"
+                app:fab_showAnimation="@anim/fab_scale_up"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add_proyek_user"
+                app:fab_size="normal" />
+
+        </FrameLayout>
+    </com.ashokvarma.bottomnavigation.BottomNavigationBar>
+
+</RelativeLayout>

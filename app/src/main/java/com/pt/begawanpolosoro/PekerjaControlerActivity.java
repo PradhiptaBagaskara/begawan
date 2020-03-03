@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,16 +18,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.SessionManager;
-import com.pt.begawanpolosoro.home.HomeAdminFragment;
 import com.pt.begawanpolosoro.pekerja.PekerjaActivity;
-import com.pt.begawanpolosoro.proyek.ProyekFragment;
-import com.pt.begawanpolosoro.user.UserFragment;
+import com.pt.begawanpolosoro.pekerja.PekerjaHomeFragment;
+import com.pt.begawanpolosoro.pekerja.TransaksiUserFragment;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class PekerjaControlerActivity extends AppCompatActivity {
     BottomNavigationBar bottomNavigationBar;
     SessionManager sm;
     HashMap map;
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     ImageButton logout;
     ApiService apiService;
     CurrentUser user;
-
     public int getPosisiHalaman() {
         return posisiHalaman;
     }
@@ -49,11 +48,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int posisiHalaman;
-
+    private FloatingActionMenu mFab;
+    FloatingActionButton addTx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pekerja_controler);
         Intent extra = getIntent();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -78,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
         String rule = map.get(sm.SES_ROLE).toString();
         role = Integer.parseInt(rule);
         logout = findViewById(R.id.logout);
+        addTx = (FloatingActionButton) findViewById(R.id.fabItemAdd);
+        addTx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PekerjaActivity.class);
+                startActivity(intent);
+            }
+        });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
-
+        bottomNavigationBar.setAutoHideEnabled(true);
         if (extra.hasExtra("halaman")){
             setPosisiHalaman(Integer.parseInt(extra.getStringExtra("halaman")));
 
@@ -94,35 +102,15 @@ public class MainActivity extends AppCompatActivity {
             setPosisiHalaman(0);
 
         }
-//        menuBottom(role);
-        bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_home, "HOME"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PROYEK"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
-//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
-                .setBarBackgroundColor(R.color.lightGrey2)
-                .setActiveColor(R.color.lightBlue)
-                .setInActiveColor(R.color.grey)
-                .setFirstSelectedPosition(getPosisiHalaman())
-                .initialise();
-        halaman(getPosisiHalaman(), role);
-
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
                 setPosisiHalaman(position);
-                if (role == 0){
-                    if (position == 1){
-                        Intent intent = new Intent(getApplicationContext(), PekerjaActivity.class);
-                        startActivity(intent);
-                    }else {
-                        halaman(getPosisiHalaman(), role);
 
-                    }
-                }else {
+
                     halaman(getPosisiHalaman(), role);
 
-                }
+
 
 //                setActionBar(position, rule);
                 aktifFragment = position;
@@ -138,8 +126,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+        bottomNavigationBar
+                .addItem(new BottomNavigationItem(R.drawable.ic_home, "DASHBOARD"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_add_big, ""))
+                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "TRANSAKSI"))
+//                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
+                .setBarBackgroundColor(R.color.lightGrey2)
+                .setActiveColor(R.color.lightBlue)
+                .setInActiveColor(R.color.grey)
+                .setFirstSelectedPosition(getPosisiHalaman())
+                .initialise();
+        halaman(getPosisiHalaman(), role);
 
+//        mFab.
+
+
+    }
 
 
     private void halaman(int index, int rule){
@@ -147,40 +149,21 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         String tag;
 
-
             switch (index){
                 case 0:
-                    HomeAdminFragment homeFragment = new HomeAdminFragment();
+                    PekerjaHomeFragment homeFragment = new PekerjaHomeFragment();
                     fragment = homeFragment;
                     tag = "HOME_FRAGMENT";
-                    Log.d("jalan", "halaman: home");
+//                    Log.d("jalan", "halaman: home");
                     break;
 
-                case 1:
-                    ProyekFragment proyekFragment = new ProyekFragment();
-                    fragment = proyekFragment;
-                    break;
                 case 2:
-                    UserFragment userFragment = new UserFragment();
+                    TransaksiUserFragment userFragment = new TransaksiUserFragment();
                     fragment = userFragment;
                     break;
             }
 
-//        else {
-//            switch (index){
-//                case 0:
-//                    HomeAdminFragment homeFragment = new HomeAdminFragment();
-//                    fragment = homeFragment;
-//                    tag = "HOME_FRAGMENT";
-//                    Log.d("jalan", "halaman: home");
-//                    break;
-//
-//
-//                default:
-//                    fragment = null;
-//                    tag = null;
-//            }
-//        }
+
         fragmentManager.beginTransaction()
                 .replace(R.id.fl_container, fragment)
                 .commit();

@@ -41,7 +41,7 @@ public class SessionManager {
         spEditor.putString(SES_TOKEN, token);
         spEditor.putString(SES_NAMA, nama);
         spEditor.putString(SES_USERNAME, username);
-        spEditor.putString(SES_ROLE, role);
+        spEditor.putString(SES_ROLE, String.valueOf(role));
         spEditor.commit();
 
     }
@@ -70,6 +70,9 @@ public class SessionManager {
 
         }
     }
+
+
+
 
     public void logged()
     {
