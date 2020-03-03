@@ -37,6 +37,10 @@ public class InitRetro {
         this.context = mContext;
 
     }
+    public static ApiService apiRetro (){
+      ApiService r = retrofit().create(ApiService.class);
+      return r;
+    }
 
 
 

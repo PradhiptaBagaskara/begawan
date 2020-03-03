@@ -157,6 +157,8 @@ public class UserFragment extends Fragment {
                     intent.putExtra("saldo", filteredUser.get(position).getSaldo());
                     intent.putExtra("id", filteredUser.get(position).getId());
                     intent.putExtra("nama", filteredUser.get(position).getNama());
+                    intent.putExtra("halaman", "2");
+
 
                     startActivity(intent);
 

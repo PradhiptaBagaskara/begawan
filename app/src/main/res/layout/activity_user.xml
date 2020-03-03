@@ -156,7 +156,7 @@
                                     android:id="@+id/addSaldo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_add_circle"
+                                    android:src="@drawable/ic_add_big"
 
                                     android:backgroundTint="@color/transparant"
                                     android:layout_gravity="center_vertical"/>

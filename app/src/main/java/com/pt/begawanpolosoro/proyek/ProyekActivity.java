@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.proyek;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +36,8 @@ import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +47,7 @@ public class ProyekActivity extends AppCompatActivity {
     CurrentUser user;
     TextView namaProyek, catatan, noneAktifitas;
     TextViewRupiah modal, total, sisa;
-    ImageButton back,edit,simpan,cancel;
+    ImageButton back,edit,simpan,cancel,delete;
     LinearLayout showEdit, hideEdit, menuBtn;
     ProgressBar progres;
 
@@ -75,6 +80,7 @@ public class ProyekActivity extends AppCompatActivity {
     EditTextRupiah eModal;
     EditText eCatatan, eNamaProyek;
     RecyclerView recyclerView;
+    InitRetro initRetro;
 
 
     String id;
@@ -93,6 +99,7 @@ public class ProyekActivity extends AppCompatActivity {
         if (!extra.isEmpty()){
             id = extra.getString("id_proyek");
         }
+        delete = findViewById(R.id.deleteBtn);
         recyclerView = findViewById(R.id.proyek_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         showEdit = findViewById(R.id.showEdit);
@@ -105,7 +112,8 @@ public class ProyekActivity extends AppCompatActivity {
         cancel = findViewById(R.id.cancelBtn);
         noneAktifitas = findViewById(R.id.noneAktifitas);
 
-        apiService = InitRetro.InitApi().create(ApiService.class);
+        initRetro = new InitRetro(getApplicationContext());
+        apiService = initRetro.InitApi().create(ApiService.class);
         user= new CurrentUser(getApplicationContext());
         setHideEdit();
 
@@ -118,6 +126,7 @@ public class ProyekActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         edit = findViewById(R.id.editBtn);
         simpan = findViewById(R.id.simpanBtn);
+        delete.setOnClickListener(del);
 
         setEdit();
         setSimpan();
@@ -141,10 +150,65 @@ public class ProyekActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtra("halaman", "1");
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+        finishAffinity();
+
+    }
+
+    private View.OnClickListener del = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProyekActivity.this);
+            alertDialog.setIcon(R.drawable.ic_delete);
+
+            alertDialog.setTitle("PERINGATAN MENGHAPUS");
+            alertDialog
+                    .setMessage("Jika anda menghapus proyek ini maka semua DATA TRANSAKSI yang berhubungan dengan proyek akan ikut terhapus! \nklik YA untuk melanjutkan klik TIDAK untuk membatalkan")
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setCancelable(false)
+                    .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // jika tombol diklik, maka akan menutup activity ini
+//                            MainActivity.this.finish();
+                            setDelete();
+                        }
+                    })
+                    .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // jika tombol ini diklik, akan menutup dialog
+                            // dan tidak terjadi apa2
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog dialog = alertDialog.create();
+            alertDialog.show();
+        }
+    };
+
+    void setDelete(){
+//        Toast.makeText(getApplicationContext(), "dialog alert", Toast.LENGTH_SHORT).show();
+        RequestBody auth = RequestBody.create(MediaType.parse("text/plain"), user.getsAuth());
+        RequestBody pId = RequestBody.create(MediaType.parse("text/plain"), id);
+        Call<ResponseProyek> p = initRetro.apiRetro().deleteProyekId(user.getsAuth(), id);
+        p.enqueue(new Callback<ResponseProyek>() {
+            @Override
+            public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
+                if (response.isSuccessful()){
+                    if (response.body().isStatus()){
+                        Toast.makeText(getApplicationContext(),response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        onBackPressed();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProyek> call, Throwable t) {
+
+            }
+        });
     }
 
     void setHideEdit(){
@@ -299,7 +363,7 @@ public class ProyekActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull UserViewHolder holder, final int position) {
             holder.mDana.convertToIDR(proyekFiltered.get(position).getDana());
             holder.mNama.setText(proyekFiltered.get(position).getNamaTransaksi());
-            holder.mTx.setText(proyekFiltered.get(position).getNamaProyek());
+            holder.mTx.setText(proyekFiltered.get(position).getNama());
             holder.mTgl.setText(proyekFiltered.get(position).getCreatedDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

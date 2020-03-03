@@ -4,154 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="140dp"
+    android:backgroundTint="@color/whiteOri"
+    android:backgroundTintMode="screen"
     android:background="#fff"
     tools:context=".login.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/login_grup"
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/login_grup"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:orientation="vertical">-->
+    <ImageView
+        android:id="@+id/img"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
-<!--        <ImageView-->
-<!--            android:layout_width="250dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:src="@drawable/header"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            />-->
-        <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content"
+        android:scaleY="1.21"
+        android:scaleX="1.25"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_login"
+        android:layout_above="@+id/cardd"
+        android:layout_centerHorizontal="true"
+        android:elevation="0dp"
+        android:layout_marginTop="30dp"
+        android:adjustViewBounds="true"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:innerRadius="0dp"
+        android:shape="ring"
+
+        android:thicknessRatio="1.9"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="5dp"
+
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:elevation="15dp"
+
+        >
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/white"
-            app:cardUseCompatPadding="true"
-            app:elevation="15dp"
-            app:cardElevation="15dp"
-            app:cardCornerRadius="5dp"
-            android:layout_centerHorizontal="true"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            android:thicknessRatio="1.9"
+            android:orientation="vertical">
 
-            >
+            <TextView
+                android:id="@+id/judulLoginPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/mont_bold"
+                android:text="LOGIN"
+                android:textColor="@color/lightBlue"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/judulLoginPage"
-                    android:text="LOGIN"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/lightBlue"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/boogaloo_regular"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
+                android:background="@color/whiteOri"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_account" />
+
+                <EditText
+                    android:id="@+id/login_username"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"/>
-
-                <LinearLayout
-                    android:padding="15dp"
-                    android:background="@color/whiteOri"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_account"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginEnd="10dp"/>
-
-                    <EditText
-                        android:id="@+id/login_username"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:fontFamily="@font/boogaloo_regular"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:inputType="textEmailAddress"
-                        android:paddingStart="10dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:padding="15dp"
-                    android:background="@color/whiteOri"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_lock"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginEnd="10dp"/>
-
-                    <EditText
-                        android:id="@+id/login_password"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:maxLength="16"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/boogaloo_regular"
-                        android:textColor="@android:color/black"
-                        android:inputType="textPassword"
-                        android:paddingStart="10dp"
-                        android:layout_marginTop="10dp"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@color/whiteOri"
-                    android:paddingTop="20dp"
-                    >
-
-                    <Button
-                        android:id="@+id/btn_login"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:textAllCaps="false"
-                        android:text="Login"
-                        android:textSize="18sp"
-                        android:layout_margin="10dp"
-                        android:background="@color/darkBlue"
-                        android:textColor="@color/white"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="30dp"
-                        />
-                    <ProgressBar
-                        android:id="@+id/progressBar_login"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_marginTop="20dp"
-                        android:padding="5dp"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center_horizontal"
-                        />
-
-
-
-                </LinearLayout>
+                    android:fontFamily="@font/worksans_regular"
+                    android:hint="Username"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteOri"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_lock" />
+
+                <EditText
+                    android:id="@+id/login_password"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    android:paddingStart="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteOri"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/gradient_btn"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar_login"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:padding="5dp" />
 
 
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
-
-    </LinearLayout>
+    <!--    </LinearLayout>-->
 
 </RelativeLayout>

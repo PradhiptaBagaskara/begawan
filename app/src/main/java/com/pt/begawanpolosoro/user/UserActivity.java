@@ -113,7 +113,7 @@ public class UserActivity extends AppCompatActivity {
     CoordinatorLayout activity;
 
     String hal;
-    Intent intent = getIntent();
+    Intent intent;
 
     public String getHal() {
         return hal;
@@ -132,7 +132,7 @@ public class UserActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.darkBlue));
         activity = findViewById(R.id.userActivity);
-
+        intent = getIntent();
         apiService = InitRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getApplicationContext());
         customDialog();
@@ -419,9 +419,8 @@ public class UserActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtra("halaman", getHal());
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finishAffinity();
     }
 
     public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {

@@ -64,7 +64,7 @@
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/namaBaru"
                     android:backgroundTint="@color/light_gray"
-                    app:met_floatingLabelText="NAMA USER BARU"
+                    app:met_floatingLabelText="nama transaksi"
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelTextColor="@color/darkBlue"
                     app:met_iconLeft="@drawable/ic_add_user"
@@ -93,7 +93,7 @@
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/keterangan"
                     android:backgroundTint="@color/light_gray"
-                    app:met_floatingLabelText="NAMA USER BARU"
+                    app:met_floatingLabelText="barang yang dibeli"
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelTextColor="@color/darkBlue"
                     app:met_iconLeft="@drawable/ic_add_user"
@@ -105,7 +105,7 @@
                     app:met_helperTextColor="@color/black"
                     android:hint="Contoh: semen 1 sak 50rb, bata 1 rit 800rb, dst"
                     android:layout_marginBottom="15dp"
-                    android:minLines="5"
+                    android:maxLines="5"
                     android:fontFamily="@font/worksans_regular"
                     android:layout_height="wrap_content"/>
             </LinearLayout>

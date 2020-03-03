@@ -38,7 +38,7 @@
         </LinearLayout>
 
     </RelativeLayout>
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_marginTop="60dp"
         android:layout_height="match_parent">
@@ -183,12 +183,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"/>
+
                             <ImageButton
                                 android:id="@+id/cancelBtn"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/ic_cancel"
                                 android:layout_gravity="end"
+
                                 android:layout_marginHorizontal="15dp"
                                 android:backgroundTint="@color/transparant"/>
                             <ImageButton
@@ -369,13 +371,30 @@
                             </LinearLayout>
 
                         </LinearLayout>
-                        <ImageButton
-                            android:id="@+id/editBtn"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/ic_edit"
-                            android:layout_gravity="right"
-                            android:backgroundTint="@color/transparant"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+                            <ImageButton
+                                android:id="@+id/deleteBtn"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/ic_delete"
+                                android:layout_gravity="end"
+
+                                android:layout_marginHorizontal="15dp"
+                                android:backgroundTint="@color/transparant"/>
+                            <ImageButton
+                                android:id="@+id/editBtn"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+
+                                android:src="@drawable/ic_edit"
+                                android:layout_gravity="right"
+                                android:backgroundTint="@color/transparant"/>
+                        </LinearLayout>
+
 
 
 
@@ -425,7 +444,7 @@
 
     </RelativeLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
 
 
 
