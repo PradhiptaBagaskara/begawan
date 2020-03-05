@@ -41,8 +41,6 @@ import com.pt.begawanpolosoro.user.api.ResponseUser;
 
 import java.util.List;
 
-import gdut.bsx.share2.Share2;
-import gdut.bsx.share2.ShareContentType;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -269,14 +267,16 @@ public class UserActivity extends AppCompatActivity {
     private View.OnClickListener sharedUser = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new Share2.Builder(UserActivity.this)
-                    .setContentType(ShareContentType.TEXT)
-                    // 设置要分享的文本内容
-                    .setTextContent("Selamat " + getNama() +"! Login anda telah di buat.\n \nUsername: " +getUsername()+"\nPassword: "+ passwordDefault
-                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/begawan.apk")
-                    .setTitle("Login Aplikasi "+ getResources().getString(R.string.app_name))
-                    .build()
-                    .shareBySystem();
+            userForm.dismiss();
+
+            String shareBody = "Selamat " + getNama() +"! Login anda telah di buat.\n \nUsername: " +getUsername()+"\nPassword: "+ passwordDefault
+                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/begawan.apk";
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+//            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Bagikan dengan "));
+
         }
     };
 
@@ -330,6 +330,7 @@ public class UserActivity extends AppCompatActivity {
         });
 
     }
+
     void loadSaldo(){
         pg.setVisibility(View.GONE);
         vSaldo.setVisibility(View.VISIBLE);
@@ -411,6 +412,12 @@ public class UserActivity extends AppCompatActivity {
         share = userForm.findViewById(R.id.shareUser);
         reset = userForm.findViewById(R.id.resetPassword);
         cardDialog = userForm.findViewById(R.id.cardDialog);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/whiteOri"
+    tools:context=".gaji.RiwayatActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:background="@drawable/white"
+        app:cardElevation="1dp"
+        android:thicknessRatio="1.9"
+        android:backgroundTint="@color/whiteOri"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/whiteOri"
+                    android:layout_gravity="left"
+                    android:src="@drawable/ic_back_black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="DOWNLOAD LAPORAN"
+                    android:textColor="@color/darkBlue"
+                    android:fontFamily="@font/mont_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/cari"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/lightGrey2"
+                android:background="@color/lightGrey2"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/text"
+        android:paddingTop="15dp"
+        android:layout_below="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Riwayat Penggajian"
+        android:fontFamily="@font/worksans_bold"
+        android:textSize="14sp"/>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycleView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_below="@+id/text"/>
+</RelativeLayout>

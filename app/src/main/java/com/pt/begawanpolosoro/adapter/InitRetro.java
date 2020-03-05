@@ -26,7 +26,7 @@ public class InitRetro {
 
     private  static Retrofit retrofit = null;
     private static final String TAG = "ServiceGenerator";
-    private static final String BASE_URL = "http://192.168.1.100:8080/";
+    public static final String BASE_URL = "http://192.168.1.100:8080/";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";
     public static final String HEADER_PRAGMA = "Pragma";
 
@@ -56,7 +56,7 @@ public class InitRetro {
                 .build();
     }
 
-    private static OkHttpClient okHttpClient(){
+    public static OkHttpClient okHttpClient(){
         return new OkHttpClient.Builder()
                 .cache(cache())
                 .addInterceptor(httpLoggingInterceptor()) // used if network off OR on

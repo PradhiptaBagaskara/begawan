@@ -99,7 +99,7 @@ public class PekerjaActivity extends AppCompatActivity {
             public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 setJenis(item);
-                Toast.makeText(getApplicationContext(), "Selected Jenis: " + item, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Selected Jenis: " + item, Toast.LENGTH_SHORT).show();
             }
         });
         totalDana = findViewById(R.id.totalTx);
@@ -117,7 +117,7 @@ public class PekerjaActivity extends AppCompatActivity {
             public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
                 ResultItemProyek result = (ResultItemProyek) opsi.getSelectedItem();
                 setIdProyek(result.getId());
-                Toast.makeText(getApplicationContext(), result.getId()+" "+result.getNamaProyek(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), result.getId()+" "+result.getNamaProyek(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -158,6 +158,11 @@ public class PekerjaActivity extends AppCompatActivity {
             }
         }
     };
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     private boolean cekField(){
         if (TextUtils.isEmpty(namaTx.getText())){

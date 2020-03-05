@@ -84,7 +84,7 @@ public class PekerjaHomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadGaji();
         loadSaldo();
-        nama.setText(user.getsNama());
+        nama.setText(user.getsNama().toUpperCase());
         bottomNavigationBar = getActivity().findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setAutoHideEnabled(true);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -224,6 +224,7 @@ public class PekerjaHomeFragment extends Fragment {
                         resultItemGajiList = response.body().getResult();
                         GajiAdapter adapter = new GajiAdapter(resultItemGajiList);
                         recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -253,8 +254,49 @@ public class PekerjaHomeFragment extends Fragment {
         public void onBindViewHolder(@NonNull GajiAdapter.MyviewHolder holder, int position) {
             holder.tgl.setText(gajiList.get(position).getCreatedDate());
             holder.gaji.convertToIDR(gajiList.get(position).getGaji());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String sPengirim = gajiList.get(position).getNamaPengirim().toUpperCase();
+                    String sPenerima = gajiList.get(position).getNama().toUpperCase();
+                    String sJmlh = gajiList.get(position).getGaji();
+                    String sTgl = gajiList.get(position).getCreatedDate();
+
+                    customDialog(sPenerima,sPengirim,sTgl,sJmlh);
+                }
+            });
 
         }
+        public void customDialog(String penerima, String pengirim, String date, String jumlah) {
+
+            Dialog userForm = new Dialog(getActivity());
+            userForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            userForm.setContentView(R.layout.dialog_gaji);
+            userForm.setCancelable(true);
+            userForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
+            userForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            TextViewRupiah gajiDialog = userForm.findViewById(R.id.gaji);
+            TextView namaPengirim = userForm.findViewById(R.id.namaPengirim);
+            TextView namaPenerima = userForm.findViewById(R.id.namaPenerima);
+            TextView tanggal = userForm.findViewById(R.id.tglDialog);
+            Button back = userForm.findViewById(R.id.backDialog);
+
+            gajiDialog.convertToIDR(jumlah);
+            namaPenerima.setText(penerima);
+            namaPengirim.setText(pengirim);
+            tanggal.setText(date);
+            userForm.show();
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    userForm.dismiss();
+                }
+            });
+
+
+        }
+
 
         @Override
         public int getItemCount() {

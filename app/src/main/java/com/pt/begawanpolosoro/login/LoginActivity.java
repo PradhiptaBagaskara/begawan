@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                                 CurrentUser user = new CurrentUser(getApplicationContext());
-                                user.routing();
+                                user.routing("0");
 
 
 

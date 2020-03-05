@@ -90,11 +90,17 @@ public class TambahProyekActivity extends AppCompatActivity {
             modal.setError("Modal Harus di isi ");
             return false;
 
-        }else {
-//
-            return true;
-
         }
+//
+        return true;
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     private View.OnClickListener sendProyek = new View.OnClickListener() {

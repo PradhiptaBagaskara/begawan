@@ -50,8 +50,7 @@
         android:layout_height="wrap_content"
         android:text="Reset Password"
         android:layout_marginVertical="5dp"
-        android:textColor="@color/whiteOri"
-        android:background="@drawable/gradient_btn"/>
+        android:textColor="@color/whiteOri"/>
 
 </LinearLayout>
 

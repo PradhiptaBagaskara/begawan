@@ -142,7 +142,7 @@ public class UserFragment extends Fragment {
             holder.mTx.setText(filteredUser.get(position).getUsername());
             int role = Integer.parseInt(filteredUser.get(position).getRole());
             if (role == 0){
-                holder.mRole.setText("pekerja");
+                holder.mRole.setText("karyawan");
             }else {
                 holder.mRole.setText("pemodal");
                 holder.mRole.setTextColor(getResources().getColor(R.color.colorPrimary));

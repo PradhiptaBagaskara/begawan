@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    android:id="@+id/cardDialog"
+    app:cardCornerRadius="20dp"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginBottom="5dp"
+    android:layout_centerHorizontal="true"
+    android:innerRadius="5dp"
+    android:shape="ring"
+    android:layout_marginTop="10dp"
+    android:thicknessRatio="1.9">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="15dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="DETAIL GAJI"
+                android:textColor="@color/darkBlue"
+                android:fontFamily="@font/worksans_bold"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pengirim:"
+                android:textColor="@color/lightBlue"
+                android:fontFamily="@font/worksans_bold"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/namaPengirim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:fontFamily="@font/worksans_regular"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:text="Tanggal:"
+                android:fontFamily="@font/worksans_bold"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/tglDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:fontFamily="@font/worksans_regular"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:text="Penerima:"
+                android:fontFamily="@font/worksans_bold"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/namaPenerima"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:fontFamily="@font/worksans_regular"
+                android:textSize="15sp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:text="Jumlah:"
+                android:fontFamily="@font/worksans_bold"
+                android:textSize="15sp"/>
+            <com.congfandi.lib.TextViewRupiah
+                android:id="@+id/gaji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightBlue"
+                android:fontFamily="@font/worksans_regular"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/backDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            android:textColor="@color/whiteOri"
+            android:background="@drawable/gradient_btn"
+            android:layout_marginTop="35dp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

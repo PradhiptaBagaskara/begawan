@@ -54,7 +54,7 @@ public class CurrentUser {
         return this.map.get(this.sm.SES_TOKEN).toString();
     }
 
-    public void routing(){
+    public void routing(String halaman){
         Intent intent;
 
         if (sm.Login())
@@ -62,6 +62,7 @@ public class CurrentUser {
             switch (getRole()){
                 case 0:
                     intent = new Intent(mContext, PekerjaControlerActivity.class);
+                    intent.putExtra("halaman", halaman);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -69,6 +70,7 @@ public class CurrentUser {
                     break;
                 case 2:
                     intent = new Intent(mContext, MainActivity.class);
+                    intent.putExtra("halaman", halaman);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);

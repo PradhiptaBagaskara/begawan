@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/nama_proyek"
+                    android:id="@+id/nama_user"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Gaji Telah Diterima"

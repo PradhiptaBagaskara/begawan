@@ -164,7 +164,7 @@ public class ProyekActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProyekActivity.this);
             alertDialog.setIcon(R.drawable.ic_delete);
 
-            alertDialog.setTitle("PERINGATAN MENGHAPUS");
+            alertDialog.setTitle("PERINGATAN!");
             alertDialog
                     .setMessage("Jika anda menghapus proyek ini maka semua DATA TRANSAKSI yang berhubungan dengan proyek akan ikut terhapus! \nklik YA untuk melanjutkan klik TIDAK untuk membatalkan")
                     .setIcon(R.mipmap.ic_launcher)
@@ -187,6 +187,12 @@ public class ProyekActivity extends AppCompatActivity {
             alertDialog.show();
         }
     };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     void setDelete(){
 //        Toast.makeText(getApplicationContext(), "dialog alert", Toast.LENGTH_SHORT).show();

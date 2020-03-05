@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.congfandi.lib.TextViewRupiah;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
@@ -45,6 +46,7 @@ public class TransaksiUserFragment extends Fragment {
     CurrentUser user;
     ApiService apiService;
     TextView vAktifitas;
+    BottomNavigationBar bottomNavigationBar;
 
 
 
@@ -58,6 +60,28 @@ public class TransaksiUserFragment extends Fragment {
         user = new CurrentUser(getActivity());
         InitRetro initRetro = new InitRetro(getActivity());
         apiService = initRetro.InitApi().create(ApiService.class);
+
+        bottomNavigationBar = getActivity().findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationBar.setAutoHideEnabled(true);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dx < dy){
+                    bottomNavigationBar.hide(true);
+                }else {
+                    bottomNavigationBar.show(true);
+                }
+
+            }
+        });
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return v;

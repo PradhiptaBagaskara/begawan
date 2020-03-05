@@ -1,6 +1,7 @@
 package com.pt.begawanpolosoro;
 
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,23 +51,14 @@ public class SplashActivity extends AwesomeSplash {
         configSplash.setPathSplashFillColor(R.color.light_gray);
         configSplash.setAnimLogoSplashTechnique(Techniques.FadeInUp); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
 
-//Customize Path
-//        configSplash.setPathSplash(Constants.BUILDING); //set path String
-//        configSplash.setOriginalHeight(400); //in relation to your svg (path) resource
-//        configSplash.setOriginalWidth(400); //in relation to your svg (path) resource
-//        configSplash.setAnimPathStrokeDrawingDuration(2000);
-//        configSplash.setPathSplashStrokeSize(3); //I advise value be <5
-//        configSplash.setPathSplashStrokeColor(R.color.whiteOri); //any color you want form colors.xml
-//        configSplash.setAnimPathFillingDuration(1000);
-//        configSplash.setPathSplashFillColor(R.color.lightBlue);
 
         //Customize Title
-        configSplash.setTitleSplash("Begawan Polosoro");
+        configSplash.setTitleSplash("BEGAWAN POLOSORO");
         configSplash.setTitleTextColor(R.color.whiteOri);
         configSplash.setTitleTextSize(30f); //float value
         configSplash.setAnimTitleDuration(1000);
-        configSplash.setAnimTitleTechnique(Techniques.FlipInX);
-        configSplash.setTitleFont("fonts/streatwear.otf");
+        configSplash.setAnimTitleTechnique(Techniques.Landing);
+        configSplash.setTitleFont("fonts/mont_bold.otf");
 
 
 
@@ -113,7 +105,12 @@ public class SplashActivity extends AwesomeSplash {
                     });
         }
         CurrentUser user = new CurrentUser(getApplicationContext());
-        user.routing();
+        String hal= "0";
+        Intent intent = getIntent();
+        if (intent.hasExtra("halaman")){
+            hal = intent.getStringExtra("halaman");
+        }
+        user.routing(hal);
 //sm.logged();
 //Log.d("ceklogin role", "role", String.valueOf(user.getRole()));
 

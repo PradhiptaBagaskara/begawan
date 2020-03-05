@@ -38,6 +38,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
+import com.pt.begawanpolosoro.SplashActivity;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
@@ -128,7 +129,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int notifID = new Random().nextInt();
 
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SplashActivity.class);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, notifID, intent,

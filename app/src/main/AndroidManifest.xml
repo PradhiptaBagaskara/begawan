@@ -4,6 +4,8 @@
     package="com.pt.begawanpolosoro">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -16,7 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PekerjaControlerActivity"></activity>
+        <activity android:name=".gaji.RiwayatActivity"></activity>
+        <activity android:name=".gaji.GajiActivity" />
+        <activity android:name=".pdf.PdfReaderActivity" />
+        <activity android:name=".pdf.PdfActivity" />
+        <activity android:name=".PekerjaControlerActivity" />
         <activity android:name=".proyek.TambahProyekActivity" />
         <activity android:name=".user.TambahUserActivity" />
         <activity android:name=".pekerja.PekerjaActivity" />

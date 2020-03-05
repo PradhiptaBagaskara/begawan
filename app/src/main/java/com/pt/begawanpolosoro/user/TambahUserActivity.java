@@ -114,7 +114,7 @@ public class TambahUserActivity extends AppCompatActivity {
             }
         });
 
-        List<String> dataset = new LinkedList<>(Arrays.asList("PEKERJA", "PEMODAL"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PEMODAL"));
         role.attachDataSource(dataset);
         role.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
@@ -139,6 +139,12 @@ public class TambahUserActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     private  View.OnClickListener send = new View.OnClickListener() {

@@ -3,6 +3,7 @@ package com.pt.begawanpolosoro.adapter;
 
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.pdf.api.ResponsePdf;
 import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseGaji;
 import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseStatusGaji;
 import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
@@ -46,6 +47,7 @@ public interface ApiService {
                              @Field("keterangan") String keterangan,
                              @Field("jenis") String jenis);
 
+
     @GET("api/user")
     Call<ResponseUser> getUser(@Query("auth_key") String auth);
 
@@ -60,7 +62,11 @@ public interface ApiService {
     @PUT("api/proyek")
     Call<ResponseProyek> deleteProyekId(@Field("auth_key") String auth,
                                      @Field("id") String  id);
-
+    @FormUrlEncoded
+    @POST("api/getpdf")
+    Call<ResponsePdf> pdf(@Field("auth_key") String auth,
+                          @Field("id") String  id,
+                          @Field("param") String param);
     @FormUrlEncoded
     @POST("api/password")
     Call<ResponseUser> resetPassword(@Field("auth_key") String auth_key,
@@ -115,4 +121,11 @@ public interface ApiService {
     Call<ResponseGaji> allGaji(@Query("auth_key") String auth,
                                   @Query("param") String param,
                                @Query("limit")  String limit);
+    @FormUrlEncoded
+    @POST("api/gaji")
+    Call<ResponseGaji> postGaji (@Field("auth_key") String auth,
+                               @Field("id") String id,
+                               @Field("keterangan") String catatan,
+                               @Field("gaji") String gaji);
+
 }

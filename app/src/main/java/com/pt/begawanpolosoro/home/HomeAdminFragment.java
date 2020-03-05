@@ -38,10 +38,12 @@ import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.adapter.SessionManager;
+import com.pt.begawanpolosoro.gaji.GajiActivity;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.home.api.ResultSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.login.api.ResultLogin;
+import com.pt.begawanpolosoro.pdf.PdfActivity;
 import com.pt.begawanpolosoro.proyek.TambahProyekActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.TambahUserActivity;
@@ -142,19 +144,12 @@ public class HomeAdminFragment extends Fragment {
         menuGrid.setAdapter(gridMenuAdapter);
         menuGrid.setOnItemClickListener(setMenuListener);
 
-
-
-
-
-
         nama = view.findViewById(R.id.nama);
         username = view.findViewById(R.id.username);
         saldo = view.findViewById(R.id.saldo);
-
-
-
         return view;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,14 +165,9 @@ public class HomeAdminFragment extends Fragment {
 
         loadTx();
 
-
-
-
-
-
-
-
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -190,6 +180,8 @@ public class HomeAdminFragment extends Fragment {
 
     }
 
+
+
     private AdapterView.OnItemClickListener setMenuListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -201,6 +193,14 @@ public class HomeAdminFragment extends Fragment {
                     break;
                 case 1:
                     i = new Intent(getActivity(), TambahProyekActivity.class);
+                    startActivity(i);
+                    break;
+                case 2:
+                    i = new Intent(getActivity(), GajiActivity.class);
+                    startActivity(i);
+                    break;
+                case 3:
+                    i = new Intent(getActivity(), PdfActivity.class);
                     startActivity(i);
                     break;
 
