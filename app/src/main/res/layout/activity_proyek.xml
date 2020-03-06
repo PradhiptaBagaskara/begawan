@@ -158,7 +158,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="20dp"
-                                    android:text="MODAL"
+                                    android:text="NILAI PROYEK"
                                     android:fontFamily="@font/worksans_bold"
                                     android:layout_marginBottom="1dp"
                                     android:textColor="@color/darkBlue"/>
@@ -297,7 +297,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="20dp"
-                                    android:text="MODAL"
+                                    android:text="NILAI PROYEK"
                                     android:fontFamily="@font/worksans_bold"
                                     android:layout_marginBottom="1dp"
                                     android:textColor="@color/darkBlue"/>
@@ -355,7 +355,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="20dp"
-                                    android:text="SISA MODAL"
+                                    android:text="LABA"
                                     android:fontFamily="@font/worksans_bold"
                                     android:layout_marginBottom="1dp"
                                     android:textColor="@color/darkBlue"/>

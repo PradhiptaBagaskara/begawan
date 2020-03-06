@@ -76,7 +76,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MODAL PROYEK"
+                android:text="NILAI PROYEK"
                 android:textColor="@color/darkBlue"
                 android:fontFamily="@font/worksans_regular"
                 android:textSize="18sp"/>

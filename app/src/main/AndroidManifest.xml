@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".gaji.RiwayatActivity"></activity>
         <activity android:name=".gaji.GajiActivity" />
