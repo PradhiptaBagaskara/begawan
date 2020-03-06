@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class PekerjaActivity extends AppCompatActivity {
     ApiService apiService;
     CurrentUser user;
     Button btn;
+    ImageButton back;
 
 
     @Override
@@ -85,6 +87,13 @@ public class PekerjaActivity extends AppCompatActivity {
         setIdProyek("");
 
         pg = findViewById(R.id.progresBaru);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         btn = findViewById(R.id.btnBaru);

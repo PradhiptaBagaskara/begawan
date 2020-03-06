@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="DOWNLOAD LAPORAN"
+                    android:text="RIWAYAT GAJI"
                     android:textColor="@color/darkBlue"
                     android:fontFamily="@font/mont_bold"
                     android:layout_gravity="center"
