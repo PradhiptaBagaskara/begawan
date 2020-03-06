@@ -68,4 +68,11 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:layout_below="@+id/text"/>
+    <TextView
+        android:id="@+id/none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Belum Ada Riwayat"
+        android:layout_below="@+id/recycleView"
+        android:fontFamily="@font/worksans_regular"/>
 </RelativeLayout>

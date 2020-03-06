@@ -33,8 +33,6 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="70dp"
-        android:divider="?android:dividerHorizontal"
-        android:showDividers="middle"
         android:orientation="vertical">
 
 
@@ -108,7 +106,7 @@
                 android:backgroundTint="@color/light_gray"
                 android:layout_width="match_parent"
                 android:fontFamily="@font/worksans_regular"
-                android:hint="Masukan Saldo"
+                android:hint="Masukan Jumlah Gaji"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>

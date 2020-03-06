@@ -148,26 +148,35 @@ public class GajiActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
-                        List<ResultItemUser> resultItemUser = response.body().getResult();
+                        if (response.body().getResult() != null){
+                            List<ResultItemUser> resultItemUser = response.body().getResult();
 
-                        SpinnerTextFormatter format = new SpinnerTextFormatter<ResultItemUser>() {
-                            @Override
-                            public Spannable format(ResultItemUser item) {
-                                return new SpannableString(item.getNama());
+                            SpinnerTextFormatter format = new SpinnerTextFormatter<ResultItemUser>() {
+                                @Override
+                                public Spannable format(ResultItemUser item) {
+                                    return new SpannableString(item.getNama());
+                                }
+                            };
+                            list.setSpinnerTextFormatter(format);
+                            list.setSelectedTextFormatter(format);
+                            list.attachDataSource(resultItemUser);
+                            ResultItemUser item = (ResultItemUser) list.getSelectedItem();
+                            setId(item.getId());
+                            if (resultItemUser.size() == 1){
+                                list.setText(item.getNama());
+
                             }
-                        };
-                        list.setSpinnerTextFormatter(format);
-                        list.setSelectedTextFormatter(format);
-                        list.attachDataSource(resultItemUser);
-                        ResultItemUser item = (ResultItemUser) list.getSelectedItem();
-                        setId(item.getId());
-                        list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-                                ResultItemUser res = (ResultItemUser) list.getSelectedItem();
-                                setId(res.getId());
-                            }
-                        });
+                            list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                                    ResultItemUser res = (ResultItemUser) list.getSelectedItem();
+                                    setId(res.getId());
+                                }
+                            });
+                        }else {
+                            list.setText("BELUM ADA DATA");
+                        }
+
                     }
                 }
             }

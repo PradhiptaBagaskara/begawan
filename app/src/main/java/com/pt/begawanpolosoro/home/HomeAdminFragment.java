@@ -63,7 +63,7 @@ import retrofit2.Response;
 public class HomeAdminFragment extends Fragment {
     LinearLayout userInfo,saldoBtn;
     RelativeLayout relativeLayout;
-    TextView nama,username;
+    TextView nama,username, none;
     TextViewRupiah saldo;
     String sNama;
     String amount = "0";
@@ -139,6 +139,7 @@ public class HomeAdminFragment extends Fragment {
         userInfo = view.findViewById(R.id.userInfo);
         saldoBtn = view.findViewById(R.id.edtSaldoBtn);
         saldoBtn.setOnClickListener(showEditSaldo);
+        none = view.findViewById(R.id.none);
         profilDialog(getActivity());
         gridMenuAdapter = new GridMenuAdapter(getActivity(),logo,menuName);
         menuGrid.setAdapter(gridMenuAdapter);
@@ -421,7 +422,7 @@ public class HomeAdminFragment extends Fragment {
                     if (res.isStatus()){
                         if (res.getResult() != null){
 //                            Log.d("tagger: ", res.getResult().toString());
-
+                            none.setVisibility(View.GONE);
                             List<ResultItemTx> TxItem = res.getResult();
                             TxAdapter Tadapter = new TxAdapter(TxItem);
                             recyclerView.setAdapter(Tadapter);

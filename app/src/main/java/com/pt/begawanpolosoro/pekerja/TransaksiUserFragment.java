@@ -63,6 +63,7 @@ public class TransaksiUserFragment extends Fragment {
 
         bottomNavigationBar = getActivity().findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setAutoHideEnabled(true);
+        vAktifitas = v.findViewById(R.id.none);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -103,6 +104,7 @@ public class TransaksiUserFragment extends Fragment {
                     if (res.isStatus()){
                         if (res.getResult() != null){
 //                            Log.d("tagger: ", res.getResult().toString());
+                            vAktifitas.setVisibility(View.GONE);
 
                             List<ResultItemTx> TxItem = res.getResult();
                             TransaksiAdapter adapter = new TransaksiAdapter(TxItem);

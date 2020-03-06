@@ -82,6 +82,7 @@ public class PekerjaActivity extends AppCompatActivity {
         InitRetro initRetro = new InitRetro(getApplicationContext());
         apiService = initRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getApplicationContext());
+        setIdProyek("");
 
         pg = findViewById(R.id.progresBaru);
 
@@ -104,6 +105,7 @@ public class PekerjaActivity extends AppCompatActivity {
         });
         totalDana = findViewById(R.id.totalTx);
         opsi = findViewById(R.id.roleBaru);
+        opsi.setText("BELUM ADA PROYEK");
         loadProyek();
 
 
@@ -112,14 +114,7 @@ public class PekerjaActivity extends AppCompatActivity {
         btn.setOnClickListener(send);
 
 
-        opsi.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-            @Override
-            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-                ResultItemProyek result = (ResultItemProyek) opsi.getSelectedItem();
-                setIdProyek(result.getId());
-//                Toast.makeText(getApplicationContext(), result.getId()+" "+result.getNamaProyek(), Toast.LENGTH_LONG).show();
-            }
-        });
+
 
     }
 
@@ -168,8 +163,8 @@ public class PekerjaActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(namaTx.getText())){
             namaTx.setError("Nama Pembelian Harus Diisi");
             return false;
-        }else if (TextUtils.isEmpty(keteranganTx.getText())){
-            keteranganTx.setError("Catatan Pembelian Harus Diisi");
+        }else if (TextUtils.isEmpty(getIdProyek())){
+            opsi.setError("Catatan Pembelian Harus Diisi");
             return false;
 
         }else if (TextUtils.isEmpty(totalDana.getNumber())){
@@ -191,20 +186,34 @@ public class PekerjaActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
+                        if (response.body().getResult().size() != 0){
+                            List<ResultItemProyek> resultItemProyek = response.body().getResult();
 
-                        List<ResultItemProyek> resultItemProyek = response.body().getResult();
-
-                        SpinnerTextFormatter formater = new SpinnerTextFormatter<ResultItemProyek>() {
-                            @Override
-                            public Spannable format(ResultItemProyek item) {
-                                return new SpannableString(item.getNamaProyek());
+                            SpinnerTextFormatter formater = new SpinnerTextFormatter<ResultItemProyek>() {
+                                @Override
+                                public Spannable format(ResultItemProyek item) {
+                                    return new SpannableString(item.getNamaProyek());
+                                }
+                            };
+                            opsi.setSpinnerTextFormatter(formater);
+                            opsi.setSelectedTextFormatter(formater);
+                            opsi.attachDataSource(resultItemProyek);
+                            ResultItemProyek item = (ResultItemProyek) opsi.getSelectedItem();
+                            setIdProyek(item.getId());
+                            if ( response.body().getResult().size() == 1){
+                                opsi.setText(item.getNamaProyek());
                             }
-                        };
-                        opsi.setSpinnerTextFormatter(formater);
-                        opsi.setSelectedTextFormatter(formater);
-                        opsi.attachDataSource(resultItemProyek);
-                        ResultItemProyek item = (ResultItemProyek) opsi.getSelectedItem();
-                        setIdProyek(item.getId());
+                            opsi.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                                    ResultItemProyek result = (ResultItemProyek) opsi.getSelectedItem();
+                                    setIdProyek(result.getId());
+//                Toast.makeText(getApplicationContext(), result.getId()+" "+result.getNamaProyek(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+
 
 
                     }

@@ -40,6 +40,7 @@ public class UserFragment extends Fragment {
     CurrentUser user;
     SearchView searchView;
     UserAdapter adapter;
+    TextView none;
 
 
     @Override
@@ -57,6 +58,7 @@ public class UserFragment extends Fragment {
 
         searchView = view.findViewById(R.id.cari_user);
         searchView.clearFocus();
+        none = view.findViewById(R.id.none);
 
 
 
@@ -81,6 +83,7 @@ public class UserFragment extends Fragment {
                     ResponseUser res = response.body();
                     if (res.isStatus()){
                         if (res.getResult() != null){
+                            none.setVisibility(View.GONE);
                             List<ResultItemUser> userList = response.body().getResult();
                             adapter = new UserAdapter(userList);
                             recyclerView.setAdapter(adapter);

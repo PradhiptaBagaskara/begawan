@@ -41,6 +41,7 @@ public class RiwayatActivity extends AppCompatActivity {
     InitRetro initRetro;
     SearchView searchView;
     ImageButton back;
+    TextView none;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class RiwayatActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.my_statusbar_color));
         initRetro = new InitRetro(getApplicationContext());
         user = new CurrentUser(getApplicationContext());
+        none =findViewById(R.id.none);
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +75,10 @@ public class RiwayatActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
                         List<ResultItemGaji> item = response.body().getResult();
+                        if (item.size() > 0){
+                            none.setVisibility(View.GONE);
+
+                        }
                         GajiAdapter adapter = new GajiAdapter(item);
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();

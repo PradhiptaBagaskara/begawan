@@ -63,6 +63,7 @@
                 android:id="@+id/dialogPassword"
                 android:layout_width="match_parent"
                 android:hint="Masukan Password Baru"
+                android:inputType="textPassword"
                 android:layout_height="wrap_content"/>
 
             <LinearLayout

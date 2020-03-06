@@ -53,7 +53,7 @@
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/namaBaru"
             android:backgroundTint="@color/light_gray"
-            app:met_floatingLabelText="NAMA USER BARU"
+            app:met_floatingLabelText="tambah user baru"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelTextColor="@color/darkBlue"
             app:met_iconLeft="@drawable/ic_add_user"

@@ -26,7 +26,8 @@ public class InitRetro {
 
     private  static Retrofit retrofit = null;
     private static final String TAG = "ServiceGenerator";
-    public static final String BASE_URL = "http://192.168.1.100:8080/";
+//    public static final String BASE_URL = "http://192.168.1.100:8080/";
+    public static final String BASE_URL = "https://begawan.000webhostapp.com/";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";
     public static final String HEADER_PRAGMA = "Pragma";
 

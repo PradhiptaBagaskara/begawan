@@ -40,7 +40,7 @@ public class ProyekFragment extends Fragment {
     CurrentUser user;
     SearchView searchView;
     ProyekAdapter adapter;
-
+    TextView none;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +55,7 @@ public class ProyekFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_proyek, container, false);
         searchView = v.findViewById(R.id.cari_user);
         searchView.clearFocus();
+        none = v.findViewById(R.id.none);
 
 
 
@@ -75,7 +76,8 @@ public class ProyekFragment extends Fragment {
             public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
                 ResponseProyek res = response.body();
                 if (res.isStatus()){
-                    if (res.getResult() != null){
+                    if (res.getResult().size() != 0){
+                        none.setVisibility(View.GONE);
                         List<ResultItemProyek> userList = response.body().getResult();
                         adapter = new ProyekAdapter(userList);
                         recyclerView.setAdapter(adapter);

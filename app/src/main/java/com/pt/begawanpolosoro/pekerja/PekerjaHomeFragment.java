@@ -61,7 +61,7 @@ public class PekerjaHomeFragment extends Fragment {
     EditText edtUname, edtPass,edtNama;
     Button btnSaveProfil, btnBatalProfil;
     ImageButton userSetting;
-    TextView labelPass;
+    TextView labelPass, none;
     BottomNavigationBar bottomNavigationBar;
 
 
@@ -77,6 +77,7 @@ public class PekerjaHomeFragment extends Fragment {
         userSetting = v.findViewById(R.id.userSetting);
         profilDialog(getActivity());
         userSetting.setOnClickListener(showEditProfil);
+        none = v.findViewById(R.id.none);
 
         saldo = v.findViewById(R.id.saldo);
         recyclerView = v.findViewById(R.id.home_rec_pekerja);
@@ -221,10 +222,15 @@ public class PekerjaHomeFragment extends Fragment {
             public void onResponse(Call<ResponseGaji> call, Response<ResponseGaji> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
-                        resultItemGajiList = response.body().getResult();
-                        GajiAdapter adapter = new GajiAdapter(resultItemGajiList);
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        if (response.body().getResult() != null){
+                            resultItemGajiList = response.body().getResult();
+                            GajiAdapter adapter = new GajiAdapter(resultItemGajiList);
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            none.setVisibility(View.GONE);
+
+                        }
+
                     }
                 }
             }

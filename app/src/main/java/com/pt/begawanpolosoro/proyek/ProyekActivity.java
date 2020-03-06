@@ -36,8 +36,6 @@ import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -154,7 +152,7 @@ public class ProyekActivity extends AppCompatActivity {
 //                Intent.FLAG_ACTIVITY_CLEAR_TASK |
 //                Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-        finishAffinity();
+        finish();
 
     }
 
@@ -195,23 +193,28 @@ public class ProyekActivity extends AppCompatActivity {
     }
 
     void setDelete(){
-//        Toast.makeText(getApplicationContext(), "dialog alert", Toast.LENGTH_SHORT).show();
-        RequestBody auth = RequestBody.create(MediaType.parse("text/plain"), user.getsAuth());
-        RequestBody pId = RequestBody.create(MediaType.parse("text/plain"), id);
-        Call<ResponseProyek> p = initRetro.apiRetro().deleteProyekId(user.getsAuth(), id);
+        menuBtn.setVisibility(View.GONE);
+        progres.setVisibility(View.VISIBLE);
+        Call<ResponseProyek> p = initRetro.apiRetro().deleteProyekId(user.getsAuth(), id, "delete");
         p.enqueue(new Callback<ResponseProyek>() {
             @Override
             public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
-                        Toast.makeText(getApplicationContext(),response.body().getMsg(), Toast.LENGTH_LONG).show();
                         onBackPressed();
                     }
                 }
+                Toast.makeText(getApplicationContext(),response.body().getMsg(), Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onFailure(Call<ResponseProyek> call, Throwable t) {
+                t.printStackTrace();
+                menuBtn.setVisibility(View.VISIBLE);
+                progres.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Terjadi kesalahan! coba lagi Nanti", Toast.LENGTH_LONG).show();
+
 
             }
         });

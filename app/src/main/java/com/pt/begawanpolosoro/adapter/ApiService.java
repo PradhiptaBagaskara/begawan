@@ -15,7 +15,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -59,14 +58,18 @@ public interface ApiService {
                                      @Query("id") String id);
 
     @FormUrlEncoded
-    @PUT("api/proyek")
+    @POST("api/proyek")
     Call<ResponseProyek> deleteProyekId(@Field("auth_key") String auth,
-                                     @Field("id") String  id);
+                                     @Field("id") String  id,
+                                        @Field("param") String param);
     @FormUrlEncoded
     @POST("api/getpdf")
     Call<ResponsePdf> pdf(@Field("auth_key") String auth,
                           @Field("id") String  id,
                           @Field("param") String param);
+    @GET("api/getpdf")
+    Call<ResponseUser> getUserPdf(@Query("auth_key") String auth);
+
     @FormUrlEncoded
     @POST("api/password")
     Call<ResponseUser> resetPassword(@Field("auth_key") String auth_key,
@@ -127,5 +130,6 @@ public interface ApiService {
                                @Field("id") String id,
                                @Field("keterangan") String catatan,
                                @Field("gaji") String gaji);
+
 
 }

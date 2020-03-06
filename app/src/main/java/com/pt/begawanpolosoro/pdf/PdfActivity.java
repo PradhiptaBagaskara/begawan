@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -112,7 +113,6 @@ public class PdfActivity extends AppCompatActivity {
         option = findViewById(R.id.laporanBaru);
 
         list = findViewById(R.id.listLaporan);
-        list.setText("KOSONG");
         back = findViewById(R.id.back);
         downloadBtn = findViewById(R.id.btnDownload);
         pg = findViewById(R.id.progresBaru);
@@ -229,26 +229,38 @@ public class PdfActivity extends AppCompatActivity {
 
                 if (response.isSuccessful())
                     if (response.body().isStatus()){
-                        List<ResultItemProyek> resultItemProyek = response.body().getResult();
+                        if (response.body().getResult() != null){
+                            if (response.body().getResult().size() != 0){
+                                List<ResultItemProyek> resultItemProyek = response.body().getResult();
+                                SpinnerTextFormatter formater = new SpinnerTextFormatter<ResultItemProyek>() {
+                                    @Override
+                                    public Spannable format(ResultItemProyek item) {
+                                        return new SpannableString(item.getNamaProyek());
+                                    }
+                                };
+                                list.setSpinnerTextFormatter(formater);
+                                list.setSelectedTextFormatter(formater);
+                                list.attachDataSource(resultItemProyek);
+                                ResultItemProyek item = (ResultItemProyek) list.getSelectedItem();
+                                setId(item.getId());
+                                if ( response.body().getResult().size() == 1){
+                                 list.setText(item.getNamaProyek());
+                                }
+                                list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                                        ResultItemProyek res = (ResultItemProyek) list.getSelectedItem();
+                                        setId(res.getId());
+                                    }
+                                });
+                                Log.d("proyek", "onResponse: "+getId());
+                            }else {
+                                list.setText("BELUM ADA DATA");
 
-                        SpinnerTextFormatter formater = new SpinnerTextFormatter<ResultItemProyek>() {
-                            @Override
-                            public Spannable format(ResultItemProyek item) {
-                                return new SpannableString(item.getNamaProyek());
                             }
-                        };
-                        list.setSpinnerTextFormatter(formater);
-                        list.setSelectedTextFormatter(formater);
-                        list.attachDataSource(resultItemProyek);
-                        ResultItemProyek item = (ResultItemProyek) list.getSelectedItem();
-                        setId(item.getId());
-                        list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-                                ResultItemProyek res = (ResultItemProyek) list.getSelectedItem();
-                                setId(res.getId());
-                            }
-                        });
+
+                        }
+
                     }
             }
 
@@ -263,32 +275,42 @@ public class PdfActivity extends AppCompatActivity {
     }
 
     void loadUser(){
-        Call<ResponseUser> u = initRetro.apiRetro().getUser(user.getsAuth());
+        Call<ResponseUser> u = initRetro.apiRetro().getUserPdf(user.getsAuth());
         u.enqueue(new Callback<ResponseUser>() {
             @Override
             public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
-                        List<ResultItemUser> resultItemUser = response.body().getResult();
+                        if (response.body().getResult() != null){
+                            List<ResultItemUser> resultItemUser = response.body().getResult();
 
-                        SpinnerTextFormatter format = new SpinnerTextFormatter<ResultItemUser>() {
-                            @Override
-                            public Spannable format(ResultItemUser item) {
-                                return new SpannableString(item.getNama());
+                            SpinnerTextFormatter format = new SpinnerTextFormatter<ResultItemUser>() {
+                                @Override
+                                public Spannable format(ResultItemUser item) {
+                                    return new SpannableString(item.getNama());
+                                }
+                            };
+                            list.setSpinnerTextFormatter(format);
+                            list.setSelectedTextFormatter(format);
+                            list.attachDataSource(resultItemUser);
+                            ResultItemUser item = (ResultItemUser) list.getSelectedItem();
+                            setId(item.getId());
+                            if (resultItemUser.size() == 1){
+                                list.setText(item.getNama());
+
                             }
-                        };
-                        list.setSpinnerTextFormatter(format);
-                        list.setSelectedTextFormatter(format);
-                        list.attachDataSource(resultItemUser);
-                        ResultItemUser item = (ResultItemUser) list.getSelectedItem();
-                        setId(item.getId());
-                        list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-                                ResultItemUser res = (ResultItemUser) list.getSelectedItem();
-                                setId(res.getId());
-                            }
-                        });
+                            list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                                    ResultItemUser res = (ResultItemUser) list.getSelectedItem();
+                                    setId(res.getId());
+                                }
+                            });
+                        }else {
+                            list.setText("BELUM ADA DATA");
+
+                        }
+
                     }
                 }
             }

@@ -24,11 +24,6 @@ import com.pt.begawanpolosoro.login.api.ResultLogin;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.angmarch.views.NiceSpinner;
-import org.angmarch.views.OnSpinnerItemSelectedListener;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -113,24 +108,26 @@ public class TambahUserActivity extends AppCompatActivity {
                 finish();
             }
         });
+        setSrole("0");
+        role.setText("KARYAWAN");
 
-        List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PEMODAL"));
-        role.attachDataSource(dataset);
-        role.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-            @Override
-            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        setSrole("0");
-
-                        break;
-                    case  1:
-                        setSrole("1");
-                        break;
-
-                }
-            }
-        });
+//        List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PEMODAL"));
+//        role.attachDataSource(dataset);
+//        role.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+//                switch (position){
+//                    case 0:
+//                        setSrole("0");
+//
+//                        break;
+//                    case  1:
+//                        setSrole("1");
+//                        break;
+//
+//                }
+//            }
+//        });
 
         btnSend.setOnClickListener(send);
 

@@ -48,7 +48,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-
+    <TextView
+        android:id="@+id/none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belum Ada Proyek"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:fontFamily="@font/worksans_regular"/>
 
 
 </FrameLayout>
