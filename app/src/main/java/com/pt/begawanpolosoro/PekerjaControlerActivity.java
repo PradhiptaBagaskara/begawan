@@ -128,7 +128,7 @@ public class PekerjaControlerActivity extends AppCompatActivity {
         });
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_home, "DASHBOARD"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_add_big, ""))
+                .addItem(new BottomNavigationItem(R.drawable.ic_add, ""))
                 .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "TRANSAKSI"))
 //                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
                 .setBarBackgroundColor(R.color.lightGrey2)

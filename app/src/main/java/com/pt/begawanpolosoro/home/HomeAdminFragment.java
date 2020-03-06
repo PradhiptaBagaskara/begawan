@@ -331,7 +331,7 @@ public class HomeAdminFragment extends Fragment {
                         if (response.body().isStatus()){
                             ResultLogin dt = response.body().getResult();
                             sm.storeLogin(dt.getRole(),dt.getNama(),dt.getUsername(),dt.getId());
-                            nama.setText(dt.getNama());
+                            nama.setText(dt.getNama().toUpperCase());
                             profilForm.dismiss();
                             Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
                         }
@@ -346,7 +346,7 @@ public class HomeAdminFragment extends Fragment {
                     btnSaveProfil.setVisibility(View.VISIBLE);
                     pgProfil.setVisibility(View.GONE);
                     btnBatalProfil.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(),"Terjadi Kesalahan!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Terjadi Kesalahan! Coba lagi nanti",Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -375,6 +375,7 @@ public class HomeAdminFragment extends Fragment {
                         btnSaveProfil.setVisibility(View.VISIBLE);
                         pgProfil.setVisibility(View.GONE);
                         btnBatalProfil.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Terjadi Kesalahan! Coba lagi nanti", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -407,6 +408,7 @@ public class HomeAdminFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseSaldo> call, Throwable t) {
+//                Toast.makeText(getActivity(), "Terjadi Kesalahan! Coba lagi nanti", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });

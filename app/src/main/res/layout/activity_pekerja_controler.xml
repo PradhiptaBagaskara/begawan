@@ -132,13 +132,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 app:fab_colorNormal="@color/lightGrey2"
-                app:fab_colorRipple="@color/darkBlue"
-                app:fab_colorPressed="@color/lightBlue"
+                app:fab_colorRipple="@color/lightBlue"
+                app:fab_colorPressed="@color/lightBlue2"
                 android:layout_marginBottom="15dp"
                 app:fab_showShadow="false"
                 app:fab_showAnimation="@anim/fab_scale_up"
                 android:layout_height="wrap_content"
-                android:src="@drawable/add_proyek_user"
+                android:src="@drawable/icon"
                 app:fab_size="normal" />
 
         </FrameLayout>
