@@ -150,6 +150,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setOnlyAlertOnce(true) // set alert sound notif
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setVibrate((new long[] { 1000, 1000, 1000, 1000, 1000 }))
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent); // action notif ketika di tap

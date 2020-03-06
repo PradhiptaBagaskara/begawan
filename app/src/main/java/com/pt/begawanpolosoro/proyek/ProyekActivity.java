@@ -165,7 +165,7 @@ public class ProyekActivity extends AppCompatActivity {
             alertDialog.setTitle("PERINGATAN!");
             alertDialog
                     .setMessage("Jika anda menghapus proyek ini maka semua DATA TRANSAKSI yang berhubungan dengan proyek akan ikut terhapus! \nklik YA untuk melanjutkan klik TIDAK untuk membatalkan")
-                    .setIcon(R.mipmap.ic_launcher)
+                    .setIcon(R.mipmap.ic_icon_round)
                     .setCancelable(false)
                     .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {

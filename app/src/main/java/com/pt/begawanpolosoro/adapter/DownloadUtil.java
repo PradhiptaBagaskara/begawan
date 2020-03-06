@@ -108,7 +108,7 @@ public class DownloadUtil {
                         alertDialog.setCancelable(true);
                         alertDialog
                                 .setMessage("Apakah anda ingin membuka file?")
-                                .setIcon(R.mipmap.ic_launcher)
+                                .setIcon(R.mipmap.ic_icon_round)
                                 .setCancelable(false)
                                 .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {

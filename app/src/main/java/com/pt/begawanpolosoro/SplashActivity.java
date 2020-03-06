@@ -68,6 +68,7 @@ public class SplashActivity extends AwesomeSplash {
 
     @Override
     public void animationsFinished() {
+
         sm = new SessionManager(getApplicationContext());
         if(sm.Login()){
             final CurrentUser user = new CurrentUser(getApplicationContext());
