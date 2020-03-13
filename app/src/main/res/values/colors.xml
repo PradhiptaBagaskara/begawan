@@ -18,6 +18,7 @@
     <color name="lightBlue2">#A5D9F0</color>
     <color name="darkBlue">#126AAF</color>
     <color name="red">#F70808</color>
+    <color name="abu">#8A000000</color>
 
 
 </resources>

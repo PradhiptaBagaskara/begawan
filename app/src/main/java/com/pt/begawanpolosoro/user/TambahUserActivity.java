@@ -21,15 +21,21 @@ import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.login.api.ResultLogin;
+import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.angmarch.views.NiceSpinner;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TambahUserActivity extends AppCompatActivity {
+    private static final String TAG = "TambahUserActivity";
     String Snama;
     String SuserName;
     String Srole;
@@ -76,6 +82,7 @@ public class TambahUserActivity extends AppCompatActivity {
     CurrentUser user;
     ProgressBar pg;
     Button btnSend;
+    ApiHelper apiHelper;
 
 
     @Override
@@ -102,32 +109,29 @@ public class TambahUserActivity extends AppCompatActivity {
         pg.setVisibility(View.GONE);
         btnSend = findViewById(R.id.btnBaru);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        back.setOnClickListener(v -> {
                 finish();
-            }
         });
         setSrole("0");
-        role.setText("KARYAWAN");
 
-//        List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PEMODAL"));
-//        role.attachDataSource(dataset);
-//        role.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
-//                switch (position){
-//                    case 0:
-//                        setSrole("0");
-//
-//                        break;
-//                    case  1:
-//                        setSrole("1");
-//                        break;
-//
-//                }
-//            }
-//        });
+
+        List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PELAKSANA", "ADMINISTRATOR"));
+        role.attachDataSource(dataset);
+        role.setOnSpinnerItemSelectedListener((parent, view, position, id) -> {
+            switch (position){
+                case 0:
+                    setSrole("0");
+
+                    break;
+                case  1:
+                    setSrole("1");
+                    break;
+                case 2:
+                    setSrole("3");
+
+            }
+        });
 
         btnSend.setOnClickListener(send);
 

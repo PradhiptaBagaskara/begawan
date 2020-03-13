@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="15dp"
+    app:cardCornerRadius="12dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCamera"
+            style="@style/TitleTextStyle"
+            android:fontFamily="@font/worksans_bold"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:text="@string/upload_bukti_transaksi" />
+
+<!--        android:onClick="showImage"-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCamera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/txtCamera"
+            android:layout_marginTop="0dp"
+            android:background="@color/lightGrey2"
+            android:scaleType="fitXY" />
+
+    </RelativeLayout>
+
+<!--    android:onClick="pickCameraImage"-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_img"
+        app:srcCompat="@drawable/upload_file"
+        android:onClick="pickImg"
+        style="@style/FabStyle" />
+
+
+</androidx.cardview.widget.CardView>

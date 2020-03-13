@@ -1,6 +1,7 @@
 package com.pt.begawanpolosoro;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Window;
@@ -14,7 +15,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.pt.begawanpolosoro.adapter.ApiService;
+import com.pt.begawanpolosoro.adapter.DownloadUtil;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
@@ -22,12 +29,15 @@ import com.viksaa.sssplash.lib.activity.AwesomeSplash;
 import com.viksaa.sssplash.lib.cnst.Flags;
 import com.viksaa.sssplash.lib.model.ConfigSplash;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SplashActivity extends AwesomeSplash {
 
+    private static final String TAG = "SplashActivity";
     SessionManager sm;
 
     @Override
@@ -68,6 +78,29 @@ public class SplashActivity extends AwesomeSplash {
 
     @Override
     public void animationsFinished() {
+        DownloadUtil downloadUtil = new DownloadUtil(getApplicationContext());
+
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()){
+                            downloadUtil.cekDir();
+                        }
+                        Log.d(TAG, "onPermissionsChecked: here");
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+
+
+                    }
+                })
+                .check();
+
 
         sm = new SessionManager(getApplicationContext());
         if(sm.Login()){

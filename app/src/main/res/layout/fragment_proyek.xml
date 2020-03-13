@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     app:iconifiedByDefault="false"
                     android:focusable="false"
-                    app:defaultQueryHint="Cari Proyek"
+                    app:defaultQueryHint="Cari Pekerjaan"
                     />
 
 

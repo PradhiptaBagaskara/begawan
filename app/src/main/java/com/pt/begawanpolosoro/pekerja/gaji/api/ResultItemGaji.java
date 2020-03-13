@@ -2,7 +2,9 @@ package com.pt.begawanpolosoro.pekerja.gaji.api;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResultItemGaji {
+import java.io.Serializable;
+
+public class ResultItemGaji implements Serializable {
 
 	@SerializedName("keterangan")
 	private String keterangan;
@@ -13,8 +15,8 @@ public class ResultItemGaji {
 	@SerializedName("nama")
 	private String nama;
 
-	@SerializedName("id_pemilik")
-	private String idPemilik;
+	@SerializedName("file_name")
+	private String fileName;
 
 	@SerializedName("gaji")
 	private String gaji;
@@ -22,14 +24,11 @@ public class ResultItemGaji {
 	@SerializedName("id")
 	private String id;
 
-	@SerializedName("id_user")
-	private String idUser;
-
 	@SerializedName("created_date")
 	private String createdDate;
 
-	@SerializedName("bulan")
-	private String bulan;
+	@SerializedName("nama_proyek")
+	private String namaProyek;
 
 	@SerializedName("username")
 	private String username;
@@ -58,12 +57,12 @@ public class ResultItemGaji {
 		return nama;
 	}
 
-	public void setIdPemilik(String idPemilik){
-		this.idPemilik = idPemilik;
+	public void setFileName(String fileName){
+		this.fileName = fileName;
 	}
 
-	public String getIdPemilik(){
-		return idPemilik;
+	public String getFileName(){
+		return fileName;
 	}
 
 	public void setGaji(String gaji){
@@ -82,14 +81,6 @@ public class ResultItemGaji {
 		return id;
 	}
 
-	public void setIdUser(String idUser){
-		this.idUser = idUser;
-	}
-
-	public String getIdUser(){
-		return idUser;
-	}
-
 	public void setCreatedDate(String createdDate){
 		this.createdDate = createdDate;
 	}
@@ -98,12 +89,12 @@ public class ResultItemGaji {
 		return createdDate;
 	}
 
-	public void setBulan(String bulan){
-		this.bulan = bulan;
+	public void setNamaProyek(String namaProyek){
+		this.namaProyek = namaProyek;
 	}
 
-	public String getBulan(){
-		return bulan;
+	public String getNamaProyek(){
+		return namaProyek;
 	}
 
 	public void setUsername(String username){
@@ -121,12 +112,11 @@ public class ResultItemGaji {
 			"keterangan = '" + keterangan + '\'' + 
 			",nama_pengirim = '" + namaPengirim + '\'' + 
 			",nama = '" + nama + '\'' + 
-			",id_pemilik = '" + idPemilik + '\'' + 
+			",file_name = '" + fileName + '\'' + 
 			",gaji = '" + gaji + '\'' + 
 			",id = '" + id + '\'' + 
-			",id_user = '" + idUser + '\'' + 
 			",created_date = '" + createdDate + '\'' + 
-			",bulan = '" + bulan + '\'' + 
+			",nama_proyek = '" + namaProyek + '\'' + 
 			",username = '" + username + '\'' + 
 			"}";
 		}

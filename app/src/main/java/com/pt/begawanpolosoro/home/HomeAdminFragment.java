@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,20 +47,28 @@ import com.pt.begawanpolosoro.proyek.TambahProyekActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.TambahUserActivity;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
+import com.pt.begawanpolosoro.util.ApiHelper;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.util.ArrayList;
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 //import com.bcc.gridmenuview.GridMenu;
 
 
 public class HomeAdminFragment extends Fragment {
-    LinearLayout userInfo,saldoBtn;
+    ImageButton saldoBtn;
     RelativeLayout relativeLayout;
     TextView nama,username, none;
     TextViewRupiah saldo;
@@ -112,17 +119,18 @@ public class HomeAdminFragment extends Fragment {
     InitRetro initRetro;
     BottomNavigationBar bt;
 
-    List sementara = new ArrayList<>();
-    NestedScrollView scrollView;
     Dialog saldoForm, profilForm;
+    NiceSpinner aksi;
     EditTextRupiah edtSaldo;
     EditText edtUname, edtPass,edtNama;
+    MaterialEditText catatan;
     Button edtSave,edtBatal, btnSaveProfil, btnBatalProfil;
     ProgressBar edtPg, pgProfil;
     GridView menuGrid;
     int logo[] = {R.drawable.user, R.drawable.proyek, R.drawable.gaji, R.drawable.print};
-    String menuName[] = {"USER", "PROYEK", "GAJI","LAPORAN"};
+    String menuName[] = {"PENGGUNA", "PEKERJAAN", "GAJI","LAPORAN"};
     GridMenuAdapter gridMenuAdapter;
+    ApiHelper apiHelper = new ApiHelper();
 
 
     @Override
@@ -134,10 +142,8 @@ public class HomeAdminFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.home_rec);
         menuGrid = view.findViewById(R.id.gridMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        scrollView = view.findViewById(R.id.scroll);
         customDialog(getActivity());
-        userInfo = view.findViewById(R.id.userInfo);
-        saldoBtn = view.findViewById(R.id.edtSaldoBtn);
+        saldoBtn = view.findViewById(R.id.editSaldo);
         saldoBtn.setOnClickListener(showEditSaldo);
         none = view.findViewById(R.id.none);
         profilDialog(getActivity());
@@ -176,7 +182,6 @@ public class HomeAdminFragment extends Fragment {
         nama.setText(getsNama().toUpperCase());
         username.setText(getsUsername());
 
-        userInfo.setOnClickListener(showEditProfil);
 
 
     }
@@ -223,6 +228,7 @@ public class HomeAdminFragment extends Fragment {
     private View.OnClickListener closeDialog = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            catatan.getText().clear();
             edtSaldo.getText().clear();
             saldoForm.dismiss();
         }
@@ -233,8 +239,9 @@ public class HomeAdminFragment extends Fragment {
         public void onClick(View v) {
             edtSave.setVisibility(View.GONE);
             edtBatal.setVisibility(View.GONE);
+            apiHelper.setKeterangan(catatan.getText().toString());
             edtPg.setVisibility(View.VISIBLE);
-           Call<ResponseSaldo> update = apiService.updateSaldoApi(getsAuth(), getsAuth(), edtSaldo.getNumber().toString(), "tambah");
+           Call<ResponseSaldo> update = apiService.updateSaldoApi(getsAuth(), getsAuth(), edtSaldo.getNumber().toString(), apiHelper.getParam(), apiHelper.getKeterangan());
            update.enqueue(new Callback<ResponseSaldo>() {
                @Override
                public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
@@ -275,6 +282,26 @@ public class HomeAdminFragment extends Fragment {
         edtSaldo = saldoForm.findViewById(R.id.dialogSaldo);
         edtSave = saldoForm.findViewById(R.id.saveSaldo);
         edtBatal= saldoForm.findViewById(R.id.cancelDialog);
+        aksi = saldoForm.findViewById(R.id.aksi);
+        catatan = saldoForm.findViewById(R.id.catatan);
+
+        List<String> dataset = new LinkedList<>(Arrays.asList("TAMBAHKAN", "KURANGI"));
+        aksi.attachDataSource(dataset);
+        apiHelper.setParam("tambah");
+        aksi.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+            @Override
+            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        apiHelper.setParam("tambah");
+                        break;
+                    case 1:
+                        apiHelper.setParam("kurang");
+                        break;
+                }
+            }
+        });
+        Log.d(TAG, "customDialog: "+apiHelper.getParam());
     }
 
 
@@ -286,6 +313,7 @@ public class HomeAdminFragment extends Fragment {
         profilForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
         profilForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         pgProfil = profilForm.findViewById(R.id.progresProfil);
+        aksi =saldoForm.findViewById(R.id.aksi);
         pgProfil.setVisibility(View.GONE);
         edtUname = profilForm.findViewById(R.id.dialogUname);
         edtNama = profilForm.findViewById(R.id.dialogNama);

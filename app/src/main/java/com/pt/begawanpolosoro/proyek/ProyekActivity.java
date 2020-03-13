@@ -1,8 +1,12 @@
 package com.pt.begawanpolosoro.proyek;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
+import com.google.android.material.snackbar.Snackbar;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
@@ -33,7 +37,13 @@ import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
 import com.pt.begawanpolosoro.proyek.api.ResultItemProyek;
 import com.pt.begawanpolosoro.proyek.api.TransaksiItem;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
+import com.pt.begawanpolosoro.util.ApiHelper;
 
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,12 +52,14 @@ import retrofit2.Response;
 
 public class ProyekActivity extends AppCompatActivity {
     ApiService apiService;
-    CurrentUser user;
-    TextView namaProyek, catatan, noneAktifitas;
-    TextViewRupiah modal, total, sisa;
-    ImageButton back,edit,simpan,cancel,delete;
-    LinearLayout showEdit, hideEdit, menuBtn;
-    ProgressBar progres;
+    public static final String TAG = "ProyekActivity";
+    public CurrentUser user;
+    public TextView namaProyek, catatan, noneAktifitas;
+    public TextViewRupiah modal, total, sisa,eNamaProyek;
+    public ImageButton back,edit,simpan,cancel;
+    public LinearLayout detail, delProyek;
+    public LinearLayout showEdit, hideEdit;
+    public ProgressBar progres;
 
     public String getsNamaProyek() {
         return sNamaProyek;
@@ -57,7 +69,7 @@ public class ProyekActivity extends AppCompatActivity {
         this.sNamaProyek = sNamaProyek;
     }
 
-    public String getsModal() {
+    public final String getsModal() {
         return sModal;
     }
 
@@ -73,15 +85,20 @@ public class ProyekActivity extends AppCompatActivity {
         this.sCatatan = sCatatan;
     }
 
-    String sNamaProyek, sModal, sCatatan;
+    public String sNamaProyek, sModal, sCatatan;
 
-    EditTextRupiah eModal;
-    EditText eCatatan, eNamaProyek;
-    RecyclerView recyclerView;
-    InitRetro initRetro;
+    public EditTextRupiah eModal;
+    public RecyclerView recyclerView;
+    public InitRetro initRetro;
+    public NiceSpinner aksi;
+    public LinearLayout menuBtn;
 
+    public View editContent,showContent;
+    public EditText edtCatatan;
 
-    String id;
+    public String id;
+    EditModal editModal;
+    public ApiHelper apiHelper = new ApiHelper();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,41 +110,26 @@ public class ProyekActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.darkBlue));
 
         Bundle extra = getIntent().getExtras();
-//        id = "2";
         if (!extra.isEmpty()){
             id = extra.getString("id_proyek");
         }
-        delete = findViewById(R.id.deleteBtn);
-        recyclerView = findViewById(R.id.proyek_rec);
+
+        getView(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        showEdit = findViewById(R.id.showEdit);
-        hideEdit = findViewById(R.id.show);
-        progres = findViewById(R.id.progres);
-        eModal = findViewById(R.id.editmodal);
-        eCatatan = findViewById(R.id.editcatatan);
-        eNamaProyek = findViewById(R.id.editnamaProyek);
-        menuBtn = findViewById(R.id.linierBtn);
-        cancel = findViewById(R.id.cancelBtn);
-        noneAktifitas = findViewById(R.id.noneAktifitas);
-
-        initRetro = new InitRetro(getApplicationContext());
-        apiService = initRetro.InitApi().create(ApiService.class);
-        user= new CurrentUser(getApplicationContext());
-        setHideEdit();
 
 
-        namaProyek = findViewById(R.id.namaProyek);
-        modal = findViewById(R.id.modal);
-        total = findViewById(R.id.totalPengeluaran);
-        sisa = findViewById(R.id.sisaModal);
-        catatan = findViewById(R.id.catatan);
-        back = findViewById(R.id.back);
-        edit = findViewById(R.id.editBtn);
-        simpan = findViewById(R.id.simpanBtn);
-        delete.setOnClickListener(del);
 
-        setEdit();
-        setSimpan();
+        this.initRetro = new InitRetro(ProyekActivity.this);
+        this.apiService = initRetro.InitApi().create(ApiService.class);
+        this.user= new CurrentUser(ProyekActivity.this);
+        editModal = new EditModal(getApplicationContext());
+
+        edit.setOnClickListener(v -> {
+            showContent.setVisibility(View.GONE);
+            editContent.setVisibility(View.VISIBLE);
+            eModal.setText("0");
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +141,16 @@ public class ProyekActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        int role = user.getRole();
         loadProyek();
+
+        if (user.getRole() < 2){
+        }
+
+
+
+
+
     }
 
     @Override
@@ -148,57 +158,77 @@ public class ProyekActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtra("halaman", "1");
-//        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-        finish();
-
+//        finish();
+//
     }
 
-    private View.OnClickListener del = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProyekActivity.this);
-            alertDialog.setIcon(R.drawable.ic_delete);
+    public void getView(Activity activity){
+        editContent = activity.findViewById(R.id.editContent);
+        editContent.setVisibility(View.GONE);
+        showContent = activity.findViewById(R.id.showContent);
+        recyclerView = activity.findViewById(R.id.proyek_rec);
+        showEdit = activity.findViewById(R.id.showEdit);
+        hideEdit = activity.findViewById(R.id.show);
+        progres = activity.findViewById(R.id.progres);
+        eModal = activity.findViewById(R.id.editmodal);
+        edtCatatan = activity.findViewById(R.id.editCatatan);
+        eNamaProyek = activity.findViewById(R.id.editnamaProyek);
+        menuBtn = activity.findViewById(R.id.menuBtn);
+        cancel = activity.findViewById(R.id.cancelBtn);
+        noneAktifitas = activity.findViewById(R.id.noneAktifitas);
+        detail = activity.findViewById(R.id.detailBtn);
+        namaProyek = activity.findViewById(R.id.namaProyek);
+        modal = activity.findViewById(R.id.modal);
+        total = activity.findViewById(R.id.totalPengeluaran);
+        sisa = activity.findViewById(R.id.sisaModal);
+        catatan = activity.findViewById(R.id.catatan);
+        back = activity.findViewById(R.id.back);
+        edit = activity.findViewById(R.id.editBtn);
+        simpan = activity.findViewById(R.id.simpanBtn);
+        aksi = activity.findViewById(R.id.aksi);
+        delProyek = activity.findViewById(R.id.deleteBtn);
 
-            alertDialog.setTitle("PERINGATAN!");
-            alertDialog
-                    .setMessage("Jika anda menghapus proyek ini maka semua DATA TRANSAKSI yang berhubungan dengan proyek akan ikut terhapus! \nklik YA untuk melanjutkan klik TIDAK untuk membatalkan")
-                    .setIcon(R.mipmap.ic_icon_round)
-                    .setCancelable(false)
-                    .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            // jika tombol diklik, maka akan menutup activity ini
+
+    }
+    public void deleteProyek(View v){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProyekActivity.this);
+
+        alertDialog.setTitle(" \rPERINGATAN!");
+        alertDialog
+                .setMessage("Jika anda menghapus proyek ini maka semua DATA TRANSAKSI yang berhubungan dengan proyek akan ikut terhapus! \n\nApakah Anda ingin melanjutkan?")
+                .setIcon(R.drawable.ic_delete)
+                .setCancelable(false)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // jika tombol diklik, maka akan menutup activity ini
 //                            MainActivity.this.finish();
-                            setDelete();
-                        }
-                    })
-                    .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // jika tombol ini diklik, akan menutup dialog
-                            // dan tidak terjadi apa2
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog dialog = alertDialog.create();
-            alertDialog.show();
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
+                        setDelete();
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = alertDialog.create();
+        alertDialog.show();
     }
+
 
     void setDelete(){
-        menuBtn.setVisibility(View.GONE);
+//        menuBtn.setVisibility(View.GONE);
         progres.setVisibility(View.VISIBLE);
         Call<ResponseProyek> p = initRetro.apiRetro().deleteProyekId(user.getsAuth(), id, "delete");
         p.enqueue(new Callback<ResponseProyek>() {
             @Override
             public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
+                progres.setVisibility(View.GONE);
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
                         onBackPressed();
@@ -211,7 +241,7 @@ public class ProyekActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseProyek> call, Throwable t) {
                 t.printStackTrace();
-                menuBtn.setVisibility(View.VISIBLE);
+//                menuBtn.setVisibility(View.VISIBLE);
                 progres.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),"Terjadi kesalahan! coba lagi Nanti", Toast.LENGTH_LONG).show();
 
@@ -220,76 +250,9 @@ public class ProyekActivity extends AppCompatActivity {
         });
     }
 
-    void setHideEdit(){
-        progres.setVisibility(View.GONE);
-        showEdit.setVisibility(View.GONE);
-        hideEdit.setVisibility(View.VISIBLE);
-        loadProyek();
 
-    }
-    void setShowEdit(){
-        showEdit.setVisibility(View.VISIBLE);
-        hideEdit.setVisibility(View.GONE);
-        eNamaProyek.setText(getsNamaProyek());
-        eNamaProyek.setTextSize(14);
-        eCatatan.setText(getsCatatan());
-        eCatatan.setTextSize(14);
-        eModal.setText(getsModal());
-        eModal.setTextSize(14);
-        progres.setVisibility(View.GONE);
 
-    }
-    void setEdit(){
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setShowEdit();
-            }
-        });
-    }
-    void setSimpan(){
-
-        simpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                setHideEdit();
-                menuBtn.setVisibility(View.GONE);
-                progres.setVisibility(View.VISIBLE);
-                Call<ResponseProyek> update = apiService.updateProyek(user.getsAuth(),id, eNamaProyek.getText().toString(),
-                        "update",eCatatan.getText().toString(),eModal.getNumber());
-                update.enqueue(new Callback<ResponseProyek>() {
-                    @Override
-                    public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body().isStatus()) {
-                                setHideEdit();
-                            }
-                        }
-                        menuBtn.setVisibility(View.VISIBLE);
-                        setHideEdit();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseProyek> call, Throwable t) {
-                        t.printStackTrace();
-                        progres.setVisibility(View.GONE);
-                        menuBtn.setVisibility(View.VISIBLE);
-                    }
-                });
-//                Toast.makeText(getApplicationContext(), eModal.getNumber().toString(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setHideEdit();
-            }
-        });
-
-    }
-
-    void loadProyek(){
+    public void loadProyek(){
         final Call<ResponseProyek> res = apiService.getProyekId(user.getsAuth(), id);
         res.enqueue(new Callback<ResponseProyek>() {
             @Override
@@ -301,11 +264,29 @@ public class ProyekActivity extends AppCompatActivity {
                         setsNamaProyek(proyek.get(0).getNamaProyek());
                         setsModal(proyek.get(0).getModal());
                         setsCatatan(proyek.get(0).getKeterangan());
+                        apiHelper.setTglMulai(proyek.get(0).getTglMulai());
+                        apiHelper.setId_(proyek.get(0).getId());
+                        apiHelper.setTglSelesai(proyek.get(0).getTglSelesai());
+                        eNamaProyek.convertToIDR(getsModal());
                         namaProyek.setText(proyek.get(0).getNamaProyek());
                         modal.convertToIDR(proyek.get(0).getModal());
                         total.convertToIDR(proyek.get(0).getTotalDana());
                         sisa.convertToIDR(proyek.get(0).getSisaModal());
-                        catatan.setText(proyek.get(0).getKeterangan());
+                        edtCatatan.setText(proyek.get(0).getKeterangan());
+                        detail.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(), ProyekDetailActivity.class);
+                                intent.putExtra("id", apiHelper.getId_());
+                                intent.putExtra("nama", getsNamaProyek());
+                                intent.putExtra("nilai", getsModal());
+                                intent.putExtra("catatan", getsCatatan());
+                                intent.putExtra("tglstart", apiHelper.getTglMulai());
+                                intent.putExtra("tglend", apiHelper.getTglSelesai());
+
+                                startActivity(intent);
+                            }
+                        });
                         if (response.body().getTransaksi() != null){
                             List<TransaksiItem> tx = response.body().getTransaksi();
                             UserAdapter adapter = new UserAdapter(tx);
@@ -327,11 +308,164 @@ public class ProyekActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseProyek> call, Throwable t) {
 
-                setHideEdit();
-//                Snackbar.make(getApplicationContext(), "Terjadi Kesalahan!", Snackbar.LENGTH_LONG).show();
+              Toast.makeText(getApplicationContext(), "Terjadi Kesalahan!", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
+    }
+
+    public class EditModal extends ProyekActivity {
+        ProyekActivity ac;
+        Context context;
+
+        public int getAksion() {
+            return aksion;
+        }
+
+        public void setAksion(int aksion) {
+            this.aksion = aksion;
+        }
+
+        private int aksion;
+
+        public EditModal(Context c) {
+            ac = ProyekActivity.this;
+            user = new CurrentUser(ac);
+            this.context = c;
+
+            ac.getView(ProyekActivity.this);
+            ac.cancel.setOnClickListener(hideEdit);
+            ac.progres.setVisibility(View.GONE);
+            List<String> dataset = new LinkedList<>(Arrays.asList("TAMBAHKAN", "KURANGI"));
+            ac.aksi.attachDataSource(dataset);
+            ac.aksi.setSelectedIndex(0);
+            Log.d(ac.TAG, "EditModal: " +ac.aksi.getSelectedIndex());
+            ac.aksi.setOnSpinnerItemSelectedListener(action);
+            ac.simpan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getAksion() == 0){
+                        tambahModal();
+                    }else if(getAksion() == 1){
+                        kurangModal();
+                    }
+                }
+            });
+
+
+
+
+        }
+        boolean cekField(){
+            int sementara= Integer.parseInt(ac.eModal.getNumber());
+            if (sementara < 1){
+                ac.eModal.setError("Nominal Tidak Boleh Kosong!");
+                return false;
+            }
+            return true;
+        }
+
+
+        private void tambahModal(){
+                if (cekField()){
+
+                ac.menuBtn.setVisibility(View.GONE);
+                ac.progres.setVisibility(View.VISIBLE);
+                Call<ResponseProyek> p = ac.apiService.updateNilaiProyek(ac.user.getsAuth(), ac.id, "tambah","nilai",ac.edtCatatan.getText().toString(),  ac.eModal.getNumber());
+
+                p.enqueue(new Callback<ResponseProyek>() {
+                    @Override
+                    public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
+                        ac.menuBtn.setVisibility(View.VISIBLE);
+                        ac.progres.setVisibility(View.GONE);
+                        if (response.isSuccessful()){
+                            if (response.body().isStatus()){
+                                if (response.body().getResult().size() < 1){
+                                    ac.loadProyek();
+                                    ac.editContent.setVisibility(View.GONE);
+                                    ac.showContent.setVisibility(View.VISIBLE);
+
+                                }
+
+                            }
+                        }
+                        Snackbar.make(ac.menuBtn, response.body().getMsg(), Snackbar.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseProyek> call, Throwable t) {
+                        ac.menuBtn.setVisibility(View.VISIBLE);
+                        ac.progres.setVisibility(View.GONE);
+                        Snackbar.make(ac.menuBtn, "Terjadi Kesalahan!", Snackbar.LENGTH_SHORT).show();
+
+                        t.printStackTrace();
+                    }
+                });
+                }
+
+            }
+
+        private void kurangModal(){
+
+                if (cekField()){
+
+                ac.menuBtn.setVisibility(View.GONE);
+                ac.progres.setVisibility(View.VISIBLE);
+                Call<ResponseProyek> p = ac.apiService.updateNilaiProyek(ac.user.getsAuth(), ac.id, "kurang","nilai",ac.getsCatatan(),  ac.eModal.getNumber());
+
+                p.enqueue(new Callback<ResponseProyek>() {
+                    @Override
+                    public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
+                        ac.menuBtn.setVisibility(View.VISIBLE);
+                        ac.progres.setVisibility(View.GONE);
+                        if (response.isSuccessful()){
+                            if (response.body().isStatus()){
+//                                if (response.body().getResult().size() < 1){
+                                    ac.loadProyek();
+                                    ac.editContent.setVisibility(View.GONE);
+                                    ac.showContent.setVisibility(View.VISIBLE);
+
+//                                }
+
+                            }
+                        }
+                        Snackbar.make(ac.menuBtn, response.body().getMsg(), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseProyek> call, Throwable t) {
+                        ac.menuBtn.setVisibility(View.VISIBLE);
+                        ac.progres.setVisibility(View.GONE);
+                        Snackbar.make(ac.menuBtn, "Terjadi Kesalahan!", Snackbar.LENGTH_SHORT).show();
+
+                        t.printStackTrace();
+                    }
+                });
+                }
+
+            }
+
+        private OnSpinnerItemSelectedListener action = new OnSpinnerItemSelectedListener() {
+            @Override
+            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        setAksion(0);
+                        break;
+                    case 1:
+                        setAksion(1);
+                        break;
+                }
+            }
+        };
+        public View.OnClickListener hideEdit = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ac.showContent.setVisibility(View.VISIBLE);
+                ac.editContent.setVisibility(View.GONE);
+            }
+        };
     }
 
     public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {

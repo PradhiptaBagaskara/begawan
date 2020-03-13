@@ -21,6 +21,7 @@ public class SessionManager {
     public static final String SES_TOKEN = "sesToken";
     private static final String SES_LOGED = "sesLoged";
     private final String LOGIN_STTS = "sesStatus";
+    private final String IS_ADMIN = "sesStatus";
     private  final int MODE_PRIVATE = 0;
 
     private Context _context;

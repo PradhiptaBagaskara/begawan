@@ -13,6 +13,12 @@ public class ResultItemProyek {
 	@SerializedName("total_dana")
 	private String totalDana;
 
+	@SerializedName("tgl_mulai")
+	private String tglMulai;
+
+	@SerializedName("tgl_selesai")
+	private String tglSelesai;
+
 	@SerializedName("id")
 	private String id;
 
@@ -47,6 +53,22 @@ public class ResultItemProyek {
 
 	public String getTotalDana(){
 		return totalDana;
+	}
+
+	public void setTglMulai(String tglMulai){
+		this.tglMulai = tglMulai;
+	}
+
+	public String getTglMulai(){
+		return tglMulai;
+	}
+
+	public void setTglSelesai(String tglSelesai){
+		this.tglSelesai = tglSelesai;
+	}
+
+	public String getTglSelesai(){
+		return tglSelesai;
 	}
 
 	public void setId(String id){
@@ -88,6 +110,8 @@ public class ResultItemProyek {
 			"sisa_modal = '" + sisaModal + '\'' + 
 			",keterangan = '" + keterangan + '\'' + 
 			",total_dana = '" + totalDana + '\'' + 
+			",tgl_mulai = '" + tglMulai + '\'' + 
+			",tgl_selesai = '" + tglSelesai + '\'' + 
 			",id = '" + id + '\'' + 
 			",created_date = '" + createdDate + '\'' + 
 			",nama_proyek = '" + namaProyek + '\'' + 

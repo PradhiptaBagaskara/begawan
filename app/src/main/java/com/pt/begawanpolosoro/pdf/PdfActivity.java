@@ -122,7 +122,7 @@ public class PdfActivity extends AppCompatActivity {
                 finish();
             }
         });
-        List<String> dataset = new LinkedList<>(Arrays.asList("PROYEK", "KARYAWAN"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("PROYEK", "PENGGUNA"));
         option.setText("PILIH JENIS PROYEK");
         option.attachDataSource(dataset);
         option.setOnSpinnerItemSelectedListener(opsiListener);
@@ -337,8 +337,7 @@ public class PdfActivity extends AppCompatActivity {
 
                     if (response.body().isStatus()){
                         setUrl(response.body().getResult().get(0).getFileName());
-                        String filename = response.body().getResult().get(0).getFileName();
-                        filename = filename.replace("uploads/", "");
+                        String filename = response.body().getResult().get(0).getNamaLaporan();
 //                        downloadUtil.startDownload(getUrl(), filename);
                         downloadUtil.startPrDOwnloader(getUrl(), filename);
                     }

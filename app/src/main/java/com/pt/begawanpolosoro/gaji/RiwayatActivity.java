@@ -1,6 +1,7 @@
 package com.pt.begawanpolosoro.gaji;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,8 +139,16 @@ public class RiwayatActivity extends AppCompatActivity {
                     String sPenerima = gajiFiltered.get(position).getNama().toUpperCase();
                     String sJmlh = gajiFiltered.get(position).getGaji();
                     String sTgl = gajiFiltered.get(position).getCreatedDate();
-
-                    customDialog(sPenerima,sPengirim,sTgl,sJmlh);
+                    Intent i = new Intent(RiwayatActivity.this, GajiDetailActivity.class);
+                    i.putExtra("file", gajiFiltered.get(position).getFileName());
+                    i.putExtra("penerima", sPenerima);
+                    i.putExtra("penngirim", sPengirim);
+                    i.putExtra("jumlah", sJmlh);
+                    i.putExtra("tanggal", sTgl);
+                    i.putExtra("pekerjaan", gajiFiltered.get(position).getNamaProyek());
+                    i.putExtra("catatan", gajiFiltered.get(position).getKeterangan());
+                    startActivity(i);
+//                    customDialog(sPenerima,sPengirim,sTgl,sJmlh);
                 }
             });
 

@@ -10,11 +10,15 @@ import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
 import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -32,19 +36,21 @@ public interface ApiService {
     Call<ResponseSaldo> updateSaldoApi (@Field("auth_key") String auth_key,
                                         @Field("id") String id,
                                         @Field("saldo") String saldo,
-                                        @Field("param") String param);
+                                        @Field("param") String param,
+                                        @Field("keterangan") String Catatan);
 
     @GET("api/transaksi")
     Call<ResponseTx> txApi (@Query("auth_key") String auth);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/transaksi")
-    Call<ResponseTx> postTx (@Field("auth_key") String auth,
-                             @Field("id_proyek") String id_proyek,
-                             @Field("nama") String nama,
-                             @Field("dana") String dana,
-                             @Field("keterangan") String keterangan,
-                             @Field("jenis") String jenis);
+    Call<ResponseTx> postTx (@Part("auth_key") RequestBody auth,
+                             @Part("id_proyek") RequestBody id_proyek,
+                             @Part("nama") RequestBody nama,
+                             @Part("dana") RequestBody dana,
+                             @Part("keterangan") RequestBody keterangan,
+                             @Part("jenis") RequestBody jenis,
+                             @Part MultipartBody.Part file);
 
 
     @GET("api/user")
@@ -62,6 +68,24 @@ public interface ApiService {
     Call<ResponseProyek> deleteProyekId(@Field("auth_key") String auth,
                                      @Field("id") String  id,
                                         @Field("param") String param);
+    @FormUrlEncoded
+    @POST("api/proyek")
+    Call<ResponseProyek> updateNilaiProyek(@Field("auth_key") String auth,
+                                      @Field("id") String id,
+                                      @Field("aksi") String aksi,
+                                      @Field("param") String param,
+                                      @Field("keterangan") String catatan,
+                                      @Field("modal") String modal);
+    @FormUrlEncoded
+    @POST("api/proyek")
+    Call<ResponseInsertProyek> insertProyek(@Field("auth_key") String auth,
+                                            @Field("id") String id,
+                                            @Field("nama_proyek") String namaProyek,
+                                            @Field("param") String param,
+                                            @Field("keterangan") String catatan,
+                                            @Field("mulai") String TglMulai,
+                                            @Field("selesai") String TglSelesai,
+                                            @Field("modal") String modal);
     @FormUrlEncoded
     @POST("api/getpdf")
     Call<ResponsePdf> pdf(@Field("auth_key") String auth,
@@ -81,22 +105,7 @@ public interface ApiService {
     Call<ResponseSaldo> updateToken(@Field("auth_key") String auth_key,
                                      @Field("token") String id);
 
-    @FormUrlEncoded
-    @POST("api/proyek")
-    Call<ResponseProyek> updateProyek(@Field("auth_key") String auth,
-                                     @Field("id") String id,
-                                      @Field("nama_proyek") String namaProyek,
-                                      @Field("param") String param,
-                                      @Field("keterangan") String catatan,
-                                      @Field("modal") String modal);
-    @FormUrlEncoded
-    @POST("api/proyek")
-    Call<ResponseInsertProyek> insertProyek(@Field("auth_key") String auth,
-                                            @Field("id") String id,
-                                            @Field("nama_proyek") String namaProyek,
-                                            @Field("param") String param,
-                                            @Field("keterangan") String catatan,
-                                            @Field("modal") String modal);
+
     @FormUrlEncoded
     @POST("api/editpemilik")
     Call<ResponseLogin> updateAdmin(@Field("auth_key") String auth,
@@ -124,12 +133,15 @@ public interface ApiService {
     Call<ResponseGaji> allGaji(@Query("auth_key") String auth,
                                   @Query("param") String param,
                                @Query("limit")  String limit);
-    @FormUrlEncoded
+    @Multipart
     @POST("api/gaji")
-    Call<ResponseGaji> postGaji (@Field("auth_key") String auth,
-                               @Field("id") String id,
-                               @Field("keterangan") String catatan,
-                               @Field("gaji") String gaji);
+    Call<ResponseGaji> postGaji (@Part("auth_key") RequestBody auth,
+                               @Part("id") RequestBody id,
+                               @Part("keterangan") RequestBody catatan,
+                               @Part("gaji") RequestBody gaji,
+                                 @Part("id_proyek") RequestBody idProyek,
+                                 @Part MultipartBody.Part file
+                                 );
 
 
 }

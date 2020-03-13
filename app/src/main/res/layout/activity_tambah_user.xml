@@ -19,11 +19,11 @@
             android:src="@drawable/ic_back_black"/>
         <TextView
             android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
             android:layout_height="match_parent"
             android:text="TAMBAH USER BARU"
             android:textColor="@color/darkBlue"
             android:fontFamily="@font/mont_bold"
-            android:layout_gravity="center"
             android:gravity="center"
             android:textSize="15sp"/>
     </RelativeLayout>
@@ -36,35 +36,35 @@
         android:divider="?android:dividerHorizontal"
         android:showDividers="middle"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
-
-        android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:labelFor="@+id/namaBaru"
-            android:text="Nama User"
-            android:textColor="@color/darkBlue"
-            android:fontFamily="@font/worksans_regular"
-            android:textSize="18sp"/>
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/namaBaru"
-            android:backgroundTint="@color/light_gray"
-            app:met_floatingLabelText="tambah user baru"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelTextColor="@color/darkBlue"
-            app:met_iconLeft="@drawable/ic_add_user"
-            android:layout_width="match_parent"
-            app:met_underlineColor="@color/lightBlue"
-            android:focusedByDefault="false"
-            android:hint="Masukan Nama"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/worksans_regular"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_marginVertical="5dp"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/namaBaru"
+                android:text="Nama User"
+                android:textColor="@color/darkBlue"
+                android:fontFamily="@font/worksans_regular"
+                android:textSize="18sp"/>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/namaBaru"
+                android:backgroundTint="@color/light_gray"
+                app:met_floatingLabelText="tambah user baru"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextColor="@color/darkBlue"
+                app:met_iconLeft="@drawable/ic_add_user"
+                android:layout_width="match_parent"
+                app:met_underlineColor="@color/lightBlue"
+                android:focusedByDefault="false"
+                android:hint="Masukan Nama"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/worksans_regular"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
 
         <LinearLayout
@@ -134,11 +134,12 @@
                 android:gravity="center"
                 android:textColor="@color/whiteOri"
                 android:background="@drawable/gradient_btn"/>
-                "/>
+            "/>
         </RelativeLayout>
 
 
     </LinearLayout>
+
 
 
 

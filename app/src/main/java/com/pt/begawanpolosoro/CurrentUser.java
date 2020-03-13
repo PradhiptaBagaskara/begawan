@@ -59,24 +59,34 @@ public class CurrentUser {
 
         if (sm.Login())
         {
+
             switch (getRole()){
                 case 0:
                     intent = new Intent(mContext, PekerjaControlerActivity.class);
-                    intent.putExtra("halaman", halaman);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
                     break;
+                case 1:
+                    intent = new Intent(mContext, PekerjaControlerActivity.class);
+                    break;
+
                 case 2:
                     intent = new Intent(mContext, MainActivity.class);
-                    intent.putExtra("halaman", halaman);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
+
                     break;
+                case 3:
+                    intent = new Intent(mContext, MainActivity.class);
+
+                    break;
+                default:
+                    intent = new Intent(mContext, PekerjaControlerActivity.class);
+                    break;
+
             }
+            intent.putExtra("halaman", halaman);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+//            break;
 
         }else {
             intent = new Intent(mContext, LoginActivity.class);

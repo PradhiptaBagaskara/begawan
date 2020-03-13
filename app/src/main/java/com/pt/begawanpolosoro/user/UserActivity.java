@@ -38,12 +38,18 @@ import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
+import com.pt.begawanpolosoro.util.ApiHelper;
+import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.angmarch.views.NiceSpinner;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -109,9 +115,12 @@ public class UserActivity extends AppCompatActivity {
     EditTextRupiah updateSaldo;
     CardView cardDialog;
     CoordinatorLayout activity;
+    MaterialEditText catatan;
+    NiceSpinner aksi;
 
     String hal;
     Intent intent;
+    ApiHelper apiHelper = new ApiHelper();
 
     public String getHal() {
         return hal;
@@ -208,7 +217,7 @@ public class UserActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadSaldo();
-        if (getRole() > 0){
+        if (getRole() > 1){
             Log.d("ll", "onCreate: "+getRole());
 
         }else{
@@ -297,7 +306,7 @@ public class UserActivity extends AppCompatActivity {
         saveSaldo.setVisibility(View.GONE);
         cancel.setVisibility(View.GONE);
         pg.setVisibility(View.VISIBLE);
-        Call<ResponseSaldo> saldoCall = apiService.updateSaldoApi(user.getsAuth(), getId(), updateSaldo.getNumber(), "tambah");
+        Call<ResponseSaldo> saldoCall = apiService.updateSaldoApi(user.getsAuth(), getId(), updateSaldo.getNumber(), apiHelper.getParam(),apiHelper.getKeterangan());
         saldoCall.enqueue(new Callback<ResponseSaldo>() {
             @Override
             public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
@@ -411,6 +420,10 @@ public class UserActivity extends AppCompatActivity {
         pgReset.setVisibility(View.GONE);
         share = userForm.findViewById(R.id.shareUser);
         reset = userForm.findViewById(R.id.resetPassword);
+        aksi = userForm.findViewById(R.id.aksi);
+        apiHelper.setParam("tambah");
+
+        Log.d(TAG, "customDialog: "+apiHelper.getParam());
         cardDialog = userForm.findViewById(R.id.cardDialog);
     }
 

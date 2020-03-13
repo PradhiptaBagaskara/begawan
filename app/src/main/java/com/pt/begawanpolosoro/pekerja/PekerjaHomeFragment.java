@@ -3,6 +3,7 @@ package com.pt.begawanpolosoro.pekerja;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
+import com.pt.begawanpolosoro.gaji.GajiDetailActivity;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.login.api.ResultLogin;
@@ -261,14 +263,24 @@ public class PekerjaHomeFragment extends Fragment {
             holder.tgl.setText(gajiList.get(position).getCreatedDate());
             holder.gaji.convertToIDR(gajiList.get(position).getGaji());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    String sPengirim = gajiList.get(position).getNamaPengirim().toUpperCase();
-                    String sPenerima = gajiList.get(position).getNama().toUpperCase();
-                    String sJmlh = gajiList.get(position).getGaji();
-                    String sTgl = gajiList.get(position).getCreatedDate();
 
-                    customDialog(sPenerima,sPengirim,sTgl,sJmlh);
+                    Intent i = new Intent(getActivity(), GajiDetailActivity.class);
+
+//                    i.putExtra("file", gajiList.get(position).getFileName());
+//                    i.putExtra("penerima", sPenerima);
+//                    i.putExtra("penngirim", sPengirim);
+//                    i.putExtra("jumlah", sJmlh);
+//                    i.putExtra("tanggal", sTgl);
+//                    i.putExtra("pekerjaan", gajiList.get(position).getNamaProyek());
+//                    i.putExtra("catatan", gajiList.get(position).getKeterangan());
+
+                    Bundle bundle = new Bundle();
+                    i.putExtra("data", gajiList.get(position));
+                    startActivity(i);
+
                 }
             });
 

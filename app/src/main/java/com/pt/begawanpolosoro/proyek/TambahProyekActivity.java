@@ -1,19 +1,27 @@
 package com.pt.begawanpolosoro.proyek;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.congfandi.lib.EditTextRupiah;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
@@ -21,7 +29,13 @@ import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
 import com.pt.begawanpolosoro.proyek.api.ResultInsertProyek;
+import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,11 +44,18 @@ import retrofit2.Response;
 public class TambahProyekActivity extends AppCompatActivity {
     MaterialEditText nama,keterangan;
     Button btn;
+    RelativeLayout btntglSelesai, btntglMulai;
+    TextView tglSelesaiText, tglMulaiText, title;
     ProgressBar pg;
     EditTextRupiah modal;
-    ImageButton back;
+    ImageButton back, tglbar;
     ApiService apiService;
     CurrentUser user;
+    DatePickerDialog datePickerDialog;
+    Calendar date = Calendar.getInstance();
+
+    ApiHelper apiHelper = new ApiHelper();
+    private static final String TAG = "TambahProyekActivity";
 
     public String getCtt() {
         return ctt;
@@ -43,8 +64,11 @@ public class TambahProyekActivity extends AppCompatActivity {
     public void setCtt(String ctt) {
         this.ctt = ctt;
     }
+    Locale locale = new Locale("id", "ID");
 
     String ctt;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +84,85 @@ public class TambahProyekActivity extends AppCompatActivity {
         user = new CurrentUser(getApplicationContext());
         apiService = initRetro.InitApi().create(ApiService.class);
 
+
+        title = findViewById(R.id.title);
+        title.setText("TAMBAH PEKERJAAN");
         nama = findViewById(R.id.namaProyek);
         modal = findViewById(R.id.modalProyek);
         keterangan = findViewById(R.id.keteranganProyek);
         btn = findViewById(R.id.btnBaru);
         pg = findViewById(R.id.progresBaru);
         pg.setVisibility(View.GONE);
+        btntglMulai = findViewById(R.id.tglMulai);
+        btntglSelesai = findViewById(R.id.tglSelesai);
+        btntglMulai.setOnClickListener(tglStart);
+        tglSelesaiText = findViewById(R.id.tglSelesaiText);
+        tglbar = findViewById(R.id.tglSelesaiIc);
+        tglMulaiText = findViewById(R.id.tglMulaiText);
+
+        btntglSelesai.setOnClickListener(tglEnd);
         back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
         btn.setOnClickListener(sendProyek);
 
 
     }
+
+    private View.OnClickListener tglStart = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            configTgl(setStartTgl);
+
+        }
+    };
+
+    private View.OnClickListener tglEnd = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            configTgl(setTglEnd);
+        }
+    };
+
+    private void hideKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    private OnTimeSelectListener setTglEnd = new OnTimeSelectListener() {
+        @Override
+        public void onTimeSelect(Date date, View v) {
+
+            apiHelper.setTglSelesai(dateFormatter.format(date));
+            tglSelesaiText.setText(apiHelper.getTglSelesai());
+        }
+    };
+
+    private OnTimeSelectListener setStartTgl = new OnTimeSelectListener() {
+        @Override
+        public void onTimeSelect(Date date, View v) {
+            apiHelper.setTglMulai(dateFormatter.format(date));
+            tglMulaiText.setText(apiHelper.getTglMulai());
+        }
+    };
+    private void configTgl(OnTimeSelectListener listener ){
+
+    TimePickerView timePickerView = new TimePickerBuilder(this, listener)
+            .setType(new boolean[]{true, true, true, false, false, false})// type of date
+             .setCancelText("BATAL")
+             .setSubmitText("OK")
+             .setTitleSize(20)
+             .setTitleText("Pilih Tanggal")
+//             .setOutSideCancelable(false)// default is true
+             .isCyclic(false)// default is false
+             .setTitleColor(getResources().getColor(R.color.darkGrey))
+             .setSubmitColor(getResources().getColor(R.color.darkBlue))
+             .setCancelColor(getResources().getColor(R.color.darkBlue))
+
+             .setDate(date)
+             .setLabel("","","","hours","mins","seconds")
+            .build();
+    timePickerView.show();
+}
     private Boolean errorForm(){
         if (TextUtils.isEmpty(keterangan.getText().toString())){
             setCtt("Tidak ada catatan");
@@ -88,6 +174,14 @@ public class TambahProyekActivity extends AppCompatActivity {
             return false;
         }else if (TextUtils.isEmpty(modal.getNumber())){
             modal.setError("Modal Harus di isi ");
+            return false;
+
+        }else if (TextUtils.isEmpty(apiHelper.getTglMulai())){
+            tglMulaiText.setError("Tanggal Tidak Boleh Kosong");
+            return false;
+
+        }else if (TextUtils.isEmpty(apiHelper.getTglSelesai())){
+            tglSelesaiText.setError("Tanggal Tidak Boleh Kosong");
             return false;
 
         }
@@ -110,7 +204,8 @@ public class TambahProyekActivity extends AppCompatActivity {
             if (errorForm()){
                 btn.setVisibility(View.GONE);
                 pg.setVisibility(View.VISIBLE);
-                Call<ResponseInsertProyek> p = apiService.insertProyek(user.getsAuth(),"0",nama.getText().toString(), "insert",getCtt(),modal.getNumber());
+                Call<ResponseInsertProyek> p = apiService.insertProyek(user.getsAuth(),"0",nama.getText().toString(), "insert",getCtt(),
+                        apiHelper.getTglMulai(),apiHelper.getTglSelesai(),modal.getNumber());
                 p.enqueue(new Callback<ResponseInsertProyek>() {
                     @Override
                     public void onResponse(Call<ResponseInsertProyek> call, Response<ResponseInsertProyek> response) {

@@ -1,10 +1,12 @@
 package com.pt.begawanpolosoro.pekerja;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,10 +15,14 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.congfandi.lib.EditTextRupiah;
+import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.PekerjaControlerActivity;
 import com.pt.begawanpolosoro.R;
@@ -25,16 +31,22 @@ import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
 import com.pt.begawanpolosoro.proyek.api.ResultItemProyek;
+import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.squareup.picasso.Picasso;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
 import org.angmarch.views.SpinnerTextFormatter;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +56,7 @@ public class PekerjaActivity extends AppCompatActivity {
     EditTextRupiah totalDana;
     NiceSpinner opsi,jenisBayar;
     ProgressBar pg;
+    int IMAGE_REQ_CODE = 101;
     private static final String TAG = "PekerjaActivity";
 
     public String getIdProyek() {
@@ -70,6 +83,9 @@ public class PekerjaActivity extends AppCompatActivity {
     CurrentUser user;
     Button btn;
     ImageButton back;
+    FloatingActionButton uploadImg;
+    AppCompatImageView img;
+    ApiHelper apiHelper = new ApiHelper();
 
 
     @Override
@@ -80,11 +96,13 @@ public class PekerjaActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.my_statusbar_color));
+        img = findViewById(R.id.imgCamera);
 
         InitRetro initRetro = new InitRetro(getApplicationContext());
         apiService = initRetro.InitApi().create(ApiService.class);
         user = new CurrentUser(getApplicationContext());
         setIdProyek("");
+        uploadImg = findViewById(R.id.fab_img);
 
         pg = findViewById(R.id.progresBaru);
         back = findViewById(R.id.back);
@@ -127,13 +145,50 @@ public class PekerjaActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: "+resultCode+"-"+requestCode);
+        if (resultCode == Activity.RESULT_OK){
+            File dt = ImagePicker.Companion.getFile(data);
+            String path = ImagePicker.Companion.getFilePath(data);
+            Picasso.with(this)
+                    .load(dt)
+                    .into(img);
+            apiHelper.setImgPath(path);
+//                Bundle extras = data.getExtras().getD
+//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                Toast.makeText(PekerjaActivity.this, path, Toast.LENGTH_SHORT).show();
+//                resultView.setImageBitmap(imageBitmap);
+
+        }
+    }
+
+    public void pickImg(View v){
+        ImagePicker.Companion.with(this)
+                .cropSquare()
+                .compress(256)
+                .maxResultSize(1080, 1080)
+                .start();
+    }
+
     private View.OnClickListener send = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 //            Toast.makeText(getApplicationContext(), getJenis(), Toast.LENGTH_SHORT).show();
             if (cekField()){
                 btn.setVisibility(View.GONE);
-                Call<ResponseTx> r = apiService.postTx(user.getsAuth(), getIdProyek(),namaTx.getText().toString(), totalDana.getNumber(),keteranganTx.getText().toString(),getJenis());
+                File file = new File(apiHelper.getImgPath());
+                RequestBody auth = RequestBody.create(MediaType.parse("text/plain"), user.getsAuth());
+                RequestBody idProyek = RequestBody.create(MediaType.parse("text/plain"), getIdProyek());
+                RequestBody nama = RequestBody.create(MediaType.parse("text/plain"), namaTx.getText().toString());
+                RequestBody jen = RequestBody.create(MediaType.parse("text/plain"), getJenis());
+                RequestBody cat = RequestBody.create(MediaType.parse("text/plain"), keteranganTx.getText().toString());
+                RequestBody pGTotal = RequestBody.create(MediaType.parse("text/plain"), totalDana.getNumber());
+
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                MultipartBody.Part poto = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+                Call<ResponseTx> r = apiService.postTx(auth, idProyek,nama, pGTotal,cat,jen, poto);
                 r.enqueue(new Callback<ResponseTx>() {
                     @Override
                     public void onResponse(Call<ResponseTx> call, Response<ResponseTx> response) {
@@ -162,11 +217,11 @@ public class PekerjaActivity extends AppCompatActivity {
             }
         }
     };
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        finish();
+//    }
 
     private boolean cekField(){
         if (TextUtils.isEmpty(namaTx.getText())){

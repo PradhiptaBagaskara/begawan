@@ -1,9 +1,6 @@
 package com.pt.begawanpolosoro;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +21,7 @@ import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.home.HomeAdminFragment;
 import com.pt.begawanpolosoro.pekerja.PekerjaActivity;
 import com.pt.begawanpolosoro.proyek.ProyekFragment;
+import com.pt.begawanpolosoro.setting.SettingsActivity;
 import com.pt.begawanpolosoro.user.UserFragment;
 
 import java.util.HashMap;
@@ -73,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sm.logout();
+//                sm.logout();
+                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i);
             }
         });
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 //        menuBottom(role);
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_home, "HOME"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PROYEK"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_proyek, "PEKERJAAN"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_user, "PENGGUNA"))
 //                .addItem(new BottomNavigationItem(R.drawable.ic_profil, "Profil"))
                 .setBarBackgroundColor(R.color.lightGrey2)

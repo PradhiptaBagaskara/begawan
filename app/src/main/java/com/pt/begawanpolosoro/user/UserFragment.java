@@ -146,9 +146,12 @@ public class UserFragment extends Fragment {
             int role = Integer.parseInt(filteredUser.get(position).getRole());
             if (role == 0){
                 holder.mRole.setText("karyawan");
-            }else {
-                holder.mRole.setText("pemodal");
+            }else if (role == 1){
+                holder.mRole.setText("pelaksana");
                 holder.mRole.setTextColor(getResources().getColor(R.color.colorPrimary));
+            }else {
+                holder.mRole.setText("administrator");
+                holder.mRole.setTextColor(getResources().getColor(R.color.colorAccent));
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
