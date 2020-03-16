@@ -1,6 +1,8 @@
 package com.pt.begawanpolosoro.user;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,8 @@ import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
+import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.pekerja.TambahSaldoActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 import com.pt.begawanpolosoro.util.ApiHelper;
@@ -101,13 +105,13 @@ public class UserActivity extends AppCompatActivity {
     String nama;
     String id;
     Dialog userForm;
-
-    Button share, reset;
+    LinearLayout linierBtn;
+    Button share, reset, delete;
 
     TextView vUsername, vNama, vAktifitas;
     TextViewRupiah vSaldo;
     ApiService apiService;
-    ImageButton back,logout, addSaldo, saveSaldo, cancel,setting;
+    ImageButton back, addSaldo, setting;
     ProgressBar pg, pgReset;
 
     RecyclerView recyclerView;
@@ -141,6 +145,7 @@ public class UserActivity extends AppCompatActivity {
         activity = findViewById(R.id.userActivity);
         intent = getIntent();
         apiService = InitRetro.InitApi().create(ApiService.class);
+
         user = new CurrentUser(getApplicationContext());
         customDialog();
         if (intent.hasExtra("halaman")){
@@ -161,19 +166,17 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         addSaldo =findViewById(R.id.addSaldo);
-        saveSaldo =findViewById(R.id.saveSaldo);
-        saveSaldo.setVisibility(View.GONE);
-        pg = findViewById(R.id.progresSaldo);
-        updateSaldo = findViewById(R.id.updateSaldo);
-        updateSaldo.setVisibility(View.GONE);
-        cancel = findViewById(R.id.cancelBtn);
-        cancel.setVisibility(View.GONE);
+
+//        pg = findViewById(R.id.progresSaldo);
+//        updateSaldo = findViewById(R.id.updateSaldo);
+//        updateSaldo.setVisibility(View.GONE);
+
         setting =findViewById(R.id.userSetting);
         setting.setOnClickListener(showCustomDialog);
 
 
 
-        pg.setVisibility(View.GONE);
+//        pg.setVisibility(View.GONE);
 
 
 
@@ -196,22 +199,12 @@ public class UserActivity extends AppCompatActivity {
         addSaldo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAddSaldo();
+                Intent intent = new Intent(UserActivity.this, TambahSaldoActivity.class);
+                intent.putExtra("id", getId());
+                startActivity(intent);
             }
         });
-        saveSaldo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSaveSaldo();
 
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadSaldo();
-            }
-        });
         vSaldo.convertToIDR(getSaldo());
         recyclerView = findViewById(R.id.tx_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -246,32 +239,108 @@ public class UserActivity extends AppCompatActivity {
     private View.OnClickListener resetPass = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            reset.setVisibility(View.GONE);
-            pgReset.setVisibility(View.VISIBLE);
-            Call<ResponseUser> pas = apiService.resetPassword(user.getsAuth(), getId(),passwordDefault);
-            pas.enqueue(new Callback<ResponseUser>() {
-                @Override
-                public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
-                    reset.setVisibility(View.VISIBLE);
-                    pgReset.setVisibility(View.GONE);
-                    if (response.isSuccessful()){
-                        if (response.body().isStatus()){
-                            Snackbar.make(activity, response.body().getMsg(), Snackbar.LENGTH_LONG).show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+//            alertDialog.setIcon(R.drawable.ic_delete);
+
+            alertDialog.setTitle("Reset Password!");
+            alertDialog
+                    .setMessage("Apakah anda yakin ingin mereset password?")
+                    .setIcon(R.drawable.ic_warning_oren)
+                    .setCancelable(true)
+                    .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            linierBtn.setVisibility(View.GONE);
+                            pgReset.setVisibility(View.VISIBLE);
+                            Call<ResponseUser> pas = apiService.resetPassword(user.getsAuth(), getId(),passwordDefault);
+                            pas.enqueue(new Callback<ResponseUser>() {
+                                @Override
+                                public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
+                                    linierBtn.setVisibility(View.VISIBLE);
+                                    pgReset.setVisibility(View.GONE);
+                                    userForm.dismiss();
+                                    if (response.isSuccessful()){
+                                        if (response.body().isStatus()){
+                                            Snackbar.make(activity, response.body().getMsg(), Snackbar.LENGTH_LONG).show();
+
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseUser> call, Throwable t) {
+                                    linierBtn.setVisibility(View.VISIBLE);
+                                    pgReset.setVisibility(View.GONE);
+                                }
+                            });
+
+
 
                         }
-                    }
+                    })
+                    .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // jika tombol ini diklik, akan menutup dialog
+                            // dan tidak terjadi apa2
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
 
-                }
-
-                @Override
-                public void onFailure(Call<ResponseUser> call, Throwable t) {
-                    reset.setVisibility(View.VISIBLE);
-                    pgReset.setVisibility(View.GONE);
-                }
-            });
 
         }
     };
+
+    public void deleteUser(View v){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+
+        alertDialog.setTitle("Hapus User");
+        alertDialog
+                .setMessage("User akan dihapus secara permanen dari sistem.\n\nApakah anda ingin melanjutkan?")
+                .setIcon(R.drawable.ic_warning_red)
+                .setCancelable(true)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        linierBtn.setVisibility(View.GONE);
+                        pgReset.setVisibility(View.VISIBLE);
+                        Call<ResponseLogin> pas = apiService.deleteUser(user.getsAuth(), getId(),"user");
+                        pas.enqueue(new Callback<ResponseLogin>() {
+                            @Override
+                            public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+
+                                linierBtn.setVisibility(View.VISIBLE);
+                                pgReset.setVisibility(View.GONE);
+                                if (response.isSuccessful())
+                                    if (response.body().isStatus())
+                                        finish();
+                                Toast.makeText(v.getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                                linierBtn.setVisibility(View.VISIBLE);
+                                pgReset.setVisibility(View.GONE);
+                                Snackbar.make(v, "Terjadi Kesalahan", Snackbar.LENGTH_LONG).show();
+
+                            }
+                        });
+
+
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+
+    }
 
     private View.OnClickListener sharedUser = new View.OnClickListener() {
         @Override
@@ -279,7 +348,7 @@ public class UserActivity extends AppCompatActivity {
             userForm.dismiss();
 
             String shareBody = "Selamat " + getNama() +"! Login anda telah di buat.\n \nUsername: " +getUsername()+"\nPassword: "+ passwordDefault
-                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/begawan.apk";
+                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/download";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
 //            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
@@ -289,64 +358,12 @@ public class UserActivity extends AppCompatActivity {
         }
     };
 
-    void setAddSaldo(){
-        pg.setVisibility(View.GONE);
-        vSaldo.setVisibility(View.GONE);
-        addSaldo.setVisibility(View.GONE);
-        cancel.setVisibility(View.VISIBLE);
-        saveSaldo.setVisibility(View.VISIBLE);
-        updateSaldo.setVisibility(View.VISIBLE);
-//        updateSaldo.setText(getSaldo());
 
 
-    }
 
-
-    void setSaveSaldo(){
-        saveSaldo.setVisibility(View.GONE);
-        cancel.setVisibility(View.GONE);
-        pg.setVisibility(View.VISIBLE);
-        Call<ResponseSaldo> saldoCall = apiService.updateSaldoApi(user.getsAuth(), getId(), updateSaldo.getNumber(), apiHelper.getParam(),apiHelper.getKeterangan());
-        saldoCall.enqueue(new Callback<ResponseSaldo>() {
-            @Override
-            public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
-                pg.setVisibility(View.GONE);
-                loadSaldo();
-
-
-                if (response.isSuccessful()){
-
-                    if (response.body().isStatus()){
-
-                    }else {
-                        Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "Terjadi Kesalahan!", Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseSaldo> call, Throwable t) {
-                pg.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "Terjadi Kesalahan!", Toast.LENGTH_LONG).show();
-
-                loadSaldo();
-            }
-        });
-
-    }
 
     void loadSaldo(){
-        pg.setVisibility(View.GONE);
-        vSaldo.setVisibility(View.VISIBLE);
-        addSaldo.setVisibility(View.VISIBLE);
-        updateSaldo.setVisibility(View.GONE);
-        saveSaldo.setVisibility(View.GONE);
-        cancel.setVisibility(View.GONE);
+
         Call<ResponseSaldo> apiSaldo = apiService.saldoApi(getId());
         apiSaldo.enqueue(new Callback<ResponseSaldo>() {
             @Override
@@ -421,18 +438,18 @@ public class UserActivity extends AppCompatActivity {
         share = userForm.findViewById(R.id.shareUser);
         reset = userForm.findViewById(R.id.resetPassword);
         aksi = userForm.findViewById(R.id.aksi);
+        linierBtn = userForm.findViewById(R.id.linierBtn);
+        delete = userForm.findViewById(R.id.deleteBtn);
         apiHelper.setParam("tambah");
-
         Log.d(TAG, "customDialog: "+apiHelper.getParam());
         cardDialog = userForm.findViewById(R.id.cardDialog);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
+    protected void onResume() {
+        super.onResume();
+        loadSaldo();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -488,14 +505,7 @@ public class UserActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(UserActivity.this, TxDetailActivity.class);
-                    intent.putExtra("id", proyekFiltered.get(position).getId());
-                    intent.putExtra("nama", proyekFiltered.get(position).getNama());
-                    intent.putExtra("nama_tx", proyekFiltered.get(position).getNamaTransaksi());
-                    intent.putExtra("nama_proyek", proyekFiltered.get(position).getNamaProyek());
-                    intent.putExtra("jenis_bayar", proyekFiltered.get(position).getJenis());
-                    intent.putExtra("dana", proyekFiltered.get(position).getDana());
-                    intent.putExtra("keterangan", proyekFiltered.get(position).getKeterangan());
-                    intent.putExtra("waktu", proyekFiltered.get(position).getCreatedDate());
+                    intent.putExtra("data", proyekFiltered.get(position));
                     startActivity(intent);
 
 

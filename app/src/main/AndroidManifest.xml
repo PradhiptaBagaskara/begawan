@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".gaji.GajiDetailActivity"></activity>
+        <activity android:name=".pekerja.TambahSaldoActivity"></activity>
+        <activity android:name=".gaji.GajiDetailActivity" />
 
         <provider
             android:name=".adapter.GenericFileProvider"

@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -112,14 +113,8 @@ public class GajiActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
         back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -132,6 +127,8 @@ public class GajiActivity extends AppCompatActivity {
             Picasso.with(this)
                     .load(dt)
                     .into(img);
+            img.setScaleType(ImageView.ScaleType.FIT_XY);
+
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,7 +154,7 @@ public class GajiActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (TextUtils.isEmpty(apiHelper.getImgPath())){
-                Snackbar.make(img, "Gambar Tidak boleh kosong", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(img, "Gambar Tidak Boleh Kosong", Snackbar.LENGTH_LONG).show();
             }else if (TextUtils.isEmpty(gaji.getText().toString())){
                 gaji.setError("Gaji tidak boleh kosong!");
             }else if (TextUtils.isEmpty(getId())){
@@ -190,6 +187,8 @@ public class GajiActivity extends AppCompatActivity {
                 linierBtn.setVisibility(View.VISIBLE);
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
+                        Intent i = new Intent(GajiActivity.this, RiwayatActivity.class);
+                        startActivity(i);
 
                     }
                 }
@@ -201,7 +200,9 @@ public class GajiActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseGaji> call, Throwable t) {
                 pg.setVisibility(View.GONE);
                 linierBtn.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Terjadi Kesalahan! Cobalagi nanti", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Koneksi Terganggu! Cek Manual Riwayat Gaji", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(GajiActivity.this, RiwayatActivity.class);
+                startActivity(i);
                 t.printStackTrace();
             }
         });

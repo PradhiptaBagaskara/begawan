@@ -30,8 +30,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/txtCamera"
             android:layout_marginTop="0dp"
-            android:background="@color/lightGrey2"
-            android:scaleType="fitXY" />
+            android:src="@drawable/ic_img"
+            android:background="@color/lightGrey2" />
 
     </RelativeLayout>
 

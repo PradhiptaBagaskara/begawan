@@ -25,36 +25,125 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="DETAIL PEKERJAAN"
+                android:text="SETTINGS"
                 android:textColor="@color/darkBlue"
                 android:fontFamily="@font/mont_bold"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:textSize="15sp"/>
-            <ImageButton
-                android:id="@+id/edit"
-                android:layout_width="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
-                android:layout_height="match_parent"
-                android:background="@color/transparant"
-                android:src="@drawable/ic_edit"/>
-            <ImageButton
-                android:id="@+id/editBatal"
-                android:layout_width="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
-                android:layout_height="match_parent"
-                android:background="@color/transparant"
-                android:src="@drawable/ic_cancel"/>
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
 
-    <FrameLayout
-        android:id="@+id/settings"
-        android:layout_below="@+id/appBar"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/appBar"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/editProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:onClick="actionProfil"
+        android:background="@drawable/button_standart"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_edit_profile"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Edit Profile"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/gantiPassword"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:background="@drawable/button_standart"
+        android:layout_height="wrap_content"
+        android:onClick="actionPassword"
+        >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_edit_password"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Ganti Password"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/resetData"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:onClick="actionReset"
+        android:background="@drawable/button_standart"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_refresh"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Reset Data"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:background="@drawable/button_standart"
+        android:onClick="actionLogout"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_logout"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Logout"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+</LinearLayout>
 </RelativeLayout>

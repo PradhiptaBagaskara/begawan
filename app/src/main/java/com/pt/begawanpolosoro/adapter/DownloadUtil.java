@@ -164,7 +164,6 @@ public class DownloadUtil {
                     public void onDownloadComplete() {
 
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                        alertDialog.setIcon(R.drawable.ic_delete);
 
                         alertDialog.setTitle("Download Sukses!");
                         alertDialog.setCancelable(true);

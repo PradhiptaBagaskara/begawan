@@ -19,12 +19,11 @@
     android:padding="15dp"
     android:layout_height="match_parent">
 <LinearLayout
+    android:id="@+id/linierBtn"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="10dp"
     android:orientation="vertical">
-
-
 
     <Button
         android:id="@+id/shareUser"
@@ -43,7 +42,18 @@
         android:layout_marginVertical="5dp"
         android:textColor="@color/whiteOri"
         android:background="@drawable/gradient_btn"/>
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hapus User"
+        android:onClick="deleteUser"
+        android:layout_marginVertical="5dp"
+        android:textColor="@color/whiteOri"
+        android:background="@drawable/gradient_red"/>
 
+
+</LinearLayout>
     <ProgressBar
         android:id="@+id/progresReset"
         android:layout_width="match_parent"
@@ -51,8 +61,5 @@
         android:text="Reset Password"
         android:layout_marginVertical="5dp"
         android:textColor="@color/whiteOri"/>
-
-</LinearLayout>
-
 </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import jp.wasabeef.picasso.transformations.BlurTransformation;
+
 public class GajiDetailActivity extends AppCompatActivity {
     private static final String TAG = "GajiDetailActivity";
     ImageButton back;
@@ -42,6 +46,7 @@ public class GajiDetailActivity extends AppCompatActivity {
     FloatingActionButton uploadImg;
     ApiHelper apiHelper = new ApiHelper();
     DownloadUtil downloadUtil;
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,29 +67,20 @@ public class GajiDetailActivity extends AppCompatActivity {
             apiHelper.setTglSelesai(data.getCreatedDate());
             apiHelper.setModal(data.getGaji());
             apiHelper.setFname(data.getFileName());
-            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/"+data.getFileName());
+            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/gaji/"+data.getFileName());
         }else {
-            Log.i(TAG, "onCreate: list" +extra.getExtras().getSerializable("data").toString());
+         finish();
+         Log.i(TAG, "onCreate: list" +"no data");
         }
-        if (extra.hasExtra("pekerjaan")){
-            apiHelper.setNama_proyek(extra.getStringExtra("pekerjaan"));
-            apiHelper.setImgPath(downloadUtil.mediaPaths+getString(R.string.img_dir)+"/" + extra.getStringExtra("file"));
-            apiHelper.setKeterangan(extra.getStringExtra("catatan"));
-            apiHelper.setPenerima(extra.getStringExtra("penerima"));
-            apiHelper.setPengirim(extra.getStringExtra("pengirim"));
-            apiHelper.setTglSelesai(extra.getStringExtra("tanggal"));
-            apiHelper.setModal(extra.getStringExtra("jumlah"));
-            apiHelper.setFname(extra.getStringExtra("file"));
-            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/"+extra.getStringExtra("file"));
-        }else {
-            Log.i(TAG, "onCreate: ");
-        }
+
         img = findViewById(R.id.imgCamera);
         linierBtn = findViewById(R.id.linierBtn);
         tgl = findViewById(R.id.tgl);
         pengirim = findViewById(R.id.pengirim);
         uploadImg = findViewById(R.id.fab_img);
         uploadImg.setImageResource(R.drawable.ic_download);
+        textView = findViewById(R.id.txtCamera);
+        textView.setText("BUKTI TRANSFER");
 
         gaji = findViewById(R.id.gajiBaru);
         karyawan = findViewById(R.id.karyawan);
@@ -94,6 +90,7 @@ public class GajiDetailActivity extends AppCompatActivity {
         proyek.setText(apiHelper.getNama_proyek());
         String path = apiHelper.getImgPath();
         Log.d(TAG, "onCreate: "+path);
+        img.setScaleType(ImageView.ScaleType.FIT_XY);
         if (downloadUtil.imgExist(path)){
             Log.d(TAG, "onCreate: Load File From Storage ");
             uploadImg.setVisibility(View.GONE);
@@ -104,13 +101,16 @@ public class GajiDetailActivity extends AppCompatActivity {
                     .into(img);
             img.setOnClickListener(imgClick);
         }else {
-            Picasso.with(this).load(apiHelper.getImgUrl()).into(img);
+            Picasso.with(this)
+                    .load(apiHelper.getImgUrl())
+                    .transform(new BlurTransformation(this))
+                    .into(img);
 
             Log.d(TAG, "onCreate: Load Image From Uri ");
 
         }
 
-//        gaji.convertToIDR(apiHelper.getModal());
+        gaji.convertToIDR(apiHelper.getModal());
         catatan.setText(apiHelper.getKeterangan());
         pengirim.setText(apiHelper.getPengirim());
         tgl.setText(apiHelper.getTglSelesai());

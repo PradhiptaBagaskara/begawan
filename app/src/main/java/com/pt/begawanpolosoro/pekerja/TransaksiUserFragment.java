@@ -94,6 +94,12 @@ public class TransaksiUserFragment extends Fragment {
         loadTx();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTx();
+    }
+
     public void loadTx(){
         Call<ResponseTx> TxApi = apiService.txApi(user.getsAuth());
         TxApi.enqueue(new Callback<ResponseTx>() {
@@ -210,15 +216,8 @@ public class TransaksiUserFragment extends Fragment {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(getActivity(), TxDetailActivity.class);
-                    intent.putExtra("id", filteredItem.get(position).getId());
-                    intent.putExtra("nama", filteredItem.get(position).getNama());
-                    intent.putExtra("nama_tx", filteredItem.get(position).getNamaTransaksi());
-                    intent.putExtra("nama_proyek", filteredItem.get(position).getNamaProyek());
-                    intent.putExtra("jenis_bayar", filteredItem.get(position).getJenis());
-                    intent.putExtra("dana", filteredItem.get(position).getDana());
-                    intent.putExtra("keterangan", filteredItem.get(position).getKeterangan());
-                    intent.putExtra("waktu", filteredItem.get(position).getCreatedDate());
                     intent.putExtra("halaman", "1");
+                    intent.putExtra("data", filteredItem.get(position));
                     startActivity(intent);
 
 

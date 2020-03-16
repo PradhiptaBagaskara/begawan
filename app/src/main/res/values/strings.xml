@@ -48,4 +48,10 @@
     <string name="label_tanggal">Tanggal</string>
     <string name="label_pengirim">Pengirim</string>
     <string name="label_tindakan">Tindakan</string>
+    <string name="label_ganti_password">Ganti Password</string>
+    <string name="label_masukan_username_baru">Masukan Username Baru</string>
+    <string name="label_edit_username">Edit Username</string>
+    <string name="kesalahan">Terjadi Kesalahan! Coba Lagi Nanti...</string>
+    <string name="label_rest">Jika Anda melakukan reset maka semua data didalam server akan hilang. \n\nMasukan Kode verifikasi untuk melakukan reset</string>
+    <string name="label_jenis_transaksi">Jenis Transaksi</string>
 </resources>

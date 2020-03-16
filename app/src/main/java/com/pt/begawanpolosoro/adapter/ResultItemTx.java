@@ -2,7 +2,9 @@ package com.pt.begawanpolosoro.adapter;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResultItemTx {
+import java.io.Serializable;
+
+public class ResultItemTx implements Serializable {
 
 	@SerializedName("keterangan")
 	private String keterangan;
@@ -24,6 +26,17 @@ public class ResultItemTx {
 
 	@SerializedName("dana")
 	private String dana;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	@SerializedName("file_name")
+	private String fileName;
 
 	public String getCreatedDate() {
 		return createdDate;

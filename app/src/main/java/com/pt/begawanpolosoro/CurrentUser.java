@@ -27,6 +27,9 @@ public class CurrentUser {
         this.mContext = context;
 
     }
+    public void logout(){
+        sm.logout();
+    }
 
     public String getsNama() {
         return this.map.get(this.sm.SES_NAMA).toString();

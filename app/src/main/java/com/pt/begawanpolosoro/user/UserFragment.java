@@ -74,6 +74,12 @@ public class UserFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUser();
+    }
+
     public void loadUser(){
         Call<ResponseUser> call = apiService.getUser(user.getsAuth());
         call.enqueue(new Callback<ResponseUser>() {

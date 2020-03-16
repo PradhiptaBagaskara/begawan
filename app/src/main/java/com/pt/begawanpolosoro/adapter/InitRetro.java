@@ -26,8 +26,8 @@ public class InitRetro {
 
     private  static Retrofit retrofit = null;
     private static final String TAG = "ServiceGenerator";
-    public static final String BASE_URL = "http://192.168.1.100:8080/";
-//    public static final String BASE_URL = "https://begawan.000webhostapp.com/";
+//    public static final String BASE_URL = "http://192.168.1.100:8080/";
+    public static final String BASE_URL = "https://begawanpolosoro.com/";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";
     public static final String HEADER_PRAGMA = "Pragma";
 
@@ -62,6 +62,8 @@ public class InitRetro {
                 .cache(cache())
                 .addInterceptor(httpLoggingInterceptor()) // used if network off OR on
                 .addNetworkInterceptor(networkInterceptor()) // only used when network is on
+                .readTimeout(3, TimeUnit.MINUTES)
+                .connectTimeout(3, TimeUnit.MINUTES)
                 .addInterceptor(offlineInterceptor())
                 .build();
     }

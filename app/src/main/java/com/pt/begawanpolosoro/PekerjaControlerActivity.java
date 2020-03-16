@@ -1,7 +1,9 @@
 package com.pt.begawanpolosoro;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.pekerja.PekerjaActivity;
 import com.pt.begawanpolosoro.pekerja.PekerjaHomeFragment;
 import com.pt.begawanpolosoro.pekerja.TransaksiUserFragment;
+import com.pt.begawanpolosoro.setting.SettingsActivity;
 
 import java.util.HashMap;
 
@@ -89,7 +92,8 @@ public class PekerjaControlerActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sm.logout();
+                Intent i = new Intent(PekerjaControlerActivity.this, SettingsActivity.class);
+                startActivity(i);
             }
         });
 
@@ -143,7 +147,31 @@ public class PekerjaControlerActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PekerjaControlerActivity.this);
 
+        alertDialog.setTitle("Keluar Aplikasi");
+        alertDialog
+                .setIcon(R.drawable.ic_warning_oren)
+                .setMessage("Apakah Anda yakin keluar dari aplikasi?")
+                .setCancelable(true)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+    }
     private void halaman(int index, int rule){
         Fragment frg = null;
         FragmentManager fragmentManager = getSupportFragmentManager();

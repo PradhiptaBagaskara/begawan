@@ -39,6 +39,13 @@ public interface ApiService {
                                         @Field("param") String param,
                                         @Field("keterangan") String Catatan);
 
+    @Multipart
+    @POST("api/saldo")
+    Call<ResponseSaldo> updateSaldoUser (@Part("auth_key") RequestBody auth_key,
+                                        @Part("id") RequestBody id,
+                                        @Part("saldo") RequestBody saldo,
+                                        @Part("param") RequestBody param,
+                                        @Part MultipartBody.Part file);
     @GET("api/transaksi")
     Call<ResponseTx> txApi (@Query("auth_key") String auth);
 
@@ -55,6 +62,12 @@ public interface ApiService {
 
     @GET("api/user")
     Call<ResponseUser> getUser(@Query("auth_key") String auth);
+
+    @FormUrlEncoded
+    @POST("api/delete")
+    Call<ResponseLogin> deleteUser (@Field("auth_key") String auth,
+                                    @Field("id") String id,
+                                    @Field("param") String Param);
 
     @GET("api/proyek")
     Call<ResponseProyek> getProyek(@Query("auth_key") String auth);

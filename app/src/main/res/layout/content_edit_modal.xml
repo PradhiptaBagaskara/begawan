@@ -144,17 +144,17 @@
                 android:id="@+id/cancelBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:background="@drawable/button_standart"
                 android:src="@drawable/ic_cancel"
-                android:layout_marginHorizontal="15dp"
-                android:backgroundTint="@color/transparant"/>
+                android:layout_marginHorizontal="15dp"/>
             <ImageButton
                 android:id="@+id/simpanBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_save"
                 android:layout_marginHorizontal="15dp"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/transparant"/>
+                android:background="@drawable/button_standart"
+                android:layout_gravity="end"/>
         </LinearLayout>
 
 

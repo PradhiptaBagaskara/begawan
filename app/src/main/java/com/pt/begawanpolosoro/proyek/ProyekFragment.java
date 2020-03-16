@@ -69,6 +69,12 @@ public class ProyekFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadProyek();
+    }
+
     public void loadProyek(){
         Call<ResponseProyek> data = apiService.getProyek(user.getsAuth());
         data.enqueue(new Callback<ResponseProyek>() {

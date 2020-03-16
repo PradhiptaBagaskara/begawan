@@ -5,295 +5,517 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user.UserActivity">
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/lightBlue"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
+        android:backgroundTint="@color/lightBlue"
+        android:background="@color/lightBlue">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            >
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparant"
+        android:src="@drawable/ic_back"
+
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="DETAIL PEMBELIAN"
+        android:textColor="@color/white"
+        android:fontFamily="@font/sf_bold"
+        android:textSize="15sp"
+        android:layout_marginRight="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+</LinearLayout>
+    </androidx.cardview.widget.CardView>
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:padding="5dp"-->
+<!--                    >-->
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/back"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:background="@color/transparant"-->
+<!--                        android:src="@drawable/ic_back"-->
+
+<!--                        android:layout_gravity="center_vertical"/>-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:text="DETAIL PEMBELIAN"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:fontFamily="@font/sf_bold"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:layout_marginRight="35dp"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="center"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginVertical="5dp"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:divider="?android:dividerHorizontal"-->
+<!--                    android:showDividers="middle">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/app_name"-->
+<!--                        android:layout_marginTop="15dp"-->
+<!--                        android:textSize="20dp"-->
+<!--                        android:textColor="@color/darkBlue"-->
+<!--                        android:layout_marginBottom="30dp"-->
+<!--                        android:gravity="center_horizontal"/>-->
+<!--                    &lt;!&ndash;                id&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="ID Transaksi"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/id_tx"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="ID Transaksi"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;                judul pembelian&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Jenis Transaksi"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/judul_pembelian"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="ID Transaksi"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;                nama pembeli&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Nama"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/nama_pekerja"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="pekerja"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;                nama proyek&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Nama Proyek"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/nama_proyek"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="nama proyek"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;                tgl&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Waktu"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/tgl"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="tgl"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;keterangan&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Jenis Barang"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/keterangan"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="keterangan"/>-->
+
+<!--                    </LinearLayout>-->
+<!--                    &lt;!&ndash;                jenis Pembelian&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Jenis Pembayaran"/>-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/jenis_bayar"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="Jenis Pembelian"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                    &lt;!&ndash;                dana&ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginVertical="5dp"-->
+
+<!--                        android:orientation="horizontal">-->
+<!--                        <TextView-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_regular"-->
+<!--                            android:text="Total Pembayaran"/>-->
+<!--                        <com.congfandi.lib.TextViewRupiah-->
+<!--                            android:id="@+id/dana"-->
+<!--                            android:layout_width="150dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:textSize="15sp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:layout_marginBottom="5dp"-->
+
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:fontFamily="@font/worksans_bold"-->
+<!--                            android:text="Rp. 50jt"/>-->
+
+<!--                    </LinearLayout>-->
+
+<!--                </LinearLayout>-->
+
+
+
+<!--                &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+<!--            </LinearLayout>-->
+
+<!--        </RelativeLayout>-->
+
+<!--    </ScrollView>-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="70dp"
+            android:orientation="vertical">
+
+            <include layout="@layout/content_uploadimage"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_nominal"
+                    android:textColor="@color/darkBlue"
+                    android:fontFamily="@font/worksans_bold"
+                    android:textSize="18sp"/>
+
+                <com.congfandi.lib.TextViewRupiah
+                    android:id="@+id/dana"
+                    android:backgroundTint="@color/light_gray"
+                    android:layout_width="match_parent"
+                    android:fontFamily="@font/worksans_regular"
+                    android:text="0"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
                 android:orientation="vertical">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp"
-                    >
-                    <ImageButton
-                        android:id="@+id/back"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/transparant"
-                        android:src="@drawable/ic_back"
-
-                        android:layout_gravity="center_vertical"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="DETAIL PEMBELIAN"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/sf_bold"
-                        android:textSize="15sp"
-                        android:layout_marginRight="35dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center"/>
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:textColor="@color/darkBlue"
+                    android:text="@string/label_nama"
+                    android:fontFamily="@font/worksans_regular"
+                    android:textSize="18sp"/>
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/nama_pekerja"
+                    android:backgroundTint="@color/light_gray"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="5dp"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:divider="?android:dividerHorizontal"
-                    android:showDividers="middle">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_name"
-                        android:layout_marginTop="15dp"
-                        android:textSize="20dp"
-                        android:textColor="@color/darkBlue"
-                        android:layout_marginBottom="30dp"
-                        android:gravity="center_horizontal"/>
-                    <!--                id-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
+                    app:textTint="@color/darkBlue"
+                    android:focusable="false"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:layout_height="wrap_content"/>
 
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="ID Transaksi"/>
-                        <TextView
-                            android:id="@+id/id_tx"
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:layout_marginBottom="5dp"
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
 
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="ID Transaksi"/>
+                android:orientation="vertical">
 
-                    </LinearLayout>
-                    <!--                judul pembelian-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/worksans_regular"
+                    android:text="@string/label_jenis_transaksi"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="18sp" />
 
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Jenis Transaksi"/>
-                        <TextView
-                            android:id="@+id/judul_pembelian"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:layout_weight="1"
-                            android:layout_marginBottom="5dp"
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/judul_pembelian"
+                    android:backgroundTint="@color/light_gray"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
+                    app:textTint="@color/darkBlue"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:layout_height="wrap_content"/>
 
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="ID Transaksi"/>
-
-                    </LinearLayout>
-                    <!--                nama pembeli-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Nama"/>
-                        <TextView
-                            android:id="@+id/nama_pekerja"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:layout_weight="1"
-                            android:layout_marginBottom="5dp"
-
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="pekerja"/>
-
-                    </LinearLayout>
-                    <!--                nama proyek-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Nama Proyek"/>
-                        <TextView
-                            android:id="@+id/nama_proyek"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:layout_marginBottom="5dp"
-
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="nama proyek"/>
-
-                    </LinearLayout>
-                    <!--                tgl-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Waktu"/>
-                        <TextView
-                            android:id="@+id/tgl"
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
-
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="tgl"/>
-
-                    </LinearLayout>
-                    <!--keterangan-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Jenis Barang"/>
-                        <TextView
-                            android:id="@+id/keterangan"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="15sp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="keterangan"/>
-
-                    </LinearLayout>
-                    <!--                jenis Pembelian-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Jenis Pembayaran"/>
-                        <TextView
-                            android:id="@+id/jenis_bayar"
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:layout_weight="1"
-                            android:layout_marginBottom="5dp"
-
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="Jenis Pembelian"/>
-
-                    </LinearLayout>
-
-                    <!--                dana-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_regular"
-                            android:text="Total Pembayaran"/>
-                        <com.congfandi.lib.TextViewRupiah
-                            android:id="@+id/dana"
-                            android:layout_width="150dp"
-                            android:layout_height="30dp"
-                            android:textSize="15sp"
-                            android:layout_weight="1"
-                            android:layout_marginBottom="5dp"
-
-                            android:gravity="center_vertical"
-                            android:fontFamily="@font/worksans_bold"
-                            android:text="Rp. 50jt"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-
-                <!-- TODO: Update blank fragment layout -->
             </LinearLayout>
 
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
 
-    </ScrollView>
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/darkBlue"
+                    android:text="@string/label_pekerjaan"
+                    android:fontFamily="@font/worksans_regular"
+                    android:textSize="18sp"/>
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/namaProyek"
+                    android:backgroundTint="@color/light_gray"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
+                    app:textTint="@color/darkBlue"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:layout_height="wrap_content"/>
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/darkBlue"
+                    android:text="@string/label_tanggal"
+                    android:fontFamily="@font/worksans_regular"
+                    android:textSize="18sp"/>
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/tgl"
+                    android:backgroundTint="@color/light_gray"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
+                    app:textTint="@color/darkBlue"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/worksans_regular"
+                    android:text="Jenis Bayar"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="18sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/jenis_bayar"
+                    android:backgroundTint="@color/light_gray"
+                    android:focusable="false"
+                    android:layout_width="match_parent"
+                    app:textTint="@color/darkBlue"
+                    android:layout_marginHorizontal="5dp"
+                    android:fontFamily="@font/worksans_regular"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/namaBaru"
+                    android:text="@string/label_catatan"
+                    android:textColor="@color/darkBlue"
+                    android:fontFamily="@font/worksans_regular"
+                    android:textSize="18sp"/>
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/keterangan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/light_gray"
+                    android:fontFamily="@font/worksans_regular"
+                    android:focusable="false"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelTextColor="@color/darkBlue"
+                    app:met_underlineColor="@color/lightBlue" />
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 

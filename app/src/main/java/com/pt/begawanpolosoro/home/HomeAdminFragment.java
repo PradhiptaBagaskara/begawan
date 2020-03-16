@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
+import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
 import com.pt.begawanpolosoro.adapter.GridMenuAdapter;
@@ -131,6 +131,7 @@ public class HomeAdminFragment extends Fragment {
     String menuName[] = {"PENGGUNA", "PEKERJAAN", "GAJI","LAPORAN"};
     GridMenuAdapter gridMenuAdapter;
     ApiHelper apiHelper = new ApiHelper();
+    CurrentUser user;
 
 
     @Override
@@ -146,11 +147,9 @@ public class HomeAdminFragment extends Fragment {
         saldoBtn = view.findViewById(R.id.editSaldo);
         saldoBtn.setOnClickListener(showEditSaldo);
         none = view.findViewById(R.id.none);
-        profilDialog(getActivity());
         gridMenuAdapter = new GridMenuAdapter(getActivity(),logo,menuName);
         menuGrid.setAdapter(gridMenuAdapter);
         menuGrid.setOnItemClickListener(setMenuListener);
-
         nama = view.findViewById(R.id.nama);
         username = view.findViewById(R.id.username);
         saldo = view.findViewById(R.id.saldo);
@@ -163,10 +162,13 @@ public class HomeAdminFragment extends Fragment {
         sm = new SessionManager(getContext());
         map = sm.getLogged();
         initRetro = new InitRetro(getContext());
+        user = new CurrentUser(getActivity());
+
         apiService = initRetro.InitApi().create(ApiService.class);
-        setsNama(map.get(sm.SES_NAMA).toString());
-        setsUsername(map.get(sm.SES_USERNAME).toString());
-        setsAuth(map.get(sm.SES_TOKEN).toString());
+        setsAuth(user.getsAuth());
+        setsNama(user.getsNama());
+        setsUsername(user.getsUsername());
+
 
         loadSaldo();
 
@@ -174,18 +176,23 @@ public class HomeAdminFragment extends Fragment {
 
     }
 
-
-
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        nama.setText(getsNama().toUpperCase());
-        username.setText(getsUsername());
-
-
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: "+user.getsNama());
 
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.i(TAG, "onStart: " + user.getsNama());
+        nama.setText(user.getsNama().toUpperCase());
+        username.setText(user.getsUsername());
+
+    }
 
 
     private AdapterView.OnItemClickListener setMenuListener = new AdapterView.OnItemClickListener() {
@@ -305,40 +312,7 @@ public class HomeAdminFragment extends Fragment {
     }
 
 
-    private void profilDialog(Context context) {
-        profilForm = new Dialog(context);
-        profilForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        profilForm.setContentView(R.layout.dialog_edit_home);
-        profilForm.setCancelable(true);
-        profilForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
-        profilForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pgProfil = profilForm.findViewById(R.id.progresProfil);
-        aksi =saldoForm.findViewById(R.id.aksi);
-        pgProfil.setVisibility(View.GONE);
-        edtUname = profilForm.findViewById(R.id.dialogUname);
-        edtNama = profilForm.findViewById(R.id.dialogNama);
-        edtPass= profilForm.findViewById(R.id.dialogPassword);
-        btnBatalProfil = profilForm.findViewById(R.id.cancelDialog);
-        btnSaveProfil = profilForm.findViewById(R.id.saveDialog);
-        edtNama.setText(getsNama());
-        edtUname.setText(getsUsername());
-    }
 
-    private View.OnClickListener showEditProfil = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            profilForm.show();
-            btnBatalProfil.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    profilForm.dismiss();
-                    edtPass.getText().clear();
-                }
-            });
-            btnSaveProfil.setOnClickListener(updateProfil);
-
-        }
-    };
 
     private View.OnClickListener updateProfil = new View.OnClickListener() {
 
@@ -498,15 +472,16 @@ public class HomeAdminFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), TxDetailActivity.class);
-                    intent.putExtra("id", txItem.get(position).getId());
-                    intent.putExtra("nama", txItem.get(position).getNama());
-                    intent.putExtra("nama_tx", txItem.get(position).getNamaTransaksi());
-                    intent.putExtra("nama_proyek", txItem.get(position).getNamaProyek());
-                    intent.putExtra("jenis_bayar", txItem.get(position).getJenis());
-                    intent.putExtra("dana", txItem.get(position).getDana());
-                    intent.putExtra("keterangan", txItem.get(position).getKeterangan());
-                    intent.putExtra("waktu", txItem.get(position).getCreatedDate());
+//                    intent.putExtra("id", txItem.get(position).getId());
+//                    intent.putExtra("nama", txItem.get(position).getNama());
+//                    intent.putExtra("nama_tx", txItem.get(position).getNamaTransaksi());
+//                    intent.putExtra("nama_proyek", txItem.get(position).getNamaProyek());
+//                    intent.putExtra("jenis_bayar", txItem.get(position).getJenis());
+//                    intent.putExtra("dana", txItem.get(position).getDana());
+//                    intent.putExtra("keterangan", txItem.get(position).getKeterangan());
+//                    intent.putExtra("waktu", txItem.get(position).getCreatedDate());
                     intent.putExtra("halaman", "1");
+                    intent.putExtra("data", txItem.get(position));
 
                     startActivity(intent);
                 }

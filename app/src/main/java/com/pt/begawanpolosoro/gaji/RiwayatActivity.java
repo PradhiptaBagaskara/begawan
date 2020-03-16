@@ -140,13 +140,13 @@ public class RiwayatActivity extends AppCompatActivity {
                     String sJmlh = gajiFiltered.get(position).getGaji();
                     String sTgl = gajiFiltered.get(position).getCreatedDate();
                     Intent i = new Intent(RiwayatActivity.this, GajiDetailActivity.class);
-                    i.putExtra("file", gajiFiltered.get(position).getFileName());
-                    i.putExtra("penerima", sPenerima);
-                    i.putExtra("penngirim", sPengirim);
-                    i.putExtra("jumlah", sJmlh);
-                    i.putExtra("tanggal", sTgl);
-                    i.putExtra("pekerjaan", gajiFiltered.get(position).getNamaProyek());
-                    i.putExtra("catatan", gajiFiltered.get(position).getKeterangan());
+                    i.putExtra("data", gajiFiltered.get(position));
+//                    i.putExtra("penerima", sPenerima);
+//                    i.putExtra("penngirim", sPengirim);
+//                    i.putExtra("jumlah", sJmlh);
+//                    i.putExtra("tanggal", sTgl);
+//                    i.putExtra("pekerjaan", gajiFiltered.get(position).getNamaProyek());
+//                    i.putExtra("catatan", gajiFiltered.get(position).getKeterangan());
                     startActivity(i);
 //                    customDialog(sPenerima,sPengirim,sTgl,sJmlh);
                 }

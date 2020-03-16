@@ -1,5 +1,7 @@
 package com.pt.begawanpolosoro;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton logout;
     ApiService apiService;
     CurrentUser user;
+    CoordinatorLayout main;
 
     public int getPosisiHalaman() {
         return posisiHalaman;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int posisiHalaman;
+    AlertDialog.Builder alertDialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.darkBlue));
-
+        main = findViewById(R.id.main);
         sm = new SessionManager(this);
         sm.checkLogin();
         map = sm.getLogged();
@@ -178,4 +183,29 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialog.setTitle("Keluar Aplikasi");
+        alertDialog
+                .setIcon(R.drawable.ic_warning_oren)
+                .setMessage("Apakah Anda yakin keluar dari aplikasi?")
+                .setCancelable(true)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // jika tombol ini diklik, akan menutup dialog
+                        // dan tidak terjadi apa2
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+    }
 }

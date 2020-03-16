@@ -2,18 +2,15 @@ package com.pt.begawanpolosoro.pekerja;
 
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +74,6 @@ public class PekerjaHomeFragment extends Fragment {
         user = new CurrentUser(getActivity());
         nama = v.findViewById(R.id.nama);
         userSetting = v.findViewById(R.id.userSetting);
-        profilDialog(getActivity());
         userSetting.setOnClickListener(showEditProfil);
         none = v.findViewById(R.id.none);
 
@@ -112,25 +108,6 @@ public class PekerjaHomeFragment extends Fragment {
         return v;
     }
 
-    private void profilDialog(Context context) {
-        profilForm = new Dialog(context);
-        profilForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        profilForm.setContentView(R.layout.dialog_edit_home);
-        profilForm.setCancelable(true);
-        profilForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
-        profilForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        pgProfil = profilForm.findViewById(R.id.progresProfil);
-        pgProfil.setVisibility(View.GONE);
-        edtUname = profilForm.findViewById(R.id.dialogUname);
-        edtNama = profilForm.findViewById(R.id.dialogNama);
-        labelPass = profilForm.findViewById(R.id.labelPass);
-        labelPass.setVisibility(View.GONE);
-        edtPass= profilForm.findViewById(R.id.dialogPassword);
-        btnBatalProfil = profilForm.findViewById(R.id.cancelDialog);
-        btnSaveProfil = profilForm.findViewById(R.id.saveDialog);
-        edtNama.setText(user.getsNama());
-        edtUname.setVisibility(View.GONE);
-    }
 
     private View.OnClickListener showEditProfil = new View.OnClickListener() {
         @Override
@@ -269,13 +246,6 @@ public class PekerjaHomeFragment extends Fragment {
 
                     Intent i = new Intent(getActivity(), GajiDetailActivity.class);
 
-//                    i.putExtra("file", gajiList.get(position).getFileName());
-//                    i.putExtra("penerima", sPenerima);
-//                    i.putExtra("penngirim", sPengirim);
-//                    i.putExtra("jumlah", sJmlh);
-//                    i.putExtra("tanggal", sTgl);
-//                    i.putExtra("pekerjaan", gajiList.get(position).getNamaProyek());
-//                    i.putExtra("catatan", gajiList.get(position).getKeterangan());
 
                     Bundle bundle = new Bundle();
                     i.putExtra("data", gajiList.get(position));
@@ -283,35 +253,6 @@ public class PekerjaHomeFragment extends Fragment {
 
                 }
             });
-
-        }
-        public void customDialog(String penerima, String pengirim, String date, String jumlah) {
-
-            Dialog userForm = new Dialog(getActivity());
-            userForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            userForm.setContentView(R.layout.dialog_gaji);
-            userForm.setCancelable(true);
-            userForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
-            userForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            TextViewRupiah gajiDialog = userForm.findViewById(R.id.gaji);
-            TextView namaPengirim = userForm.findViewById(R.id.namaPengirim);
-            TextView namaPenerima = userForm.findViewById(R.id.namaPenerima);
-            TextView tanggal = userForm.findViewById(R.id.tglDialog);
-            Button back = userForm.findViewById(R.id.backDialog);
-
-            gajiDialog.convertToIDR(jumlah);
-            namaPenerima.setText(penerima);
-            namaPengirim.setText(pengirim);
-            tanggal.setText(date);
-            userForm.show();
-            back.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    userForm.dismiss();
-                }
-            });
-
 
         }
 
