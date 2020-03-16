@@ -158,33 +158,11 @@ public class PdfActivity extends AppCompatActivity {
                 list.setError("Form Tidak Boleh Kosong");
 
             }else {
-                Dexter.withActivity(PdfActivity.this)
-                        .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .withListener(new MultiplePermissionsListener() {
-                            @Override
-                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                                downloadBtn.setEnabled(false);
-                                if (report.areAllPermissionsGranted()){
-                                    downloadBtn.setVisibility(View.GONE);
-                                    pg.setVisibility(View.VISIBLE);
-                                    getPdf(getId(), getParam());
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "Permisi diperlukan", Toast.LENGTH_SHORT).show();
-                                }
 
-                            }
+            downloadBtn.setVisibility(View.GONE);
+            pg.setVisibility(View.VISIBLE);
+            getPdf(getId(), getParam());
 
-                            @Override
-                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//                                downloadBtn.setEnabled(true);
-
-                            }
-                        })
-                        .check();
-
-
-//            Toast.makeText(getApplicationContext(), getId(), Toast.LENGTH_SHORT).show();
-//            Toast.makeText(getApplicationContext(), getParam(), Toast.LENGTH_SHORT).show();
             }
 
 
@@ -202,11 +180,6 @@ public class PdfActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
 
     void loadLaporan(int position) {
         switch (position) {
@@ -227,10 +200,10 @@ public class PdfActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseProyek> call, Response<ResponseProyek> response) {
 
-                if (response.isSuccessful())
-                    if (response.body().isStatus()){
-                        if (response.body().getResult() != null){
-                            if (response.body().getResult().size() != 0){
+                if (response.isSuccessful()) {
+                    if (response.body().isStatus()) {
+                        if (response.body().getResult() != null) {
+                            if (response.body().getResult().size() != 0) {
                                 List<ResultItemProyek> resultItemProyek = response.body().getResult();
                                 SpinnerTextFormatter formater = new SpinnerTextFormatter<ResultItemProyek>() {
                                     @Override
@@ -243,8 +216,8 @@ public class PdfActivity extends AppCompatActivity {
                                 list.attachDataSource(resultItemProyek);
                                 ResultItemProyek item = (ResultItemProyek) list.getSelectedItem();
                                 setId(item.getId());
-                                if ( response.body().getResult().size() == 1){
-                                 list.setText(item.getNamaProyek());
+                                if (response.body().getResult().size() == 1) {
+                                    list.setText(item.getNamaProyek());
                                 }
                                 list.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
                                     @Override
@@ -253,8 +226,8 @@ public class PdfActivity extends AppCompatActivity {
                                         setId(res.getId());
                                     }
                                 });
-                                Log.d("proyek", "onResponse: "+getId());
-                            }else {
+                                Log.d("proyek", "onResponse: " + getId());
+                            } else {
                                 list.setText("BELUM ADA DATA");
 
                             }
@@ -262,6 +235,7 @@ public class PdfActivity extends AppCompatActivity {
                         }
 
                     }
+                }
             }
 
             @Override

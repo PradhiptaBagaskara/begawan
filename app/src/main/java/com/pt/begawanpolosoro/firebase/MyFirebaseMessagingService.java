@@ -23,6 +23,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -164,6 +166,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     getString(R.string.app_name),
                     NotificationManager.IMPORTANCE_HIGH);
             channel.setVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            channel.setSound(defaultSoundUri,att);
+//            channel.setDescription(message);
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            channel.enableVibration(true);
             notificationManager.createNotificationChannel(channel);
         }
 //        startForeground(1, notificationManagerku);

@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -152,21 +153,19 @@ public class PekerjaActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK){
             File dt = ImagePicker.Companion.getFile(data);
             String path = ImagePicker.Companion.getFilePath(data);
+            img.setScaleType(ImageView.ScaleType.FIT_XY);
             Picasso.with(this)
                     .load(dt)
                     .into(img);
             apiHelper.setImgPath(path);
-//                Bundle extras = data.getExtras().getD
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                Toast.makeText(PekerjaActivity.this, path, Toast.LENGTH_SHORT).show();
-//                resultView.setImageBitmap(imageBitmap);
+
 
         }
     }
 
     public void pickImg(View v){
         ImagePicker.Companion.with(this)
-                .cropSquare()
+//                .cropSquare()
                 .compress(256)
                 .maxResultSize(1080, 1080)
                 .start();

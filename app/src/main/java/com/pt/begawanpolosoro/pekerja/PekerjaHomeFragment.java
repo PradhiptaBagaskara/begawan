@@ -220,6 +220,13 @@ public class PekerjaHomeFragment extends Fragment {
             }
         });
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     public class GajiAdapter extends RecyclerView.Adapter<PekerjaHomeFragment.GajiAdapter.MyviewHolder>{
 
         List<ResultItemGaji> gajiList;

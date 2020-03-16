@@ -3,11 +3,13 @@ package com.pt.begawanpolosoro;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -79,6 +81,8 @@ public class SplashActivity extends AwesomeSplash {
     @Override
     public void animationsFinished() {
         DownloadUtil downloadUtil = new DownloadUtil(getApplicationContext());
+        downloadUtil.cekDir();
+
 
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)

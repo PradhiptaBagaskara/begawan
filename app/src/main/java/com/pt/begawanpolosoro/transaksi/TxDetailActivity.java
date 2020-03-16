@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import com.congfandi.lib.TextViewRupiah;
@@ -35,6 +37,7 @@ public class TxDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "TxDetailActivity";
     MaterialEditText nama, namaTx, jenisTx, tgl, jenisBayar, id,namaP;
+    AppCompatTextView titleImg;
     TextViewRupiah total;
     ImageButton back;
     ApiHelper apiHelper = new ApiHelper();
@@ -60,6 +63,8 @@ public class TxDetailActivity extends AppCompatActivity {
         namaTx = findViewById(R.id.judul_pembelian);
         jenisBayar = findViewById(R.id.jenis_bayar);
         tgl = findViewById(R.id.tgl);
+        titleImg = findViewById(R.id.txtCamera);
+        titleImg.setText("BUKTI TRANSAKSI");
         total = findViewById(R.id.dana);
         jenisTx = findViewById(R.id.keterangan);
         namaP = findViewById(R.id.namaProyek);
@@ -97,6 +102,7 @@ public class TxDetailActivity extends AppCompatActivity {
         img = findViewById(R.id.imgCamera);
         uploadImg = findViewById(R.id.fab_img);
         uploadImg.setImageResource(R.drawable.ic_download);
+        img.setScaleType(ImageView.ScaleType.FIT_XY);
         if (downloadUtil.imgExist(apiHelper.getImgPath())){
             Log.d(TAG, "onCreate: Load File From Storage ");
             uploadImg.setVisibility(View.GONE);

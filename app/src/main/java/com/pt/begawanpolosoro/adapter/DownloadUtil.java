@@ -105,6 +105,8 @@ public class DownloadUtil {
         }
     }
 
+
+
     public boolean imgExist(String fileName){
         File file = new File(fileName);
         if(file.exists() || file.isFile())

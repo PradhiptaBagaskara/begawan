@@ -231,8 +231,7 @@ public class UserActivity extends AppCompatActivity {
             share.setOnClickListener(sharedUser);
             reset.setOnClickListener(resetPass);
 
-//
-//            addVideo.setOnClickListener(addVideoFb);
+
         }
     };
 
