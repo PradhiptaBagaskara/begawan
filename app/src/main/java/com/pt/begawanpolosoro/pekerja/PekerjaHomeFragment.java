@@ -77,6 +77,9 @@ public class PekerjaHomeFragment extends Fragment {
         userSetting.setOnClickListener(showEditProfil);
         none = v.findViewById(R.id.none);
 
+        TextView title = getActivity().findViewById(R.id.title);
+        title.setText(getResources().getString(R.string.app_name));
+
         saldo = v.findViewById(R.id.saldo);
         recyclerView = v.findViewById(R.id.home_rec_pekerja);
 

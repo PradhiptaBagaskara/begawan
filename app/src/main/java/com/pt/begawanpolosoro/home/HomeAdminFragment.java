@@ -149,6 +149,8 @@ public class HomeAdminFragment extends Fragment {
         nama = view.findViewById(R.id.nama);
         username = view.findViewById(R.id.username);
         saldo = view.findViewById(R.id.saldo);
+        TextView title = getActivity().findViewById(R.id.title);
+        title.setText(getResources().getString(R.string.app_name));
         return view;
     }
 
