@@ -2,7 +2,9 @@ package com.pt.begawanpolosoro.update;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseUpdate{
+import java.io.Serializable;
+
+public class ResponseUpdate implements Serializable {
 
 	@SerializedName("outputName")
 	private String outputName;
