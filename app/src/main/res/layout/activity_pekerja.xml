@@ -71,7 +71,7 @@
                     app:met_iconLeft="@drawable/ic_add_user"
                     android:layout_width="match_parent"
                     app:met_underlineColor="@color/lightBlue"
-                    app:met_helperText="Contoh: pembelian bahan pondasi/nomor nota"
+                    app:met_helperText="Contoh: pembelian bahan pondasi"
                     app:met_helperTextColor="@color/black"
                     android:hint="Masukan Nama"
                     android:layout_marginBottom="15dp"
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     app:met_underlineColor="@color/lightBlue"
                     android:inputType="textMultiLine"
-                    app:met_helperText="Masukan Catatan"
+                    app:met_helperText="Masukan Catatan (opsional)"
                     android:focusedByDefault="false"
                     app:met_helperTextColor="@color/black"
                     android:hint="catatan untuk pembelian"
@@ -205,9 +205,7 @@
                     android:layout_height="wrap_content"
                     android:text="KIRIM"
                     android:gravity="center"
-                    android:textColor="@color/whiteOri"
-                    android:background="@drawable/gradient_btn"/>
-                "/>
+                    android:textColor="@color/whiteOri"/>
             </RelativeLayout>
 
 

@@ -74,7 +74,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <LinearLayout
-                                android:layout_width="240dp"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="10dp"
                                 android:orientation="vertical"
@@ -94,9 +94,9 @@
                             <ImageButton
                                 android:id="@+id/userSetting"
                                 android:layout_width="100dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="50dp"
                                 android:src="@drawable/ic_settings"
-                                android:backgroundTint="@color/transparant"
+                                android:background="@drawable/button_standart"
                                 android:layout_gravity="center_vertical"/>
 
 
@@ -106,12 +106,12 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <LinearLayout
-                                android:layout_width="240dp"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="10dp"
                                 android:orientation="vertical">
                                 <TextView
-                                    android:layout_width="240dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="20dp"
                                     android:text="SALDO"
                                     android:fontFamily="@font/worksans_bold"
@@ -131,11 +131,51 @@
                                 <ImageButton
                                     android:id="@+id/addSaldo"
                                     android:layout_width="100dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="50dp"
                                     android:src="@drawable/ic_add_big"
                                     android:layout_marginEnd="10dp"
-                                    android:backgroundTint="@color/transparant"
+                                    android:background="@drawable/button_standart"
                                     android:layout_gravity="end|center_vertical"/>
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="10dp"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp"
+                                    android:text="TOTAL PIUTANG"
+                                    android:fontFamily="@font/worksans_bold"
+                                    android:layout_marginBottom="1dp"
+                                    android:textColor="@color/darkBlue"/>
+
+                                <com.congfandi.lib.TextViewRupiah
+                                    android:id="@+id/utang"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:fontFamily="@font/worksans_bold"
+                                    />
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/lunasiBtn"
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
+
+                                android:src="@drawable/ic_setting_blue"
+                                android:layout_marginEnd="10dp"
+                                android:onClick="showTotalUtang"
+                                android:background="@drawable/button_standart"
+                                android:layout_gravity="end"/>
 
 
                         </LinearLayout>

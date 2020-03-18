@@ -51,7 +51,11 @@
     <string name="label_ganti_password">Ganti Password</string>
     <string name="label_masukan_username_baru">Masukan Username Baru</string>
     <string name="label_edit_username">Edit Username</string>
-    <string name="kesalahan">Terjadi Kesalahan! Coba Lagi Nanti...</string>
+    <string name="kesalahan">Terjadi Kesalahan! Coba Lagi Nanti…</string>
     <string name="label_rest">Jika Anda melakukan reset maka semua data didalam server akan hilang. \n\nMasukan Kode verifikasi untuk melakukan reset</string>
     <string name="label_jenis_transaksi">Jenis Transaksi</string>
+    <string name="belum_ada_pekerjaan">Belum Ada Pekerjaan</string>
+    <string name="status_pembayaran">Status Pembayaran</string>
+    <string name="bukti_tx">BUKTI TRANSAKSI</string>
+    <string name="label_dialog_utang">Semua hutang yang ada pada transaksi pengguna akan dilunasi dengan mengurangi saldo yang anda punyai.\nJumlah Semua Hutang:</string>
 </resources>

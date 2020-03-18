@@ -15,6 +15,10 @@ public class ResultItemTx implements Serializable {
 	@SerializedName("jenis")
 	private String jenis;
 
+
+	@SerializedName("status")
+	private String status;
+
 	@SerializedName("nama_transaksi")
 	private String namaTransaksi;
 
@@ -57,6 +61,13 @@ public class ResultItemTx implements Serializable {
 		return keterangan;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public void setNama(String nama){
 		this.nama = nama;
 	}

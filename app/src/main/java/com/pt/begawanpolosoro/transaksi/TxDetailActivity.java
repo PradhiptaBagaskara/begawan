@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.transaksi;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,8 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +26,12 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.DownloadUtil;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
+import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
@@ -32,11 +39,14 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import jp.wasabeef.picasso.transformations.BlurTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TxDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "TxDetailActivity";
-    MaterialEditText nama, namaTx, jenisTx, tgl, jenisBayar, id,namaP;
+    MaterialEditText nama, namaTx, jenisTx, tgl, jenisBayar, id,namaP,pelunasan;
     AppCompatTextView titleImg;
     TextViewRupiah total;
     ImageButton back;
@@ -45,6 +55,15 @@ public class TxDetailActivity extends AppCompatActivity {
     DownloadUtil downloadUtil;
     AppCompatImageView img;
     FloatingActionButton uploadImg;
+    Button lunasBtn;
+    CurrentUser user ;
+
+    TextView dialogLabelUtang;
+    Button btnCloseUtang, btnSendUtang;
+    LinearLayout dialogLinarUtang;
+    ProgressBar pgUtang;
+    TextViewRupiah jumlahUtang;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +75,7 @@ public class TxDetailActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.darkBlue));
         initRetro = new InitRetro(getApplicationContext());
         Intent extra = getIntent();
+        user = new CurrentUser(getApplicationContext());
         downloadUtil = new DownloadUtil(getApplicationContext());
 
 //        id = findViewById(R.id.id_tx);
@@ -64,11 +84,13 @@ public class TxDetailActivity extends AppCompatActivity {
         jenisBayar = findViewById(R.id.jenis_bayar);
         tgl = findViewById(R.id.tgl);
         titleImg = findViewById(R.id.txtCamera);
-        titleImg.setText("BUKTI TRANSAKSI");
+        titleImg.setText(getString(R.string.bukti_tx));
         total = findViewById(R.id.dana);
         jenisTx = findViewById(R.id.keterangan);
         namaP = findViewById(R.id.namaProyek);
         back = findViewById(R.id.back);
+        pelunasan = findViewById(R.id.statusPelunasan);
+        lunasBtn = findViewById(R.id.lunasiBtn);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,12 +100,18 @@ public class TxDetailActivity extends AppCompatActivity {
 
         if (extra.hasExtra("data")){
             ResultItemTx dt = (ResultItemTx) extra.getSerializableExtra("data");
+            apiHelper.setNama(dt.getNama());
+            apiHelper.setModal(dt.getDana());
+            apiHelper.setId_(dt.getId());
+            apiHelper.setModal(dt.getDana());
             nama.setText(dt.getNama());
             namaTx.setText(dt.getNamaTransaksi());
             jenisBayar.setText(dt.getJenis());
             tgl.setText(dt.getCreatedDate());
             total.convertToIDR(dt.getDana());
             String ket = dt.getKeterangan();
+            pelunasan.setText(dt.getStatus());
+            apiHelper.setStatus(dt.getStatus());
 
             jenisTx.setText(ket);
             namaP.setText(dt.getNamaProyek());
@@ -98,6 +126,9 @@ public class TxDetailActivity extends AppCompatActivity {
         }else {
 
             finish();
+        }
+        if (!apiHelper.getStatus().equals("lunas") && user.getRole() > 1){
+            lunasBtn.setVisibility(View.VISIBLE);
         }
         img = findViewById(R.id.imgCamera);
         uploadImg = findViewById(R.id.fab_img);
@@ -122,6 +153,71 @@ public class TxDetailActivity extends AppCompatActivity {
 
         }
     }
+
+    private void utangDialog(){
+        dialog = new Dialog(TxDetailActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_utang);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparant);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialogLinarUtang = dialog.findViewById(R.id.linierBtn);
+        dialogLabelUtang = dialog.findViewById(R.id.dialoglabelNama);
+        btnCloseUtang = dialog.findViewById(R.id.cancelDialog);
+        btnSendUtang = dialog.findViewById(R.id.lunasiBtn);
+        pgUtang = dialog.findViewById(R.id.progres);
+        jumlahUtang = dialog.findViewById(R.id.jumlahUtang);
+        String label = getString(R.string.label_dialog_utang);
+        label = label.replace("pengguna", apiHelper.getNama());
+        label = label.replace("semua", "");
+        label = label.replace("Semua ", "");
+        label = label.replace("hutang", "Hutang");
+
+        dialogLabelUtang.setText(label);
+        try {
+            jumlahUtang.convertToIDR(apiHelper.getModal());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        btnCloseUtang.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+        btnSendUtang.setOnClickListener(utangListener);
+
+    }
+
+    private View.OnClickListener utangListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            pgUtang.setVisibility(View.VISIBLE);
+            dialogLinarUtang.setVisibility(View.GONE);
+            Call<ResponseLogin> p = initRetro.apiRetro().hutang(user.getsAuth(),apiHelper.getId_(),apiHelper.getModal(),"single");
+            p.enqueue(new Callback<ResponseLogin>() {
+                @Override
+                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+                    pgUtang.setVisibility(View.GONE);
+                    dialogLinarUtang.setVisibility(View.VISIBLE);
+                    if (response.isSuccessful())
+                        if (response.body().isStatus())
+                            dialog.dismiss();
+                            finish();
+                    Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                    pgUtang.setVisibility(View.GONE);
+                    dialogLinarUtang.setVisibility(View.VISIBLE);
+                    t.printStackTrace();
+
+                }
+            });
+        }
+    };
+
+
+    public void lunasiUtang(View view) {
+        utangDialog();
+    }
     public void pickImg(View view){
         String imgPath = downloadUtil.downloadInit();
 
@@ -134,6 +230,7 @@ public class TxDetailActivity extends AppCompatActivity {
                         uploadImg.setVisibility(View.GONE);
                         File f = new File(apiHelper.getImgPath());
                         Uri uri = Uri.fromFile(f);
+                        downloadUtil.showImg(f);
                         Picasso.with(getApplicationContext()).load(uri).into(img);
                         img.setOnClickListener(imgClick);
                     }

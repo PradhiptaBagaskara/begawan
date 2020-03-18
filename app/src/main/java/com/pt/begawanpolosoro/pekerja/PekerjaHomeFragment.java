@@ -81,8 +81,8 @@ public class PekerjaHomeFragment extends Fragment {
         recyclerView = v.findViewById(R.id.home_rec_pekerja);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        loadGaji();
         loadSaldo();
+        loadGaji();
         nama.setText(user.getsNama().toUpperCase());
         bottomNavigationBar = getActivity().findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setAutoHideEnabled(true);

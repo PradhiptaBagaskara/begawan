@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,13 +39,10 @@ import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.gaji.GajiActivity;
 import com.pt.begawanpolosoro.home.api.ResponseSaldo;
 import com.pt.begawanpolosoro.home.api.ResultSaldo;
-import com.pt.begawanpolosoro.login.api.ResponseLogin;
-import com.pt.begawanpolosoro.login.api.ResultLogin;
 import com.pt.begawanpolosoro.pdf.PdfActivity;
 import com.pt.begawanpolosoro.proyek.TambahProyekActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.TambahUserActivity;
-import com.pt.begawanpolosoro.user.api.ResponseUser;
 import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
@@ -179,6 +175,7 @@ public class HomeAdminFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadTx();
         Log.i(TAG, "onResume: "+user.getsNama());
 
     }
@@ -314,76 +311,7 @@ public class HomeAdminFragment extends Fragment {
 
 
 
-    private View.OnClickListener updateProfil = new View.OnClickListener() {
 
-        @Override
-        public void onClick(View v) {
-            btnSaveProfil.setVisibility(View.GONE);
-            btnBatalProfil.setVisibility(View.GONE);
-            pgProfil.setVisibility(View.VISIBLE);
-            Call<ResponseLogin> up = apiService.updateAdmin(getsAuth(),edtUname.getText().toString(), edtNama.getText().toString());
-            up.enqueue(new Callback<ResponseLogin>() {
-                @Override
-                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
-                    btnSaveProfil.setVisibility(View.VISIBLE);
-                    pgProfil.setVisibility(View.GONE);
-                    btnBatalProfil.setVisibility(View.VISIBLE);
-
-                    if (response.isSuccessful()){
-                        if (response.body().isStatus()){
-                            ResultLogin dt = response.body().getResult();
-                            sm.storeLogin(dt.getRole(),dt.getNama(),dt.getUsername(),dt.getId());
-                            nama.setText(dt.getNama().toUpperCase());
-                            profilForm.dismiss();
-                            Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
-                        }
-                    }else {
-                        Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseLogin> call, Throwable t) {
-                    btnSaveProfil.setVisibility(View.VISIBLE);
-                    pgProfil.setVisibility(View.GONE);
-                    btnBatalProfil.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(),"Terjadi Kesalahan! Coba lagi nanti",Toast.LENGTH_LONG).show();
-
-                }
-            });
-            if (!TextUtils.isEmpty(edtPass.getText().toString())){
-                Call<ResponseUser> u = apiService.resetPassword(getsAuth(), getsAuth(), edtPass.getText().toString());
-                u.enqueue(new Callback<ResponseUser>() {
-                    @Override
-                    public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
-                        btnSaveProfil.setVisibility(View.VISIBLE);
-                        pgProfil.setVisibility(View.GONE);
-                        btnBatalProfil.setVisibility(View.VISIBLE);
-
-                        if (response.isSuccessful()){
-                            if (response.body().isStatus()){
-                                profilForm.dismiss();
-                                Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
-                            }
-                        }else {
-                            Toast.makeText(getActivity(),response.body().getMsg(),Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseUser> call, Throwable t) {
-                        btnSaveProfil.setVisibility(View.VISIBLE);
-                        pgProfil.setVisibility(View.GONE);
-                        btnBatalProfil.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(), "Terjadi Kesalahan! Coba lagi nanti", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-        }
-    };
 
 
 
@@ -468,18 +396,14 @@ public class HomeAdminFragment extends Fragment {
             holder.mNama.setText(txItem.get(position).getNama());
             holder.mTx.setText(txItem.get(position).getNamaTransaksi());
             holder.mTgl.setText(txItem.get(position).getCreatedDate());
+            if (txItem.get(position).getStatus().equals("belum lunas") && txItem.get(position).getJenis().equals("utang"))
+                holder.mDana.setTextColor(getResources().getColor(R.color.red));
+            else if (txItem.get(position).getStatus().equals("lunas") && txItem.get(position).getJenis().equals("utang") )
+                holder.mDana.setTextColor(getResources().getColor(R.color.colorPrimary));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), TxDetailActivity.class);
-//                    intent.putExtra("id", txItem.get(position).getId());
-//                    intent.putExtra("nama", txItem.get(position).getNama());
-//                    intent.putExtra("nama_tx", txItem.get(position).getNamaTransaksi());
-//                    intent.putExtra("nama_proyek", txItem.get(position).getNamaProyek());
-//                    intent.putExtra("jenis_bayar", txItem.get(position).getJenis());
-//                    intent.putExtra("dana", txItem.get(position).getDana());
-//                    intent.putExtra("keterangan", txItem.get(position).getKeterangan());
-//                    intent.putExtra("waktu", txItem.get(position).getCreatedDate());
                     intent.putExtra("halaman", "1");
                     intent.putExtra("data", txItem.get(position));
 

@@ -11,8 +11,9 @@ public class ApiHelper {
     private  String id_;
     private String tglMulai;
     private String tglSeleseai;
-    String fname;
-    String param;
+    private String fname;
+    private String param;
+    private String status;
 
     public String getParam() {
         return param;
@@ -169,5 +170,13 @@ public class ApiHelper {
 
     public void setInstance(ApiHelper instance) {
         this.instance = instance;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

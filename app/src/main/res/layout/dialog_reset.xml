@@ -84,7 +84,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/gradient_btn"
-                    android:text="Simpan"
+                    android:text="KIRIM"
                     android:textColor="@color/whiteOri" />
 
 

@@ -59,6 +59,8 @@ public class UserFragment extends Fragment {
         searchView = view.findViewById(R.id.cari_user);
         searchView.clearFocus();
         none = view.findViewById(R.id.none);
+        TextView title = getActivity().findViewById(R.id.title);
+        title.setText("PENGGUNA");
 
 
 

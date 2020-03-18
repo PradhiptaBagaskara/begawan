@@ -1,9 +1,13 @@
 package com.pt.begawanpolosoro.setting;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,19 +20,30 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnProgressListener;
+import com.downloader.PRDownloader;
+import com.downloader.Progress;
+import com.pt.begawanpolosoro.BuildConfig;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.R;
+import com.pt.begawanpolosoro.adapter.DownloadUtil;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.SessionManager;
 import com.pt.begawanpolosoro.login.api.ResponseLogin;
 import com.pt.begawanpolosoro.login.api.ResultLogin;
+import com.pt.begawanpolosoro.update.ResponseUpdate;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.io.File;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -37,7 +52,8 @@ import retrofit2.Response;
 
 public class SettingsActivity extends AppCompatActivity  {
 
-    private static final String TITLE_TAG = "settingsActivityTitle";
+    private static final String TAG = "settingsActivityTitle";
+    private static final int INSTALL_PACKAGES_REQUESTCODE = 102;
     LinearLayout editProfile,gantiPassword,logout,reset,linierBtn,linierNama, linierUname,linierPass;
     ProgressBar pg;
     MaterialEditText vNama, vPassword, vUname, vKodeVerif;
@@ -49,7 +65,8 @@ public class SettingsActivity extends AppCompatActivity  {
     Button cancel, submit;
     TextView labelNama, labelPass, labelUname, tKodeVerif;
     SessionManager sm;
-
+    ProgressDialog pd;
+    AlertDialog dialogAlert;
     public int getKodeVerif() {
         return kodeVerif;
     }
@@ -59,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity  {
     }
 
     int kodeVerif;
+    DownloadUtil downloadUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity  {
         initRetro = new InitRetro(getApplicationContext());
         user = new CurrentUser(getApplicationContext());
         sm = new SessionManager(getApplicationContext());
-
+        downloadUtil = new DownloadUtil(getApplicationContext());
         reset = findViewById(R.id.resetData);
         if (user.getRole() != 2)
             reset.setVisibility(View.GONE);
@@ -144,6 +162,8 @@ public class SettingsActivity extends AppCompatActivity  {
         cancel.setOnClickListener(v -> dialog.dismiss());
 
     }
+
+
 
     public void actionPassword(View view) {
         customDialog(view.getContext());
@@ -319,5 +339,161 @@ public class SettingsActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    private void progres(){
+        dialog = new Dialog(SettingsActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_progres);
+        dialog.setCancelable(true);
+//        dialog.getWindow()
+//        dialog.getWindow().setBackgroundDrawableResource(R.color.blur);
+//        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    private void checkIsAndroidO() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean result = getPackageManager().canRequestPackageInstalls();
+            if (result) {
+                doUpdate();
+            } else {
+                // request the permission
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
+            }
+        } else {
+            doUpdate();
+        }
+    }
+    public void actionCheck(View view) {
+        progres();
+
+
+//        Log.i(TAG, "actionCheck: "+downloadUtil.md5(versi));
+        dialog.show();
+       doUpdate();
+    }
+
+    private void doUpdate(){
+        String versi = BuildConfig.VERSION_NAME;
+        String md5 = downloadUtil.md5(versi);
+        Call<ResponseUpdate> up = initRetro.apiRetro().getUpdate("cek");
+        up.enqueue(new Callback<ResponseUpdate>() {
+            @Override
+            public void onResponse(Call<ResponseUpdate> call, Response<ResponseUpdate> response) {
+                dialog.cancel();
+
+                if (response.isSuccessful()) {
+                    String md5Server = response.body().getHash();
+                    if (!md5.equals(md5Server)){
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
+                        alertDialog.setTitle("Update Tersedia");
+                        alertDialog
+                                .setMessage("Update Aplikasi Sekarang?")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setCancelable(true)
+                                .setPositiveButton("UPDATE",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        downloadUtil.downloadInit();
+                                        String dir = downloadUtil.getUpdateDir()+ File.separator+"update.apk";
+                                        pdDownload();
+//                                        int max = (int) response.body().getBytes();
+//                                        pd.setMax(max);
+                                        PRDownloader.download(response.body().getDownloadUrl(), downloadUtil.getUpdateDir(), "update.apk")
+                                                .build()
+                                                .setOnProgressListener(new OnProgressListener() {
+                                                    @Override
+                                                    public void onProgress(Progress progress) {
+                                                        float total = (progress.totalBytes/1024)/1024;
+                                                        float cur = ((progress.currentBytes/1024)/1024)*100;
+                                                        int tc = (int) (cur/total);
+                                                        pd.setProgress(tc);
+
+
+                                                    }
+                                                }).start(new OnDownloadListener() {
+                                            @Override
+                                            public void onDownloadComplete() {
+                                                pd.dismiss();
+//                                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                File apk = new File(downloadUtil.getUpdateDir()+File.separator+"update.apk");
+//                                                Uri uri = Uri.fromFile(apk);
+                                                if (apk.exists() && apk.isFile()) {
+                                                    downloadUtil.installApk(apk);
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError(Error error) {
+                                                pd.dismiss();
+                                                Toast.makeText(getApplicationContext(), getString(R.string.kesalahan), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("TIDAK",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // jika tombol ini diklik, akan menutup dialog
+                                        // dan tidak terjadi apa2
+                                        dialogAlert.cancel();
+                                    }
+                                });
+                        dialogAlert = alertDialog.create();
+                        dialogAlert.show();
+                    }else {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
+                        alertDialog.setTitle("Aplikasi Uptodate");
+                        alertDialog
+                                .setMessage("Tidak tersedia update untuk sekarang")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setCancelable(true)
+                                .setPositiveButton("CLOSE",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+
+                                        dialog.dismiss();
+//                                        Toast.makeText(view.getContext(), "CLOSE", Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                });
+                        dialogAlert = alertDialog.create();
+                        dialogAlert.show();
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), "Kesalaha Dalam Memuat Data!", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUpdate> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private void pdDownload(){
+        pd = new ProgressDialog(SettingsActivity.this);
+        pd.setMessage("Sedang Mendownload File. Mohoon Tunggu...");
+        pd.setIndeterminate(false);
+        pd.setCancelable(true);
+//        pd.set
+        pd.setMax(100);
+        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        pd.setCancelable(true);
+        pd.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == INSTALL_PACKAGES_REQUESTCODE){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                doUpdate();
+
+            }
+        }
     }
 }

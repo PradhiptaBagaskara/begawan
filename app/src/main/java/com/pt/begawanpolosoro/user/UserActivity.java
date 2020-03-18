@@ -27,13 +27,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.congfandi.lib.EditTextRupiah;
 import com.congfandi.lib.TextViewRupiah;
 import com.google.android.material.snackbar.Snackbar;
 import com.pt.begawanpolosoro.CurrentUser;
 import com.pt.begawanpolosoro.MainActivity;
 import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.ApiService;
+import com.pt.begawanpolosoro.adapter.DownloadUtil;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResponseTx;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
@@ -43,7 +43,6 @@ import com.pt.begawanpolosoro.pekerja.TambahSaldoActivity;
 import com.pt.begawanpolosoro.transaksi.TxDetailActivity;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 import com.pt.begawanpolosoro.util.ApiHelper;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -53,9 +52,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class UserActivity extends AppCompatActivity {
+    private static final String TAG = "UserActivity";
 
     public String getUsername() {
         return username;
@@ -107,28 +106,32 @@ public class UserActivity extends AppCompatActivity {
     Dialog userForm;
     LinearLayout linierBtn;
     Button share, reset, delete;
+    TextViewRupiah jumlahUtang;
 
-    TextView vUsername, vNama, vAktifitas;
-    TextViewRupiah vSaldo;
+    TextView vNama, vAktifitas, dialogLabelUtang;
+    Button btnCloseUtang, btnSendUtang;
+    LinearLayout dialogLinarUtang;
+    ProgressBar pgUtang;
+    TextViewRupiah vSaldo, vUtang;
     ApiService apiService;
-    ImageButton back, addSaldo, setting;
+    ImageButton back, addSaldo, setting, utangBtn;
     ProgressBar pg, pgReset;
 
     RecyclerView recyclerView;
     CurrentUser user;
-    EditTextRupiah updateSaldo;
     CardView cardDialog;
     CoordinatorLayout activity;
-    MaterialEditText catatan;
     NiceSpinner aksi;
 
     String hal;
     Intent intent;
     ApiHelper apiHelper = new ApiHelper();
+    DownloadUtil downloadUtil;
 
     public String getHal() {
         return hal;
     }
+    Dialog dialog;
 
     public void setHal(String hal) {
         this.hal = hal;
@@ -145,6 +148,7 @@ public class UserActivity extends AppCompatActivity {
         activity = findViewById(R.id.userActivity);
         intent = getIntent();
         apiService = InitRetro.InitApi().create(ApiService.class);
+        downloadUtil = new DownloadUtil(getApplicationContext());
 
         user = new CurrentUser(getApplicationContext());
         customDialog();
@@ -173,6 +177,8 @@ public class UserActivity extends AppCompatActivity {
 
         setting =findViewById(R.id.userSetting);
         setting.setOnClickListener(showCustomDialog);
+        vUtang = findViewById(R.id.utang);
+        utangBtn = findViewById(R.id.lunasiBtn);
 
 
 
@@ -181,6 +187,7 @@ public class UserActivity extends AppCompatActivity {
 
 
         Bundle extra = getIntent().getExtras();
+
         if (!extra.isEmpty()){
             setId(extra.getString("id"));
             setNama(extra.getString("nama"));
@@ -188,6 +195,8 @@ public class UserActivity extends AppCompatActivity {
             setUsername(extra.getString("username"));
             setRole(extra.getString("role"));
 
+        }else {
+            finish();
         }
 
         vNama = findViewById(R.id.nama);
@@ -205,7 +214,12 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        vSaldo.convertToIDR(getSaldo());
+        try {
+            vSaldo.convertToIDR(getSaldo());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recyclerView = findViewById(R.id.tx_rec);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -373,6 +387,13 @@ public class UserActivity extends AppCompatActivity {
                         if (res.getResult() != null){
                             setSaldo(res.getResult().getSaldo());
                             vSaldo.convertToIDR(getSaldo());
+                            apiHelper.setModal(res.getResult().getTotal_piutang());
+                            try {
+                                vUtang.convertToIDR(response.body().getResult().getTotal_piutang());
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
                         }
 
@@ -423,6 +444,61 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+    private void utangDialog(){
+        dialog = new Dialog(UserActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_utang);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparant);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialogLinarUtang = dialog.findViewById(R.id.linierBtn);
+        dialogLabelUtang = dialog.findViewById(R.id.dialoglabelNama);
+        btnCloseUtang = dialog.findViewById(R.id.cancelDialog);
+        btnSendUtang = dialog.findViewById(R.id.lunasiBtn);
+        pgUtang = dialog.findViewById(R.id.progres);
+        jumlahUtang = dialog.findViewById(R.id.jumlahUtang);
+        String label = getString(R.string.label_dialog_utang);
+        label = label.replace("pengguna", getNama());
+        dialogLabelUtang.setText(label);
+        try {
+            jumlahUtang.convertToIDR(apiHelper.getModal());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        btnCloseUtang.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+        btnSendUtang.setOnClickListener(utangListener);
+
+    }
+
+    private View.OnClickListener utangListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            pgUtang.setVisibility(View.VISIBLE);
+            dialogLinarUtang.setVisibility(View.GONE);
+            Call<ResponseLogin> p = apiService.hutang(user.getsAuth(),getId(),"0","all");
+            p.enqueue(new Callback<ResponseLogin>() {
+                @Override
+                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+                    if (response.isSuccessful())
+                        if (response.body().isStatus())
+                            pgUtang.setVisibility(View.GONE);
+                            dialogLinarUtang.setVisibility(View.VISIBLE);
+                            dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                    pgUtang.setVisibility(View.GONE);
+                    dialogLinarUtang.setVisibility(View.VISIBLE);
+                    t.printStackTrace();
+
+                }
+            });
+        }
+    };
+
 
 
     private void customDialog() {
@@ -457,6 +533,10 @@ public class UserActivity extends AppCompatActivity {
         i.putExtra("halaman", getHal());
         startActivity(i);
         finishAffinity();
+    }
+
+    public void showTotalUtang(View view) {
+        utangDialog();
     }
 
     public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
@@ -497,6 +577,14 @@ public class UserActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull UserViewHolder holder, final int position) {
             holder.mDana.convertToIDR(proyekFiltered.get(position).getDana());
             holder.mNama.setText(proyekFiltered.get(position).getNamaTransaksi());
+            if (proyekFiltered.get(position).getStatus().equals("belum lunas") && proyekFiltered.get(position).getJenis().equals("utang"))
+                holder.mDana.setTextColor(getResources().getColor(R.color.red));
+            else if (proyekFiltered.get(position).getStatus().equals("lunas") && proyekFiltered.get(position).getJenis().equals("utang") )
+                holder.mDana.setTextColor(getResources().getColor(R.color.colorPrimary));
+//            else
+//                holder.mDana.setTextColor(getResources().getColor(R.color.red));
+
+
             holder.mTx.setText(proyekFiltered.get(position).getNamaProyek());
             holder.mTgl.setText(proyekFiltered.get(position).getCreatedDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {

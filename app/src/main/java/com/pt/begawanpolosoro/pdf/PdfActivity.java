@@ -122,7 +122,7 @@ public class PdfActivity extends AppCompatActivity {
                 finish();
             }
         });
-        List<String> dataset = new LinkedList<>(Arrays.asList("PROYEK", "PENGGUNA"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("PEKERJAAN", "PENGGUNA"));
         option.setText("PILIH JENIS PROYEK");
         option.attachDataSource(dataset);
         option.setOnSpinnerItemSelectedListener(opsiListener);

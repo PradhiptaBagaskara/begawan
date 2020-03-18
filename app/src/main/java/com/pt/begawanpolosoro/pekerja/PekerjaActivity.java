@@ -119,7 +119,7 @@ public class PekerjaActivity extends AppCompatActivity {
         namaTx = findViewById(R.id.namaBaru);
         keteranganTx = findViewById(R.id.keterangan);
         jenisBayar = findViewById(R.id.jenisBayar);
-        List<String> dataset = new LinkedList<>(Arrays.asList("KHAS", "BON"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("KHAS", "UTANG"));
         jenisBayar.attachDataSource(dataset);
         String  jen = jenisBayar.getSelectedItem().toString();
         setJenis(jen);
@@ -127,13 +127,13 @@ public class PekerjaActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                setJenis(item);
+                setJenis(item.toLowerCase());
 //                Toast.makeText(getApplicationContext(), "Selected Jenis: " + item, Toast.LENGTH_SHORT).show();
             }
         });
         totalDana = findViewById(R.id.totalTx);
         opsi = findViewById(R.id.roleBaru);
-        opsi.setText("BELUM ADA PROYEK");
+        opsi.setText(getString(R.string.belum_ada_pekerjaan));
         loadProyek();
 
 

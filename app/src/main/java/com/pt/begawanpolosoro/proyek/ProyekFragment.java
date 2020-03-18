@@ -56,6 +56,8 @@ public class ProyekFragment extends Fragment {
         searchView = v.findViewById(R.id.cari_user);
         searchView.clearFocus();
         none = v.findViewById(R.id.none);
+        TextView title = getActivity().findViewById(R.id.title);
+        title.setText("PEKERJAAN");
 
 
 

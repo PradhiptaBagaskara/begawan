@@ -64,6 +64,8 @@ public class TransaksiUserFragment extends Fragment {
         bottomNavigationBar = getActivity().findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar.setAutoHideEnabled(true);
         vAktifitas = v.findViewById(R.id.none);
+        TextView title = getActivity().findViewById(R.id.title);
+        title.setText("TRANSAKSI");
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -211,6 +213,10 @@ public class TransaksiUserFragment extends Fragment {
             holder.mNama.setText(filteredItem.get(position).getNamaTransaksi());
             holder.mTx.setText(filteredItem.get(position).getNamaProyek());
             holder.mTgl.setText(filteredItem.get(position).getCreatedDate());
+            if (filteredItem.get(position).getStatus().equals("belum lunas") && filteredItem.get(position).getJenis().equals("utang"))
+                holder.mDana.setTextColor(getResources().getColor(R.color.red));
+            else if (filteredItem.get(position).getStatus().equals("lunas") && filteredItem.get(position).getJenis().equals("utang") )
+                holder.mDana.setTextColor(getResources().getColor(R.color.colorPrimary));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

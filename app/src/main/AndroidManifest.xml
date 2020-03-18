@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:allowBackup="true"
@@ -21,9 +22,9 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysVisible"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".pekerja.TambahSaldoActivity"></activity>
-        <activity android:name=".gaji.GajiDetailActivity" />
-
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
         <provider
             android:name=".adapter.GenericFileProvider"
             android:authorities="${applicationId}.provider"
@@ -33,6 +34,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <activity android:name=".pekerja.TambahSaldoActivity"/>
+        <activity android:name=".gaji.GajiDetailActivity" />
+
+
 
         <activity
             android:name=".setting.SettingsActivity"

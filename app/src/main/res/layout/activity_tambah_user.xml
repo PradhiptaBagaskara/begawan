@@ -132,9 +132,7 @@
                 android:layout_height="wrap_content"
                 android:text="KIRIM"
                 android:gravity="center"
-                android:textColor="@color/whiteOri"
-                android:background="@drawable/gradient_btn"/>
-            "/>
+                android:textColor="@color/whiteOri"/>
         </RelativeLayout>
 
 

@@ -10,6 +10,17 @@ public class ResponseUpdate{
 	@SerializedName("size")
 	private String size;
 
+	public long getBytes() {
+		return bytes;
+	}
+
+	public void setBytes(long bytes) {
+		this.bytes = bytes;
+	}
+
+	@SerializedName("bytes")
+	private long bytes;
+
 	@SerializedName("updateRequired")
 	private boolean updateRequired;
 

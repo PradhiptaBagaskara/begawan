@@ -8,6 +8,7 @@ import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseGaji;
 import com.pt.begawanpolosoro.pekerja.gaji.api.ResponseStatusGaji;
 import com.pt.begawanpolosoro.proyek.api.ResponseInsertProyek;
 import com.pt.begawanpolosoro.proyek.api.ResponseProyek;
+import com.pt.begawanpolosoro.update.ResponseUpdate;
 import com.pt.begawanpolosoro.user.api.ResponseUser;
 
 import okhttp3.MultipartBody;
@@ -69,8 +70,18 @@ public interface ApiService {
                                     @Field("id") String id,
                                     @Field("param") String Param);
 
+    @FormUrlEncoded
+    @POST("api/hutang")
+    Call<ResponseLogin> hutang (@Field("auth_key") String auth,
+                                @Field("id") String id,
+                                @Field("jumlah") String jumlah,
+                                @Field("param") String Param);
+
     @GET("api/proyek")
     Call<ResponseProyek> getProyek(@Query("auth_key") String auth);
+
+    @GET("api/version")
+    Call<ResponseUpdate> getUpdate(@Query("param") String param);
 
     @GET("api/proyek")
     Call<ResponseProyek> getProyekId(@Query("auth_key") String auth,
