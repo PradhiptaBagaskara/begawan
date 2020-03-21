@@ -108,7 +108,7 @@ public class UserActivity extends AppCompatActivity {
     Button share, reset, delete;
     TextViewRupiah jumlahUtang;
 
-    TextView vNama, vAktifitas, dialogLabelUtang;
+    TextView vNama, vAktifitas, dialogLabelUtang, tc;
     Button btnCloseUtang, btnSendUtang;
     LinearLayout dialogLinarUtang;
     ProgressBar pgUtang;
@@ -425,6 +425,7 @@ public class UserActivity extends AppCompatActivity {
                             UserAdapter Tadapter = new UserAdapter(TxItem);
                             recyclerView.setAdapter(Tadapter);
                             vAktifitas.setVisibility(View.GONE);
+                            Tadapter.notifyDataSetChanged();
 
                         }
 
@@ -454,12 +455,24 @@ public class UserActivity extends AppCompatActivity {
         dialogLinarUtang = dialog.findViewById(R.id.linierBtn);
         dialogLabelUtang = dialog.findViewById(R.id.dialoglabelNama);
         btnCloseUtang = dialog.findViewById(R.id.cancelDialog);
+        tc  = dialog.findViewById(R.id.kodeVerif);
         btnSendUtang = dialog.findViewById(R.id.lunasiBtn);
         pgUtang = dialog.findViewById(R.id.progres);
         jumlahUtang = dialog.findViewById(R.id.jumlahUtang);
-        String label = getString(R.string.label_dialog_utang);
-        label = label.replace("pengguna", getNama());
-        dialogLabelUtang.setText(label);
+        int ut = Integer.parseInt(apiHelper.getModal());
+
+        if (ut < 1){
+            btnSendUtang.setVisibility(View.GONE);
+            tc.setVisibility(View.GONE);
+            dialogLabelUtang.setText("Tidak Ada Hutang Yang Perlu Dibayar!");
+
+        }else {
+            String label = getString(R.string.label_dialog_utang);
+            label = label.replace("pengguna", getNama());
+            dialogLabelUtang.setText(label);
+            btnSendUtang.setOnClickListener(utangListener);
+
+        }
         try {
             jumlahUtang.convertToIDR(apiHelper.getModal());
         }catch (Exception e){
@@ -467,7 +480,6 @@ public class UserActivity extends AppCompatActivity {
         }
         btnCloseUtang.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
-        btnSendUtang.setOnClickListener(utangListener);
 
     }
 
@@ -484,6 +496,7 @@ public class UserActivity extends AppCompatActivity {
                         if (response.body().isStatus())
                             pgUtang.setVisibility(View.GONE);
                             dialogLinarUtang.setVisibility(View.VISIBLE);
+                            loadTx();
                             dialog.dismiss();
                     Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                 }
@@ -524,6 +537,7 @@ public class UserActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadSaldo();
+        loadTx();
     }
 
     @Override

@@ -65,6 +65,8 @@ public class GajiDetailActivity extends AppCompatActivity {
         downloadUtil = new DownloadUtil(getApplicationContext());
         initRetro = new InitRetro(getApplicationContext());
         apiHelper.setModal("10");
+        back = findViewById(R.id.back);
+        back.setOnClickListener(v -> finish());
 
 
         if (extra.getExtras().getSerializable("data") != null){

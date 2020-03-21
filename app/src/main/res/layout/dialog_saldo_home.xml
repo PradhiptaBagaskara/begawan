@@ -46,8 +46,8 @@
                 android:id="@+id/catatan"
                 android:layout_width="match_parent"
                 android:hint="@string/masukan_catatan"
-                android:maxLines="3"
-                android:minLines="3"
+                android:maxLength="50"
+                app:met_helperText="max. 50 karakter"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="wrap_content"

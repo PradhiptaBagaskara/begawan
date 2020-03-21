@@ -154,6 +154,7 @@ public class HomeAdminFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +179,7 @@ public class HomeAdminFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadTx();
+        loadSaldo();
         Log.i(TAG, "onResume: "+user.getsNama());
 
     }

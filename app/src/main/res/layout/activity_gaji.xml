@@ -114,6 +114,9 @@
                 android:focusedByDefault="false"
                 android:hint="Masukan Catatan"
                 android:layout_marginBottom="15dp"
+                app:met_helperText="max. 50 karakter"
+                app:met_helperTextColor="@color/black"
+                android:maxLength="50"
                 android:fontFamily="@font/worksans_regular"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

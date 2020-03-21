@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="DETAIL PROYEK"
+                android:text="DETAIL PEKERJAAN"
                 android:textColor="@color/white"
                 android:fontFamily="@font/sf_bold"
                 android:layout_marginTop="5dp"
@@ -102,7 +102,7 @@
                         android:fontFamily="@font/worksans_bold"
                         android:textSize="15sp"
                         android:layout_marginBottom="10dp"
-                        android:text="Aktifitas Proyek "/>
+                        android:text="Aktifitas Pekerjaan "/>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_marginTop="10dp"

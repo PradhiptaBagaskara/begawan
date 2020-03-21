@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 android {
     signingConfigs {
@@ -17,8 +19,8 @@ android {
         applicationId "com.pt.begawanpolosoro"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.1.0"
+        versionCode 3
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -41,8 +43,8 @@ android {
     productFlavors {
         versionName {
             dimension = 'defaultConfig'
-            versionCode = 2
-            versionName = '1.1.0'
+            versionCode = 3
+            versionName = '1.1.1'
             targetSdkVersion 29
             minSdkVersion 21
             applicationId = 'com.pt.begawanpolosoro'
@@ -91,5 +93,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta02'
+
 
 }

@@ -3,9 +3,12 @@ package com.pt.begawanpolosoro.proyek;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -68,6 +72,17 @@ public class TambahProyekActivity extends AppCompatActivity {
 
     String ctt;
     SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE, dd MMMM yyyy", locale);
+    CoordinatorLayout rootView;
+
+    public boolean isKeyboardStatus() {
+        return keyboardStatus;
+    }
+
+    public void setKeyboardStatus(boolean keyboardStatus) {
+        this.keyboardStatus = keyboardStatus;
+    }
+
+    boolean keyboardStatus;
 
 
     @Override
@@ -84,6 +99,7 @@ public class TambahProyekActivity extends AppCompatActivity {
         user = new CurrentUser(getApplicationContext());
         apiService = initRetro.InitApi().create(ApiService.class);
 
+        rootView = findViewById(R.id.rootView);
 
         title = findViewById(R.id.title);
         title.setText("TAMBAH PEKERJAAN");
@@ -104,6 +120,33 @@ public class TambahProyekActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         back.setOnClickListener(v -> finish());
         btn.setOnClickListener(sendProyek);
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootView.getRootView().getHeight();
+
+                // r.bottom is the position above soft keypad or device button.
+                // if keypad is shown, the r.bottom is smaller than that before.
+                int keypadHeight = screenHeight - r.bottom;
+                Log.d(TAG, "keypadHeight = " + keypadHeight);
+
+                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                    // keyboard is opened
+                    if (!isKeyboardStatus()) {
+                        setKeyboardStatus(true);
+                    }
+                }
+                else {
+                    // keyboard is closed
+                    if (isKeyboardStatus()) {
+                        setKeyboardStatus(false);
+                    }
+                }
+            }
+        });
 
 
     }
@@ -191,11 +234,7 @@ public class TambahProyekActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
+
 
     private View.OnClickListener sendProyek = new View.OnClickListener() {
         @Override

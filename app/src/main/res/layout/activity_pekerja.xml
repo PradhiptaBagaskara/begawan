@@ -65,10 +65,9 @@
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/namaBaru"
                     android:backgroundTint="@color/light_gray"
-                    app:met_floatingLabelText="nama transaksi"
+                    app:met_floatingLabelText="max. 50 karakter"
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelTextColor="@color/darkBlue"
-                    app:met_iconLeft="@drawable/ic_add_user"
                     android:layout_width="match_parent"
                     app:met_underlineColor="@color/lightBlue"
                     app:met_helperText="Contoh: pembelian bahan pondasi"
@@ -82,7 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
-
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -95,15 +93,13 @@
                 <com.rengwuxian.materialedittext.MaterialEditText
                     android:id="@+id/keterangan"
                     android:backgroundTint="@color/light_gray"
-                    app:met_floatingLabelText="barang yang dibeli"
+                    app:met_floatingLabelText="Catatan Pembelian (opsional)"
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelTextColor="@color/darkBlue"
-                    app:met_iconLeft="@drawable/ic_add_user"
                     android:layout_width="match_parent"
                     app:met_underlineColor="@color/lightBlue"
-                    android:inputType="textMultiLine"
-                    app:met_helperText="Masukan Catatan (opsional)"
-                    android:focusedByDefault="false"
+                    app:met_helperText="max. 50 karakter"
+                    android:maxLength="50"
                     app:met_helperTextColor="@color/black"
                     android:hint="catatan untuk pembelian"
                     android:layout_marginBottom="15dp"
