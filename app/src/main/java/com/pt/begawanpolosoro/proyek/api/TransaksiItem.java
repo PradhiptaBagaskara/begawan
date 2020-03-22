@@ -2,13 +2,12 @@ package com.pt.begawanpolosoro.proyek.api;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TransaksiItem{
+import java.io.Serializable;
+
+public class TransaksiItem implements Serializable {
 
 	@SerializedName("keterangan")
 	private String keterangan;
-
-	@SerializedName("role")
-	private String role;
 
 	@SerializedName("nama")
 	private String nama;
@@ -16,14 +15,12 @@ public class TransaksiItem{
 	@SerializedName("jenis")
 	private String jenis;
 
+
+	@SerializedName("status")
+	private String status;
+
 	@SerializedName("nama_transaksi")
 	private String namaTransaksi;
-
-	@SerializedName("saldo")
-	private String saldo;
-
-	@SerializedName("created_date")
-	private String createdDate;
 
 	@SerializedName("id")
 	private String id;
@@ -34,6 +31,28 @@ public class TransaksiItem{
 	@SerializedName("dana")
 	private String dana;
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	@SerializedName("file_name")
+	private String fileName;
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@SerializedName("created_date")
+	private String createdDate;
+
 	public void setKeterangan(String keterangan){
 		this.keterangan = keterangan;
 	}
@@ -42,14 +61,13 @@ public class TransaksiItem{
 		return keterangan;
 	}
 
-	public void setRole(String role){
-		this.role = role;
+	public String getStatus() {
+		return status;
 	}
 
-	public String getRole(){
-		return role;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-
 	public void setNama(String nama){
 		this.nama = nama;
 	}
@@ -72,22 +90,6 @@ public class TransaksiItem{
 
 	public String getNamaTransaksi(){
 		return namaTransaksi;
-	}
-
-	public void setSaldo(String saldo){
-		this.saldo = saldo;
-	}
-
-	public String getSaldo(){
-		return saldo;
-	}
-
-	public void setCreatedDate(String createdDate){
-		this.createdDate = createdDate;
-	}
-
-	public String getCreatedDate(){
-		return createdDate;
 	}
 
 	public void setId(String id){
@@ -115,19 +117,17 @@ public class TransaksiItem{
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"TransaksiItem{" + 
-			"keterangan = '" + keterangan + '\'' + 
-			",role = '" + role + '\'' + 
-			",nama = '" + nama + '\'' + 
-			",jenis = '" + jenis + '\'' + 
-			",nama_transaksi = '" + namaTransaksi + '\'' + 
-			",saldo = '" + saldo + '\'' + 
-			",created_date = '" + createdDate + '\'' + 
-			",id = '" + id + '\'' + 
-			",nama_proyek = '" + namaProyek + '\'' + 
-			",dana = '" + dana + '\'' + 
-			"}";
-		}
+	public String toString(){
+		return
+				"ResultItem{" +
+						"keterangan = '" + keterangan + '\'' +
+						",nama = '" + nama + '\'' +
+						",jenis = '" + jenis + '\'' +
+						",nama_transaksi = '" + namaTransaksi + '\'' +
+						",id = '" + id + '\'' +
+						",nama_proyek = '" + namaProyek + '\'' +
+						",dana = '" + dana + '\'' +
+						",created_date = '" + createdDate + '\'' +
+						"}";
+	}
 }

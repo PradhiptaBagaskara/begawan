@@ -154,6 +154,9 @@ public class TambahProyekActivity extends AppCompatActivity {
     private View.OnClickListener tglStart = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (isKeyboardStatus()){
+                hideKeyboard();
+            }
             configTgl(setStartTgl);
 
         }
@@ -162,6 +165,9 @@ public class TambahProyekActivity extends AppCompatActivity {
     private View.OnClickListener tglEnd = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (isKeyboardStatus()){
+                hideKeyboard();
+            }
             configTgl(setTglEnd);
         }
     };

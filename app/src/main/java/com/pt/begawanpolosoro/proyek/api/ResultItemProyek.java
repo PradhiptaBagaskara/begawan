@@ -2,7 +2,9 @@ package com.pt.begawanpolosoro.proyek.api;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResultItemProyek {
+import java.io.Serializable;
+
+public class ResultItemProyek implements Serializable {
 
 	@SerializedName("sisa_modal")
 	private String sisaModal;

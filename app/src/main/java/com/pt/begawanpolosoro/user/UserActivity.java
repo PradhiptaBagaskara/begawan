@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.congfandi.lib.TextViewRupiah;
 import com.google.android.material.snackbar.Snackbar;
@@ -107,7 +109,7 @@ public class UserActivity extends AppCompatActivity {
     LinearLayout linierBtn;
     Button share, reset, delete;
     TextViewRupiah jumlahUtang;
-
+    SwipeRefreshLayout refresh;
     TextView vNama, vAktifitas, dialogLabelUtang, tc;
     Button btnCloseUtang, btnSendUtang;
     LinearLayout dialogLinarUtang;
@@ -149,6 +151,20 @@ public class UserActivity extends AppCompatActivity {
         intent = getIntent();
         apiService = InitRetro.InitApi().create(ApiService.class);
         downloadUtil = new DownloadUtil(getApplicationContext());
+        refresh = findViewById(R.id.refresh);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadSaldo();
+                loadTx();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refresh.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
 
         user = new CurrentUser(getApplicationContext());
         customDialog();
@@ -490,21 +506,22 @@ public class UserActivity extends AppCompatActivity {
         public void onClick(View v) {
             pgUtang.setVisibility(View.VISIBLE);
             dialogLinarUtang.setVisibility(View.GONE);
-            Call<ResponseLogin> p = apiService.hutang(user.getsAuth(),getId(),"0","all");
-            p.enqueue(new Callback<ResponseLogin>() {
+            Call<ResponseSaldo> p = apiService.hutang(user.getsAuth(),getId(),"0","all");
+            p.enqueue(new Callback<ResponseSaldo>() {
                 @Override
-                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
-                    if (response.isSuccessful())
-                        if (response.body().isStatus())
-                            pgUtang.setVisibility(View.GONE);
-                            dialogLinarUtang.setVisibility(View.VISIBLE);
-                            loadTx();
-                            dialog.dismiss();
+                public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
+                    if (response.isSuccessful() && response.body().isStatus()) {
+                        pgUtang.setVisibility(View.GONE);
+                        dialogLinarUtang.setVisibility(View.VISIBLE);
+                        loadTx();
+                        dialog.dismiss();
+                    }
+
                     Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                 }
 
                 @Override
-                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                public void onFailure(Call<ResponseSaldo> call, Throwable t) {
                     pgUtang.setVisibility(View.GONE);
                     dialogLinarUtang.setVisibility(View.VISIBLE);
                     t.printStackTrace();
@@ -549,7 +566,7 @@ public class UserActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra("halaman", getHal());
+        i.putExtra("halaman", "2");
         startActivity(i);
     }
 

@@ -31,7 +31,8 @@ import com.pt.begawanpolosoro.R;
 import com.pt.begawanpolosoro.adapter.DownloadUtil;
 import com.pt.begawanpolosoro.adapter.InitRetro;
 import com.pt.begawanpolosoro.adapter.ResultItemTx;
-import com.pt.begawanpolosoro.login.api.ResponseLogin;
+import com.pt.begawanpolosoro.home.api.ResponseSaldo;
+import com.pt.begawanpolosoro.proyek.api.TransaksiItem;
 import com.pt.begawanpolosoro.util.ApiHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
@@ -123,8 +124,28 @@ public class TxDetailActivity extends AppCompatActivity {
 
 
 
-        }else {
+        }else if (extra.hasExtra("tx")){
+            TransaksiItem dt = (TransaksiItem) extra.getSerializableExtra("tx");
+            apiHelper.setNama(dt.getNama());
+            apiHelper.setModal(dt.getDana());
+            apiHelper.setId_(dt.getId());
+            apiHelper.setModal(dt.getDana());
+            nama.setText(dt.getNama());
+            namaTx.setText(dt.getNamaTransaksi());
+            jenisBayar.setText(dt.getJenis());
+            tgl.setText(dt.getCreatedDate());
+            total.convertToIDR(dt.getDana());
+            String ket = dt.getKeterangan();
+            pelunasan.setText(dt.getStatus());
+            apiHelper.setStatus(dt.getStatus());
 
+            jenisTx.setText(ket);
+            namaP.setText(dt.getNamaProyek());
+            apiHelper.setImgPath(downloadUtil.mediaPaths+getString(R.string.img_dir)+"/" + dt.getFileName());
+
+            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/transaksi/"+dt.getFileName());
+            apiHelper.setFname(dt.getFileName());
+        }else {
             finish();
         }
         if (!apiHelper.getStatus().equals("lunas") && user.getRole() > 1){
@@ -190,10 +211,10 @@ public class TxDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             pgUtang.setVisibility(View.VISIBLE);
             dialogLinarUtang.setVisibility(View.GONE);
-            Call<ResponseLogin> p = initRetro.apiRetro().hutang(user.getsAuth(),apiHelper.getId_(),apiHelper.getModal(),"single");
-            p.enqueue(new Callback<ResponseLogin>() {
+            Call<ResponseSaldo> p = initRetro.apiRetro().hutang(user.getsAuth(),apiHelper.getId_(),apiHelper.getModal(),"single");
+            p.enqueue(new Callback<ResponseSaldo>() {
                 @Override
-                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+                public void onResponse(Call<ResponseSaldo> call, Response<ResponseSaldo> response) {
                     pgUtang.setVisibility(View.GONE);
                     dialogLinarUtang.setVisibility(View.VISIBLE);
                     if (response.isSuccessful())
@@ -204,7 +225,7 @@ public class TxDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                public void onFailure(Call<ResponseSaldo> call, Throwable t) {
                     pgUtang.setVisibility(View.GONE);
                     dialogLinarUtang.setVisibility(View.VISIBLE);
                     t.printStackTrace();

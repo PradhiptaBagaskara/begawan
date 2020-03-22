@@ -72,7 +72,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("api/hutang")
-    Call<ResponseLogin> hutang (@Field("auth_key") String auth,
+    Call<ResponseSaldo> hutang (@Field("auth_key") String auth,
                                 @Field("id") String id,
                                 @Field("jumlah") String jumlah,
                                 @Field("param") String Param);

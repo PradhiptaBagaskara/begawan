@@ -6,7 +6,12 @@
     android:id="@+id/userActivity"
     android:layout_height="match_parent"
     tools:context=".user.UserActivity">
-        <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/refresh">
+
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -224,6 +229,7 @@
             </LinearLayout>
 
         </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 

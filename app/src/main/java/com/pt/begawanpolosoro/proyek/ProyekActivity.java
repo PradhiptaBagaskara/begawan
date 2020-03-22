@@ -283,6 +283,7 @@ public class ProyekActivity extends AppCompatActivity {
                                 intent.putExtra("catatan", getsCatatan());
                                 intent.putExtra("tglstart", apiHelper.getTglMulai());
                                 intent.putExtra("tglend", apiHelper.getTglSelesai());
+//                                intent.putExtra("data", proyek.get(0));
 
                                 startActivity(intent);
                             }
@@ -291,6 +292,7 @@ public class ProyekActivity extends AppCompatActivity {
                             List<TransaksiItem> tx = response.body().getTransaksi();
                             UserAdapter adapter = new UserAdapter(tx);
                             recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                             noneAktifitas.setVisibility(View.GONE);
 
                         }else {
@@ -312,6 +314,13 @@ public class ProyekActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProyek();
+
     }
 
     public class EditModal extends ProyekActivity {
@@ -508,19 +517,17 @@ public class ProyekActivity extends AppCompatActivity {
             holder.mNama.setText(proyekFiltered.get(position).getNamaTransaksi());
             holder.mTx.setText(proyekFiltered.get(position).getNama());
             holder.mTgl.setText(proyekFiltered.get(position).getCreatedDate());
+            if (proyekFiltered.get(position).getStatus().equals("belum lunas") && proyekFiltered.get(position).getJenis().equals("utang"))
+                holder.mDana.setTextColor(getResources().getColor(R.color.red));
+            else if (proyekFiltered.get(position).getStatus().equals("lunas") && proyekFiltered.get(position).getJenis().equals("utang") )
+                holder.mDana.setTextColor(getResources().getColor(R.color.colorPrimary));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Intent intent = new Intent(ProyekActivity.this, TxDetailActivity.class);
-                    intent.putExtra("id", proyekFiltered.get(position).getId());
-                    intent.putExtra("nama", proyekFiltered.get(position).getNama());
-                    intent.putExtra("nama_tx", proyekFiltered.get(position).getNamaTransaksi());
-                    intent.putExtra("nama_proyek", proyekFiltered.get(position).getNamaProyek());
-                    intent.putExtra("jenis_bayar", proyekFiltered.get(position).getJenis());
-                    intent.putExtra("dana", proyekFiltered.get(position).getDana());
-                    intent.putExtra("keterangan", proyekFiltered.get(position).getKeterangan());
-                    intent.putExtra("waktu", proyekFiltered.get(position).getCreatedDate());
+
+                    intent.putExtra("tx", proyekFiltered.get(position));
                     startActivity(intent);
 
 

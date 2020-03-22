@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 
 import com.congfandi.lib.EditTextRupiah;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -55,9 +58,15 @@ public class TambahSaldoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_saldo);
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(),R.color.my_statusbar_color));
         initRetro = new InitRetro(getApplicationContext());
         user = new CurrentUser(getApplicationContext());
         Intent extra = getIntent();
+        back = findViewById(R.id.back);
+        back.setOnClickListener(v -> finish());
         apiHelper.setImgPath("");
         if (extra.hasExtra("id")){
             apiHelper.setId_(extra.getStringExtra("id"));
