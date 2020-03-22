@@ -327,8 +327,10 @@ public class UserActivity extends AppCompatActivity {
                                 pgReset.setVisibility(View.GONE);
                                 if (response.isSuccessful())
                                     if (response.body().isStatus())
-                                        finish();
-                                Toast.makeText(v.getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                                        userForm.dismiss();
+                                        onBackPressed();
+//                                        finish();
+                                Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -544,9 +546,11 @@ public class UserActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("halaman", getHal());
         startActivity(i);
-        finishAffinity();
     }
 
     public void showTotalUtang(View view) {
