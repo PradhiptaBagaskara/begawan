@@ -19,6 +19,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -138,7 +139,7 @@ public interface ApiService {
                                       );
 
     @FormUrlEncoded
-    @POST("api/user")
+    @PUT("api/user")
     Call<ResponseLogin> updateUser(@Field("auth_key") String auth,
                                     @Field("password") String password,
                                     @Field("nama") String nama);
@@ -156,7 +157,7 @@ public interface ApiService {
     @GET("api/gaji")
     Call<ResponseGaji> allGaji(@Query("auth_key") String auth,
                                   @Query("param") String param,
-                               @Query("limit")  String limit);
+                               @Query("limit")  String limits);
     @Multipart
     @POST("api/gaji")
     Call<ResponseGaji> postGaji (@Part("auth_key") RequestBody auth,

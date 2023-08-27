@@ -118,7 +118,7 @@ public class TxDetailActivity extends AppCompatActivity {
             namaP.setText(dt.getNamaProyek());
             apiHelper.setImgPath(downloadUtil.mediaPaths+getString(R.string.img_dir)+"/" + dt.getFileName());
 
-            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/transaksi/"+dt.getFileName());
+            apiHelper.setImgUrl(initRetro.getBaseUrl()+"uploads/transaksi/"+dt.getFileName());
             apiHelper.setFname(dt.getFileName());
 
 
@@ -143,7 +143,7 @@ public class TxDetailActivity extends AppCompatActivity {
             namaP.setText(dt.getNamaProyek());
             apiHelper.setImgPath(downloadUtil.mediaPaths+getString(R.string.img_dir)+"/" + dt.getFileName());
 
-            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/transaksi/"+dt.getFileName());
+            apiHelper.setImgUrl(initRetro.getBaseUrl()+"uploads/transaksi/"+dt.getFileName());
             apiHelper.setFname(dt.getFileName());
         }else {
             finish();

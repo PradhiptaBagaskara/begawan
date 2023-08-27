@@ -5,9 +5,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -26,14 +35,17 @@ public class InitRetro {
 
     private  static Retrofit retrofit = null;
     private static final String TAG = "ServiceGenerator";
-//    public static final String BASE_URL = "http://192.168.0.8/";
-    public static final String BASE_URL = "https://begawanpolosoro.com/";
+//    public static final String BASE_URL = "http://192.168.1.2:8080/";
+    public static final String BASE_URL = "https://emp.blankontech.com/";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";
     public static final String HEADER_PRAGMA = "Pragma";
 
 
     private static final long cacheSize = 15 * 1024 * 1024; // 5 MB
 
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
     public InitRetro(Context mContext){
         this.context = mContext;
 
@@ -51,7 +63,7 @@ public class InitRetro {
 
     private static Retrofit retrofit(){
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(getBaseUrl())
                 .client(okHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -122,7 +134,7 @@ public class InitRetro {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Log.d(TAG, "network interceptor: called.");
+                Log.i(TAG, "network interceptor: called.");
 
                 Response response = chain.proceed(chain.request());
 
@@ -147,7 +159,7 @@ public class InitRetro {
                     @Override
                     public void log (String message)
                     {
-                        Log.d(TAG, "log: http log: " + message);
+                        Log.i(TAG, "log: http log: " + message);
                     }
                 } );
         httpLoggingInterceptor.setLevel( HttpLoggingInterceptor.Level.BODY);

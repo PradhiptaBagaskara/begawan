@@ -379,7 +379,7 @@ public class UserActivity extends AppCompatActivity {
             userForm.dismiss();
 
             String shareBody = "Selamat " + getNama() +"! Login anda telah di buat.\n \nUsername: " +getUsername()+"\nPassword: "+ passwordDefault
-                    + "\n\nDownload Aplikasi di https://begawanpolosoro.com/app/download";
+                    + "\n\nDownload Aplikasi di "+ InitRetro.getBaseUrl() +"app/download";
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
 //            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");

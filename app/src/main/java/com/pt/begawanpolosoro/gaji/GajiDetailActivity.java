@@ -80,7 +80,7 @@ public class GajiDetailActivity extends AppCompatActivity {
             apiHelper.setTglSelesai(data.getCreatedDate());
             apiHelper.setModal(data.getGaji());
             apiHelper.setFname(data.getFileName());
-            apiHelper.setImgUrl(initRetro.BASE_URL+"uploads/gaji/"+data.getFileName());
+            apiHelper.setImgUrl(initRetro.getBaseUrl()+"uploads/gaji/"+data.getFileName());
         }else {
          finish();
          Log.i(TAG, "onCreate: list" +"no data");

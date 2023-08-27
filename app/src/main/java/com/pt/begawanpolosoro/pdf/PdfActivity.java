@@ -73,7 +73,7 @@ public class PdfActivity extends AppCompatActivity {
     String id;
 
     public String getUrl() {
-        return initRetro.BASE_URL+url;
+        return InitRetro.getBaseUrl()+url;
     }
 
     public void setUrl(String url) {

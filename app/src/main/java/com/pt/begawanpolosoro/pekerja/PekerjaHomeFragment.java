@@ -2,15 +2,18 @@ package com.pt.begawanpolosoro.pekerja;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +77,9 @@ public class PekerjaHomeFragment extends Fragment {
         user = new CurrentUser(getActivity());
         nama = v.findViewById(R.id.nama);
         userSetting = v.findViewById(R.id.userSetting);
-        userSetting.setOnClickListener(showEditProfil);
+        userSetting.setVisibility(View.INVISIBLE);
+//        profilDialog(getActivity());
+//        userSetting.setOnClickListener(showEditProfil);
         none = v.findViewById(R.id.none);
 
         TextView title = getActivity().findViewById(R.id.title);
@@ -127,6 +132,27 @@ public class PekerjaHomeFragment extends Fragment {
 
         }
     };
+
+    private void profilDialog(Context context) {
+        profilForm = new Dialog(context);
+        profilForm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        profilForm.setContentView(R.layout.dialog_edit_home);
+        profilForm.setCancelable(true);
+        profilForm.getWindow().setBackgroundDrawableResource(R.color.transparant);
+        profilForm.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pgProfil = profilForm.findViewById(R.id.progresProfil);
+        pgProfil.setVisibility(View.GONE);
+        edtUname = profilForm.findViewById(R.id.dialogUname);
+        edtNama = profilForm.findViewById(R.id.dialogNama);
+        labelPass = profilForm.findViewById(R.id.dialoglaabelPass);
+        labelPass.setVisibility(View.GONE);
+        edtPass= profilForm.findViewById(R.id.dialogPassword);
+        btnBatalProfil = profilForm.findViewById(R.id.cancelDialog);
+        btnSaveProfil = profilForm.findViewById(R.id.saveDialog);
+        edtNama.setText(user.getsNama());
+        edtUname.setVisibility(View.GONE);
+    }
+
 
     private View.OnClickListener updateProfil = new View.OnClickListener() {
 
