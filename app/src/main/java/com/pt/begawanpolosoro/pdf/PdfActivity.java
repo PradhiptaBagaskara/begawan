@@ -108,7 +108,7 @@ public class PdfActivity extends AppCompatActivity {
         setUrl("");
         setParam("");
         setId("");
-        downloadUtil = new DownloadUtil(this);
+        downloadUtil = new DownloadUtil(getApplicationContext());
 
         option = findViewById(R.id.laporanBaru);
 
@@ -160,8 +160,9 @@ public class PdfActivity extends AppCompatActivity {
             }else {
 
             downloadBtn.setVisibility(View.GONE);
-            pg.setVisibility(View.VISIBLE);
             getPdf(getId(), getParam());
+
+            pg.setVisibility(View.VISIBLE);
 
             }
 
@@ -294,6 +295,7 @@ public class PdfActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Terjadi Kesalahan! Coba lagi nanti", Toast.LENGTH_LONG).show();
 
                 downloadBtn.setVisibility(View.VISIBLE);
+                Log.e("error when downloading", "onFailure: ", t);
                 t.printStackTrace();
 
             }

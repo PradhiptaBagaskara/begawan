@@ -273,6 +273,30 @@ public class DownloadUtil {
 
     }
 
+    public void openPDF(File file){
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+        String type = mime.getMimeTypeFromExtension(ext);
+        Log.d(TAG, "openpdf: mime "+ type);
+        try {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri contentUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
+                i.setDataAndType(contentUri, type);
+            } else {
+                i.setDataAndType(Uri.fromFile(file), type);
+            }
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        } catch (ActivityNotFoundException anfe) {
+            Toast.makeText(context, "Versi Android Tidak Compatible! Silakan buka PDF di " + Uri.fromFile(file).toString(), Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
 
     public long startPrDOwnloader(String url, String fname){
         // Enabling database for resume support even after the application is killed:
@@ -292,35 +316,11 @@ public class DownloadUtil {
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
+                        Log.d(TAG, "onDownloadComplete: download complete");
+                        Toast.makeText(context, "Download Selesai", Toast.LENGTH_SHORT).show();
+                        File file = new File(laporanPath+File.separator+fname);
+                        openPDF(file);
 
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-
-                        alertDialog.setTitle("Download Sukses!");
-                        alertDialog.setCancelable(true);
-                        alertDialog
-                                .setMessage("Apakah anda ingin membuka file?")
-                                .setIcon(R.mipmap.ic_icon_round)
-                                .setCancelable(false)
-                                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-
-                                        Intent intent = new Intent(context, PdfReaderActivity.class);
-                                        intent.putExtra("file", path+context.getString(R.string.pt_name)+"/"+fname);
-                                        context.startActivity(intent);
-
-
-                                    }
-                                })
-                                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // jika tombol ini diklik, akan menutup dialog
-                                        // dan tidak terjadi apa2
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog dialog = alertDialog.create();
-                        alertDialog.show();
-                        Log.d("download" , "complete: "+fname);
                     }
 
                     @Override
