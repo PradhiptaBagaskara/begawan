@@ -148,7 +148,7 @@ public interface ApiService {
     Call<ResponseLogin> newUser(@Field("auth_key") String auth,
                                 @Field("nama") String nama,
                                 @Field("role") String role,
-                                    @Field("saldo") String  Saldo);
+                                @Field("saldo") String  Saldo);
 
 
     @GET("api/gaji")

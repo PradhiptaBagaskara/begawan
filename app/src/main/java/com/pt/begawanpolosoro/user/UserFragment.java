@@ -1,5 +1,6 @@
 package com.pt.begawanpolosoro.user;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -147,14 +148,14 @@ public class UserFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
             holder.mDana.convertToIDR(filteredUser.get(position).getSaldo());
             holder.mNama.setText(filteredUser.get(position).getNama());
             holder.mTx.setText(filteredUser.get(position).getUsername());
             int role = Integer.parseInt(filteredUser.get(position).getRole());
-            if (role == 0){
+            if (role == 1){
                 holder.mRole.setText("karyawan");
-            }else if (role == 1){
+            }else if (role == 2){
                 holder.mRole.setText("pelaksana");
                 holder.mRole.setTextColor(getResources().getColor(R.color.colorPrimary));
             }else {

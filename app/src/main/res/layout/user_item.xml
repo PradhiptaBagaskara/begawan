@@ -31,34 +31,38 @@
 
 
             <LinearLayout
+                android:id="@+id/user_info_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginRight="5dp"
+                android:layout_weight="1"
                 android:divider="?android:dividerHorizontal"
-                android:showDividers="middle"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:showDividers="middle">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/txNameUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/worksans_bold"
-                        android:textSize="15sp"
                         android:layout_marginBottom="1dp"
-                        android:text="nama user"/>
+                        android:fontFamily="@font/worksans_bold"
+                        android:text="nama user"
+                        android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/txName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:textSize="12sp"
                         android:fontFamily="@font/worksans_regular"
-                        android:text="username"/>
+                        android:text="username"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
@@ -66,35 +70,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/lightBlue"
                     android:fontFamily="@font/worksans_regular"
-                    android:text="pengguna"/>
+                    android:text="pengguna"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="12sp"
+                    android:textAlignment="textEnd"/>
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/info_saldo_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
+                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:textSize="15sp"
-                    android:textAlignment="textEnd"
                     android:fontFamily="@font/worksans_regular"
-                    android:text="Sisa Saldo"/>
+                    android:text="Sisa Saldo"
+                    android:textAlignment="textEnd"
+                    android:textSize="15sp" />
+
                 <com.congfandi.lib.TextViewRupiah
                     android:id="@+id/txDana"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="Rp. 500000000"
+                    android:layout_gravity="center_vertical|end"
                     android:fontFamily="@font/worksans_bold"
-                    android:layout_gravity="center_vertical"/>
-
+                    android:text="Rp. 500000000"
+                    android:textSize="12sp"
+                    android:textAlignment="textEnd"/>
 
             </LinearLayout>
         </LinearLayout>

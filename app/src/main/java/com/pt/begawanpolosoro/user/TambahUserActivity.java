@@ -3,6 +3,7 @@ package com.pt.begawanpolosoro.user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,6 +41,16 @@ public class TambahUserActivity extends AppCompatActivity {
     String SuserName;
     String Srole;
     String Ssaldo;
+
+    String NewUserRole;
+
+    public String getNewUserRole() {
+        return NewUserRole;
+    }
+
+    public void setNewUserRole(String newUserRole) {
+        NewUserRole = newUserRole;
+    }
 
 
     public String getSnama() {
@@ -113,7 +124,7 @@ public class TambahUserActivity extends AppCompatActivity {
         back.setOnClickListener(v -> {
                 finish();
         });
-        setSrole("0");
+        setSrole("1");
 
 
         List<String> dataset = new LinkedList<>(Arrays.asList("KARYAWAN", "PELAKSANA", "ADMINISTRATOR"));
@@ -121,14 +132,18 @@ public class TambahUserActivity extends AppCompatActivity {
         role.setOnSpinnerItemSelectedListener((parent, view, position, id) -> {
             switch (position){
                 case 0:
-                    setSrole("0");
-
+                    setSrole("1");
+                    Log.i(TAG, "onCreate: role "+ getSrole());
                     break;
                 case  1:
-                    setSrole("1");
+                    setSrole("2");
+                    Log.i(TAG, "onCreate: role "+ getSrole());
+
                     break;
                 case 2:
                     setSrole("3");
+                    Log.i(TAG, "onCreate: role "+ getSrole());
+
 
             }
         });
@@ -154,6 +169,7 @@ public class TambahUserActivity extends AppCompatActivity {
             if (errorForm()){
                 btnSend.setVisibility(View.GONE);
                 pg.setVisibility(View.VISIBLE);
+                Log.i(TAG, "onClick: "+ getSnama() + getSsaldo() + getSrole());
                 Call<ResponseLogin> p = apiService.newUser(user.getsAuth(), getSnama(),getSrole(),getSsaldo());
                 p.enqueue(new Callback<ResponseLogin>() {
                     @Override
